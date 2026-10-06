@@ -1,0 +1,4 @@
+pyinstaller==6.16.0
+pytest==9.1.1
+pytest-cov==7.0.0
+setuptools==84.0.0

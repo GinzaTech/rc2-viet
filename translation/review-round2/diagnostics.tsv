@@ -1,0 +1,125 @@
+Restart Aircraft. Contact DJI Support if it persists after restart.	Khởi động lại máy bay. Liên hệ bộ phận hỗ trợ DJI nếu lỗi vẫn còn sau khi khởi động lại.
+Restart Aircraft. Contact DJI Support if the problem persists.	Khởi động lại máy bay. Liên hệ bộ phận hỗ trợ DJI nếu lỗi vẫn tiếp diễn.
+Backward vision sensor calibration error. Precision Hovering and Obstacle Avoidance may fail.	Lỗi hiệu chuẩn cảm biến hình ảnh phía sau. Giữ vị trí chính xác và tránh chướng ngại vật có thể không hoạt động.
+Backward left vision sensor error.	Lỗi cảm biến hình ảnh phía sau bên trái.
+Backward right vision sensor error.	Lỗi cảm biến hình ảnh phía sau bên phải.
+Downward Vision Sensors Calibration Error	Lỗi hiệu chuẩn cảm biến hình ảnh phía dưới
+Calibrate Downward Vision Sensors	Hiệu chuẩn cảm biến hình ảnh phía dưới
+Vision system recalibration is required.	Cần hiệu chuẩn lại hệ thống cảm biến hình ảnh.
+Downward vision sensor calibration error. Precision Hovering and Landing Protection may fail.	Lỗi hiệu chuẩn cảm biến hình ảnh phía dưới. Giữ vị trí chính xác và bảo vệ khi hạ cánh có thể không hoạt động.
+Downward left vision sensor error.	Lỗi cảm biến hình ảnh phía dưới bên trái.
+Downward right vision sensor error.	Lỗi cảm biến hình ảnh phía dưới bên phải.
+Forward vision sensor calibration error. Precision Hovering and Obstacle Avoidance may fail.	Lỗi hiệu chuẩn cảm biến hình ảnh phía trước. Giữ vị trí chính xác và tránh chướng ngại vật có thể không hoạt động.
+Forward left vision sensor error.	Lỗi cảm biến hình ảnh phía trước bên trái.
+Forward right vision sensor error.	Lỗi cảm biến hình ảnh phía trước bên phải.
+Vision sensor communication error.	Lỗi giao tiếp với cảm biến hình ảnh.
+Calibrating the Vision Sensors with DJI Assistant on a PC or Mac is recommended.	Nên hiệu chuẩn cảm biến hình ảnh bằng DJI Assistant trên PC hoặc Mac.
+Calibrate the Vision Sensors with DJI Assistant on PC or Mac for higher accuracy.	Hiệu chuẩn cảm biến hình ảnh bằng DJI Assistant trên PC hoặc Mac để đạt độ chính xác cao hơn.
+Propeller Guards detected. Forward obstacle sensing has turned off.	Phát hiện bộ bảo vệ cánh quạt. Cảm biến chướng ngại vật phía trước đã tắt.
+Please remove the propeller guards.	Vui lòng tháo bộ bảo vệ cánh quạt.
+Hardware Malfunction. Contact DJI Support to arrange for repairs.	Lỗi phần cứng. Liên hệ bộ phận hỗ trợ DJI để được sửa chữa.
+Vision system error.	Lỗi hệ thống cảm biến hình ảnh.
+Vision sensor error.	Lỗi cảm biến hình ảnh.
+Downward Infrared Sensor calibration error. Precision Hovering and Landing Protection may fail.	Lỗi hiệu chuẩn cảm biến hồng ngoại phía dưới. Giữ vị trí chính xác và bảo vệ khi hạ cánh có thể không hoạt động.
+Downward Infrared Sensor Error	Lỗi cảm biến hồng ngoại phía dưới
+Downward Vision Sensor Calibration Error. Precision Hovering and Landing Protection may fail.	Lỗi hiệu chuẩn cảm biến hình ảnh phía dưới. Giữ vị trí chính xác và bảo vệ khi hạ cánh có thể không hoạt động.
+Downward Vision Sensor Error	Lỗi cảm biến hình ảnh phía dưới
+Forward Infrared Sensor calibration error. Precision Hovering and Obstacle Avoidance may fail.	Lỗi hiệu chuẩn cảm biến hồng ngoại phía trước. Giữ vị trí chính xác và tránh chướng ngại vật có thể không hoạt động.
+Forward Infrared Sensor Error	Lỗi cảm biến hồng ngoại phía trước
+Forward Vision Sensor calibration error. Precision Hovering and Obstacle Avoidance may fail.	Lỗi hiệu chuẩn cảm biến hình ảnh phía trước. Giữ vị trí chính xác và tránh chướng ngại vật có thể không hoạt động.
+Forward Vision Sensor Error	Lỗi cảm biến hình ảnh phía trước
+Battery Cell Error	Lỗi cell pin
+Solution: to ensure battery health, do not power off the aircraft until discharging it to 5% after landing. Restart and sync the flight data. Contact DJI Support as soon as possible.	Giải pháp: Để bảo vệ pin, sau khi hạ cánh, hãy chờ pin xả xuống 5% rồi mới tắt máy bay. Khởi động lại và đồng bộ dữ liệu bay. Liên hệ bộ phận hỗ trợ DJI sớm nhất có thể.
+Battery is not fully charged. To ensure flight safety, please charge to 100% before first use.	Pin chưa được sạc đầy. Để đảm bảo an toàn bay, sạc pin tới 100% trước lần sử dụng đầu tiên.
+Charge battery fully before flying.	Sạc đầy pin trước khi bay.
+Complete battery discharging and charging is required. Otherwise, flight safety may be affected due to inaccurate power detection. .	Cần xả pin rồi sạc đầy. Nếu không, mức pin có thể được xác định sai và ảnh hưởng đến an toàn bay.
+Discharge battery to 5% or below after flight. Charge battery to 50% for long-term storage.	Sau khi bay, xả pin xuống 5% hoặc thấp hơn. Sạc tới 50% nếu cất giữ lâu dài.
+Check Aircraft Load. Heavy loads may lead to overcurrent. Reduce excessive motion during flight.	Kiểm tra tải trọng máy bay. Tải nặng có thể gây quá dòng. Hạn chế thao tác chuyển động mạnh khi bay.
+Low Temperature Environment. Battery not suitable for flight.	Nhiệt độ môi trường thấp. Pin không phù hợp để bay.
+Warm battery to 41F (5°C) and retry.	Làm ấm pin tới 41F (5°C) rồi thử lại.
+Stop flying, cool battery to room temperature and retry.	Dừng bay, để pin nguội về nhiệt độ phòng rồi thử lại.
+Camera error	Lỗi camera
+Restart Aircraft. Contact DJI Support if it persists after restart. Error code:	Khởi động lại máy bay. Liên hệ bộ phận hỗ trợ DJI nếu lỗi vẫn còn. Mã lỗi:
+Camera Overheating	Camera quá nóng
+Cool camera and retry	Để camera nguội rồi thử lại
+Camera Sensor Error	Lỗi cảm biến camera
+Hardware Malfunction. Contact DJI Support to for repairs	Lỗi phần cứng. Liên hệ bộ phận hỗ trợ DJI để được sửa chữa
+Aircraft Upgrade Error	Lỗi cập nhật máy bay
+Retry following instructions carefully.	Làm theo hướng dẫn cẩn thận rồi thử lại.
+Battery Connection to Center Board Failed.	Pin không kết nối được với bo mạch trung tâm.
+GPS Connection to Center Board Failed.	GPS không kết nối được với bo mạch trung tâm.
+Hardware Malfunction. Contact DJI Support for repairs.	Lỗi phần cứng. Liên hệ bộ phận hỗ trợ DJI để được sửa chữa.
+Main Controller Connection to Center Board Failed.	Bộ điều khiển chính không kết nối được với bo mạch trung tâm.
+Contact DJI Support if it persits after restart.	Liên hệ bộ phận hỗ trợ DJI nếu lỗi vẫn còn sau khi khởi động lại.
+Hardware malfunction. Contact customer service for repairs.	Lỗi phần cứng. Liên hệ bộ phận chăm sóc khách hàng để được sửa chữa.
+Video Decoder not encrypted.	Bộ giải mã video chưa được mã hóa.
+Hardware malfunction. Contact DJI Support service for repairs.	Lỗi phần cứng. Liên hệ bộ phận hỗ trợ DJI để được sửa chữa.
+Gimbal joint angle sensor initialization error.	Lỗi khởi tạo cảm biến góc khớp gimbal.
+Restart your aircraft. If the problem persists, the gimbal may be broken. Please contact DJI Support.	Khởi động lại máy bay. Nếu lỗi vẫn còn, gimbal có thể đã hỏng. Vui lòng liên hệ bộ phận hỗ trợ DJI.
+Hardware Malfunction. Contact DJI Support for repairs	Lỗi phần cứng. Liên hệ bộ phận hỗ trợ DJI để được sửa chữa
+Gimbal cannot receive Main Controller data	Gimbal không nhận được dữ liệu từ bộ điều khiển chính
+Check the 8-pin plug that connects the damping plate and the aircraft. Ensure that none of the pins are loose. If the problem persists, contact DJI Support	Kiểm tra giắc 8 chân nối đế giảm chấn với máy bay. Đảm bảo không có chân nào bị lỏng. Nếu lỗi vẫn còn, liên hệ bộ phận hỗ trợ DJI
+Gimbal Roll Error	Lỗi nghiêng ngang gimbal
+Gimbal shaking error.	Lỗi rung gimbal.
+Check gimbal connector.	Kiểm tra đầu nối gimbal.
+Gimbal Calibration Error	Lỗi hiệu chuẩn gimbal
+Gimbal Yaw Error	Lỗi xoay hướng gimbal
+Secure Encryption Error	Lỗi mã hóa bảo mật
+Relink Remote Controller	Ghép nối lại tay điều khiển
+Remote controller wireless transmission channel not calibrated.	Kênh truyền không dây của tay điều khiển chưa được hiệu chuẩn.
+Flight distance may be affected. Please contact DJI Support.	Khoảng cách bay có thể bị ảnh hưởng. Vui lòng liên hệ bộ phận hỗ trợ DJI.
+Aircraft wireless transmission channel not calibrated	Kênh truyền không dây của máy bay chưa được hiệu chuẩn
+Flight distance may be inaccurate. Contact DJI Support.	Khoảng cách bay có thể không chính xác. Liên hệ bộ phận hỗ trợ DJI.
+Dongle disconnected. Unable to continue	Thiết bị kết nối mạng đã ngắt kết nối. Không thể tiếp tục
+Your subscription to Enhanced Transmission has expired. Renew subscription for continued service	Gói dịch vụ truyền tín hiệu tăng cường đã hết hạn. Gia hạn để tiếp tục sử dụng
+Your subscription to Enhanced Transmission will expire in %1$s days, %2$s hours. Renew subscription for continued service	Gói dịch vụ truyền tín hiệu tăng cường sẽ hết hạn sau %1$s ngày, %2$s giờ. Gia hạn để tiếp tục sử dụng
+Subscription Reminder	Nhắc gia hạn dịch vụ
+Your subscription to Enhanced Transmission will expire in %1$s days, %2$s hours	Gói dịch vụ truyền tín hiệu tăng cường sẽ hết hạn sau %1$s ngày, %2$s giờ
+Restart your aircraft or contact DJI Support.	Khởi động lại máy bay hoặc liên hệ bộ phận hỗ trợ DJI.
+Gimbal Motor Obstructed. Check whether gimbal rotates smoothly and clamp mounted off. Contact DJI Support if it persists.	Động cơ gimbal bị cản trở. Kiểm tra gimbal có xoay trơn tru và đã tháo kẹp bảo vệ chưa. Liên hệ bộ phận hỗ trợ DJI nếu lỗi vẫn còn.
+Gimbal motor load too large. Please check if the gimbal clamp has been removed.	Tải động cơ gimbal quá lớn. Kiểm tra đã tháo kẹp bảo vệ gimbal chưa.
+Gimbal is restarting. Check that the gimbal rotates smoothly if restart fails again.	Gimbal đang khởi động lại. Nếu tiếp tục thất bại, kiểm tra gimbal có xoay trơn tru không.
+Firmware Update Required	Cần cập nhật firmware
+Accelerometer failed	Cảm biến gia tốc bị lỗi
+Restart the aircraft. Contact DJI Support if this continues after restarting.	Khởi động lại máy bay. Liên hệ bộ phận hỗ trợ DJI nếu lỗi vẫn còn sau khi khởi động lại.
+Accelerometer Error	Lỗi cảm biến gia tốc
+Contact DJI Support if it persists after restart.	Liên hệ bộ phận hỗ trợ DJI nếu lỗi vẫn còn sau khi khởi động lại.
+Aircraft attitude is too large.	Góc nghiêng của máy bay quá lớn.
+Place aircraft on a flat surface and restart. Contact DJI Support if this continues after restarting.	Đặt máy bay trên mặt phẳng rồi khởi động lại. Liên hệ bộ phận hỗ trợ DJI nếu lỗi vẫn còn.
+Barometer Error	Lỗi cảm biến áp suất
+Compass Error	Lỗi la bàn
+Aircraft GPS Error	Lỗi GPS máy bay
+Restart Aircraft. If the problem persists, contact DJI Support	Khởi động lại máy bay. Liên hệ bộ phận hỗ trợ DJI nếu lỗi vẫn còn
+IMU Calibration Required	Cần hiệu chuẩn IMU
+Please calibrate IMU.	Vui lòng hiệu chuẩn IMU.
+IMU Calibration Incomplete	Hiệu chuẩn IMU chưa hoàn tất
+Please recalibrate IMU.	Vui lòng hiệu chuẩn lại IMU.
+IMU Parameter Error	Lỗi thông số IMU
+IMU Data Error	Lỗi dữ liệu IMU
+Place aircraft on a flat surface and restart it. Contact DJI Support if this continues after restart.	Đặt máy bay trên mặt phẳng rồi khởi động lại. Liên hệ bộ phận hỗ trợ DJI nếu lỗi vẫn còn.
+Hardware Malfunction	Lỗi phần cứng
+IMU Initialization Failed. Restart Aircraft. Contact DJI Support if the problem persists.	Khởi tạo IMU thất bại. Khởi động lại máy bay. Liên hệ bộ phận hỗ trợ DJI nếu lỗi vẫn còn.
+Barometer Data Error	Lỗi dữ liệu cảm biến áp suất
+Barometer Initialization Failed	Khởi tạo cảm biến áp suất thất bại
+Data Recorder Error	Lỗi bộ ghi dữ liệu
+SD Card Rewrite Error	Lỗi ghi lại thẻ SD
+IMU recalibration is required.	Cần hiệu chuẩn lại IMU.
+Calibrate IMU	Hiệu chuẩn IMU
+Hardware Malfunction. Contact DJI Support to for repairs.	Lỗi phần cứng. Liên hệ bộ phận hỗ trợ DJI để được sửa chữa.
+Remote Controller Encryption Error	Lỗi mã hóa tay điều khiển
+Hardware Malfunction. Contact DJI Support to arrange for repairs	Lỗi phần cứng. Liên hệ bộ phận hỗ trợ DJI để được sửa chữa
+Remote Controller Image Transmission Initialization Error	Lỗi khởi tạo truyền hình ảnh của tay điều khiển
+Remote Controller GPS Error	Lỗi GPS tay điều khiển
+Remote controller overheated.	Tay điều khiển quá nóng.
+Remote controller is too hot. Ensure you are operating within the recommended temperature range.	Tay điều khiển quá nóng. Đảm bảo nhiệt độ khi sử dụng nằm trong phạm vi khuyến nghị.
+Recharge Battery	Sạc lại pin
+Remote Controller Reset. Check the settings.	Tay điều khiển đã được đặt lại. Kiểm tra cài đặt.
+Solution: Check settings for accuracy, especially when using Mode 2 and Mode 1, and then restart the controller.	Giải pháp: Kiểm tra cài đặt, đặc biệt khi dùng Chế độ 2 và Chế độ 1, rồi khởi động lại tay điều khiển.
+Remote Controller not Calibrated	Tay điều khiển chưa được hiệu chuẩn
+Disconnect Remote Controller from aircraft and enter Remote Controller Settings menu to calibrate sticks.	Ngắt kết nối tay điều khiển với máy bay, rồi mở cài đặt tay điều khiển để hiệu chuẩn cần điều khiển.
+Remote Controller has been idle for too long	Tay điều khiển đã không hoạt động quá lâu
+Turn off the Remote Controller	Tắt tay điều khiển
+Remote Controller 5G Module Error	Lỗi mô-đun 5G của tay điều khiển
+Left vision sensor error.	Lỗi cảm biến hình ảnh bên trái.
+Please contact DJI Support for repair	Vui lòng liên hệ bộ phận hỗ trợ DJI để được sửa chữa
+Right vision sensor error.	Lỗi cảm biến hình ảnh bên phải.

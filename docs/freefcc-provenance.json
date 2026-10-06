@@ -1,0 +1,9 @@
+{
+  "release_url": "https://github.com/doesthings/FreeFCC/releases/tag/v1.5.5",
+  "tag": "v1.5.5",
+  "asset_name": "app-release.apk",
+  "sha256": "da2c7dd3ce389d3bd04334188e5ec0fe060070d9c4ff9cf1127aadecf133f1e4",
+  "official_digest": "sha256:da2c7dd3ce389d3bd04334188e5ec0fe060070d9c4ff9cf1127aadecf133f1e4",
+  "size": 19461348,
+  "source_url": "https://github.com/doesthings/FreeFCC/tree/v1.5.5"
+}

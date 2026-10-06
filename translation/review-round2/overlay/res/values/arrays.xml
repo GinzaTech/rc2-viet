@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string-array name="jazzy_effects">
+        <item>Tiêu chuẩn</item>
+        <item>Bảng</item>
+        <item>Lập phương</item>
+        <item>Lập phương</item>
+        <item>Lật dọc</item>
+        <item>FlipHorizontal</item>
+        <item>Chồng</item>
+        <item>Phóng to</item>
+        <item>Thu nhỏ</item>
+        <item>Xoay lên</item>
+        <item>Xoay dưới</item>
+        <item>Hiệp định</item>
+    </string-array>
+    <string-array name="exo_controls_playback_speeds">
+        <item>0,25x</item>
+        <item>0,5x</item>
+        <item>0,75x</item>
+        <item>Thường</item>
+        <item>1,25x</item>
+        <item>1,5x</item>
+        <item>2x</item>
+    </string-array>
+</resources>

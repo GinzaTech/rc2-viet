@@ -1,0 +1,19 @@
+[
+  "authsdk_app_name",
+  "fpv_setting_camera_material_name_prefix",
+  "fpv_setting_safe_remote_id_operator_number_hint_content",
+  "m3_sys_motion_easing_emphasized_accelerate",
+  "m3_sys_motion_easing_emphasized_decelerate",
+  "m3_sys_motion_easing_legacy",
+  "m3_sys_motion_easing_legacy_accelerate",
+  "m3_sys_motion_easing_legacy_decelerate",
+  "m3_sys_motion_easing_linear",
+  "m3_sys_motion_easing_standard",
+  "m3_sys_motion_easing_standard_accelerate",
+  "m3_sys_motion_easing_standard_decelerate",
+  "material_motion_easing_accelerated",
+  "material_motion_easing_decelerated",
+  "material_motion_easing_linear",
+  "material_motion_easing_standard",
+  "country_code_2_country_str"
+]

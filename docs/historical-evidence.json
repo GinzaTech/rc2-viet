@@ -1,0 +1,79 @@
+{
+  "after-bridge-reboot.json": {
+    "serial": "RC2_REDACTED",
+    "boot_completed": "1",
+    "uptime": "468.50 3350.02",
+    "home_property": "local.rc2.home_local.rc2.home.HomeActivity",
+    "resolved_home": "priority=0 preferredOrder=0 match=0x0 specificIndex=-1 isDefault=false\nlocal.rc2.home/.HomeActivity",
+    "foreground_before_any_home_action": "mResumedActivity: ActivityRecord{d809aa7 u0 app.lawnchair/.LawnchairLauncher t3}",
+    "boot_home_events": "",
+    "overlay_state_before_repair": "local.dji.fly.vietnamese:0 {\n  mPackageName...........: local.dji.fly.vietnamese\n  mUserId................: 0\n  mTargetPackageName.....: dji.go.v5\n  mTargetOverlayableName.: DJIFlyLocalTranslation\n  mBaseCodePath..........: /data/app/~~Vy20PgoK9jpl_6lxf1dc7g==/local.dji.fly.vietnamese-qoO2WVH7LUlq-AuZU68yJw==/base.apk\n  mState.................: STATE_ENABLED\n  mIsEnabled.............: true\n  mIsMutable.............: true\n  mPriority..............: 2147483647\n  mCategory..............: null\n}",
+    "activation": {
+      "status": "already_enabled",
+      "sample": "Kết nối máy bay"
+    },
+    "radar": "Khi bật, bản đồ radar phát hiện chướng ngại vật sẽ hiển thị theo thời gian thực"
+  },
+  "user-wording-device.json": {
+    "status": "enabled",
+    "sample": "Kết nối máy bay",
+    "readback": {
+      "fpv_setting_control_advanced_parameter_description": "Tinh chỉnh độ nhạy và đường cong của máy bay và gimbal",
+      "fpv_setting_control_advanced_parameter_flight_exp_list": "đường cong cần điều khiển (Expo)",
+      "fpv_setting_control_advanced_parameter_list": "điều chỉnh độ nhạy và đường cong",
+      "fpv_setting_control_advanced_parameter_no_parameter_available_in_current_flight_mode_content": "Chế độ bay hiện tại không hỗ trợ điều chỉnh độ nhạy và đường cong",
+      "fpv_setting_control_unit_kilometer_btn": "Hệ kilomet(Km)",
+      "fpv_setting_safe_bypass_safety_title": "Tùy chọn tránh khi bay",
+      "fpv_setting_safe_compass_normal_list": "La bàn hoạt động bình thường",
+      "fpv_setting_safe_obstacle_radar_show_list": "Hiển thị bản đồ radar",
+      "fpv_basic_flight_automatic_return_btn": "quay về vị trí ban đầu",
+      "fpv_setting_control_advanced_parameter_cine_btn": "quay phim"
+    },
+    "version": "versionCode=7 minSdk=29 targetSdk=30\n    versionName=1.21.8-vi-reviewed5\n    signatures=PackageSignatures{85b6d53 version:3, signatures:[c6c209a7], past signatures:[]}",
+    "stock_hash": "cfbf67368fa812c6e7d51430a07518ab47d056605bf373fcc69277e540caa32e"
+  },
+  "compiled-developer-verification.json": {
+    "status": "developer_enabled",
+    "development_settings_enabled": "1",
+    "component": "com.android.settings/com.android.settings.Settings$DevelopmentSettingsDashboardActivity",
+    "dashboard_opened": true,
+    "serial": "RC2_REDACTED",
+    "events": [
+      {
+        "state": "pairing",
+        "message": "Đang ghép nối RC 2; chờ xác nhận USB trên tay."
+      },
+      {
+        "state": "pairing",
+        "message": "Chọn Allow USB debugging trên RC 2 nếu có hộp thoại."
+      },
+      {
+        "state": "connected",
+        "message": "Đã kết nối ADB với RC 2."
+      }
+    ]
+  },
+  "compiled-freefcc-verification.json": {
+    "embedded_files": {
+      "assets/adb/adb.exe": true,
+      "assets/adb/AdbWinApi.dll": true,
+      "assets/adb/AdbWinUsbApi.dll": true,
+      "assets/lawnchair.apk": true,
+      "assets/freefcc.apk": true,
+      "assets/FREEFCC_LICENSE.txt": true
+    },
+    "lawnchair_embedded_sha256": "d4200d0985169fd79ba1bd225d653f2a2fe7b50aa07cb0d05ca64c7623f86059",
+    "freefcc_embedded_sha256": "da2c7dd3ce389d3bd04334188e5ec0fe060070d9c4ff9cf1127aadecf133f1e4",
+    "compiled_gui_smoke_exit_code": 0,
+    "embedded_adb_without_sdk_path": {
+      "exit_code": 0,
+      "version": [
+        "Android Debug Bridge version 1.0.41",
+        "Version 37.0.0-14910828"
+      ]
+    },
+    "all_10_buttons_fit": true,
+    "hardware_install_from_new_buttons": "NOT VERIFIED after reset; no controller write sent during this feature request",
+    "fcc_activation": "No activation/connection/radio command exists in the install flow; app is not launched"
+  }
+}

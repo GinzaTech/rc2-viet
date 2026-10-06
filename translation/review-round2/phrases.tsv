@@ -1,0 +1,706 @@
+Go to Settings	Mở cài đặt
+AE Lock on	Đã bật khóa phơi sáng tự động
+AE Lock off	Đã tắt khóa phơi sáng tự động
+Feature coming soon	Tính năng sẽ sớm được bổ sung
+Don't show again	Không hiển thị lại
+Do not control aircraft	Không điều khiển máy bay
+Calibration failed. Try again	Hiệu chuẩn thất bại. Vui lòng thử lại
+Calibrating…	Đang hiệu chuẩn…
+Calibrate	Hiệu chuẩn
+Tracking subject. Unable to switch cameras	Đang bám theo chủ thể. Không thể chuyển camera
+Function not supported in Explore mode	Chế độ Khám phá không hỗ trợ tính năng này
+Zoom not supported in current shooting mode	Chế độ chụp hiện tại không hỗ trợ thu phóng
+No SD card. Unable to shoot. Insert SD card	Không có thẻ SD nên không thể chụp hoặc quay. Vui lòng lắp thẻ SD
+Adjusting White Balance (WB) Recommended	Nên điều chỉnh cân bằng trắng (WB)
+Live	Trực tiếp
+Live Photo	Ảnh động
+D-Cine	D-Cine
+Norm.	Thường
+At Maximum Resolution	Ở độ phân giải tối đa
+Shutter	Tốc độ màn trập
+AEB Setting	Cài đặt chụp bù phơi sáng (AEB)
+Landscape Mode	Chế độ khung hình ngang
+Coding Format	Định dạng mã hóa
+Color Display Assist	Hỗ trợ hiển thị màu
+Original	Bản gốc
+Output	Đầu ra
+422 HQ	422 HQ
+Shoot Mode	Chế độ chụp/quay
+%1$s/%2$s available	Còn trống %1$s/%2$s
+Formatting...	Đang định dạng...
+Initializing…	Đang khởi tạo…
+Internal	Bộ nhớ trong
+Unavailable	Không khả dụng
+Tint	Sắc độ
+ALL-I	ALL-I
+Compression Method	Phương thức nén
+Portrait Mode	Chế độ khung hình dọc
+Camera Orientation	Hướng camera
+Cropped	Có cắt khung hình
+Lossless	Không mất chất lượng
+Portrait Mode Preference	Ưu tiên khung hình dọc
+Pano	Ảnh toàn cảnh
+Vertical	Dọc
+Generating...	Đang tạo...
+Sphere	Toàn cảnh hình cầu
+Wide-angle	Góc rộng
+Explore	Khám phá
+Enhancing image quality.Please wait.	Đang cải thiện chất lượng ảnh. Vui lòng chờ.
+Enhancing image quality...	Đang cải thiện chất lượng ảnh...
+Burst	Chụp liên tiếp
+Single	Chụp đơn
+Smart	Thông minh
+Timed Shot	Chụp theo khoảng thời gian
+Vert.	Dọc
+Horiz.	Ngang
+Feature only available in Landscape mode	Tính năng chỉ dùng được ở chế độ khung hình ngang
+Feature unavailable in Attitude mode	Tính năng không khả dụng trong chế độ ATTI
+Unavailable during landing	Không khả dụng trong lúc hạ cánh
+Flight tutorial in progress. QuickShots disabled	Đang chạy hướng dẫn bay. QuickShots đã bị tắt
+Unavailable during RTH	Không khả dụng trong lúc quay về điểm cất cánh (RTH)
+Enable this function in Normal mode	Chuyển sang chế độ Thường để bật tính năng này
+Satellite positioning signal weak. Function unavailable	Tín hiệu định vị vệ tinh yếu. Tính năng không khả dụng
+Button unavailable in QuickShots	Không thể dùng nút này trong QuickShots
+Update to latest firmware version to use this feature	Cập nhật firmware mới nhất để sử dụng tính năng này
+Automatically switched to internal storage	Đã tự động chuyển sang bộ nhớ trong
+SD card detected. Switch storage location to SD card?	Đã phát hiện thẻ SD. Chuyển nơi lưu sang thẻ SD?
+Storage unavailable	Không thể sử dụng bộ nhớ
+Output duration increased by 1 second	Thời lượng video đầu ra tăng thêm 1 giây
+Hyperlapse	Quay tua nhanh chuyển động (Hyperlapse)
+CourseLock	Khóa hướng bay
+Lock course	Khóa hướng bay
+Duration	Thời lượng
+Failed to generate flight route. Readjust waypoints	Không tạo được đường bay. Vui lòng điều chỉnh lại các điểm bay
+Selected subject area too small. Check and try again	Vùng chủ thể đã chọn quá nhỏ. Vui lòng kiểm tra rồi thử lại
+Tap the shutter button to start shooting	Nhấn nút chụp/quay để bắt đầu
+Set direction before selecting subject	Đặt hướng bay trước khi chọn chủ thể
+Failed to select subject. Try again	Không chọn được chủ thể. Vui lòng thử lại
+Insufficient frames. Unable to create video	Không đủ khung hình để tạo video
+Creating video failed	Không tạo được video
+Creating video...	Đang tạo video...
+Video saved	Đã lưu video
+Video created successfully	Đã tạo video thành công
+Frames	Khung hình
+Free	Tự do
+Interval	Khoảng thời gian
+Waypoint	Điểm bay
+Waypoint Hyperlapse will be recorded in Landscape	Video Hyperlapse theo điểm bay sẽ được quay theo khung hình ngang
+Waypoint Hyperlapse will be recorded in Portrait	Video Hyperlapse theo điểm bay sẽ được quay theo khung hình dọc
+Camera Rotation Angle: %1$s (good)	Góc xoay camera: %1$s (phù hợp)
+Camera Rotation Angle: %1$s (too large)	Góc xoay camera: %1$s (quá lớn)
+Camera Rotation Angle: %1$s  (too small)	Góc xoay camera: %1$s  (quá nhỏ)
+Set waypoint	Đặt điểm bay
+Reverse	Đảo ngược
+Sequence	Trình tự
+Circle	Bay vòng tròn
+CCW	Ngược chiều kim đồng hồ
+CW	Theo chiều kim đồng hồ
+Directional POI	Điểm quan tâm theo hướng bay
+Select subject	Chọn chủ thể
+Roll Angle Range From Start to End	Phạm vi góc nghiêng từ đầu đến cuối
+Roll Angle	Góc nghiêng ngang
+Switched to clockwise rotation	Đã chuyển sang xoay theo chiều kim đồng hồ
+Switched to counterclockwise rotation	Đã chuyển sang xoay ngược chiều kim đồng hồ
+Set direction before starting CourseLock Hyperlapse	Đặt hướng bay trước khi quay Hyperlapse khóa hướng bay
+Select subject before starting Circle Hyperlapse	Chọn chủ thể trước khi quay Hyperlapse vòng tròn
+Loading task failed. Check and try again	Không tải được tác vụ. Vui lòng kiểm tra rồi thử lại
+Saving task failed	Không lưu được tác vụ
+No. of Waypoints	Số điểm bay
+Tap here to adjust output and original video formats	Nhấn vào đây để điều chỉnh định dạng video đầu ra và video gốc
+Tap here to expand Hyperlapse settings	Nhấn vào đây để mở cài đặt Hyperlapse
+Length	Chiều dài
+Width	Chiều rộng
+MasterShots	Quay tự động (MasterShots)
+Pitch Up + Fly Forward	Ngẩng camera + bay tới
+Circle (Far)	Bay vòng tròn (xa)
+Camera Straight + Descend	Camera hướng thẳng + hạ độ cao
+Camera Straight + Circle	Camera hướng thẳng + bay vòng tròn
+Circle (Medium)	Bay vòng tròn (trung bình)
+Circle (Close)	Bay vòng tròn (gần)
+Adjusting aircraft position...	Đang điều chỉnh vị trí máy bay...
+Rocket	Bay thẳng lên (Rocket)
+Roll + Fly Forward	Nghiêng ngang + bay tới
+Dronie	Bay lùi và lên cao (Dronie)
+Camera Down + Descend	Camera hướng xuống + hạ độ cao
+Camera Down + Fly Forward	Camera hướng xuống + bay tới
+Camera Down + Circle	Camera hướng xuống + bay vòng tròn
+Aircraft automatically adjusting MasterShot start point	Máy bay đang tự điều chỉnh điểm bắt đầu MasterShot
+Current Location	Vị trí hiện tại
+MasterShot will start from current aircraft location	MasterShot sẽ bắt đầu tại vị trí hiện tại của máy bay
+Check subject area and flight route	Kiểm tra vùng chủ thể và đường bay
+Set shooting parameters	Cài đặt thông số chụp/quay
+Tap to take MasterShot	Nhấn để bắt đầu MasterShot
+Zoom In/Out	Phóng to/thu nhỏ
+Obstacle avoidance unavailable in current mode	Chế độ hiện tại không hỗ trợ tránh chướng ngại vật
+Asteroid	Tiểu hành tinh (Asteroid)
+QuickShots	Quay nhanh tự động (QuickShots)
+Dolly Zoom	Hiệu ứng thu phóng phối cảnh (Dolly Zoom)
+Helix	Bay xoắn ốc (Helix)
+Returning...	Đang quay về...
+Slow Motion	Quay chậm
+Digital Transceiver SN	Số sê-ri bộ thu phát tín hiệu số
+Aircraft SN	Số sê-ri máy bay
+Aircraft Firmware	Firmware máy bay
+Flight Controller SN	Số sê-ri bộ điều khiển bay
+App Version	Phiên bản ứng dụng
+Battery Cycle Count	Số chu kỳ sạc pin
+RC Track Firmware	Firmware RC Track
+RC Track SN	Số sê-ri RC Track
+Camera SN	Số sê-ri camera
+Clear All Data	Xóa toàn bộ dữ liệu
+Data in aircraft internal storage and SD card	Dữ liệu trong bộ nhớ máy bay và thẻ SD
+Aircraft logs	Nhật ký máy bay
+Unlocking licenses	Giấy phép mở khóa khu vực bay
+Land aircraft to clear data	Hạ cánh máy bay trước khi xóa dữ liệu
+Cleared successfully. Aircraft will restart soon	Đã xóa dữ liệu. Máy bay sẽ sớm khởi động lại
+Cleared successfully. Restart aircraft	Đã xóa dữ liệu. Vui lòng khởi động lại máy bay
+Failed to clear data. Try again	Không xóa được dữ liệu. Vui lòng thử lại
+Failed to clear data. Restart aircraft	Không xóa được dữ liệu. Vui lòng khởi động lại máy bay
+Aircraft connection required	Cần kết nối với máy bay
+Copied	Đã sao chép
+Model	Mẫu thiết bị
+RC Firmware	Firmware tay điều khiển
+Remote Controller SN	Số sê-ri tay điều khiển
+Reset All Settings	Đặt lại tất cả cài đặt
+Reset all settings to default and restart aircraft?	Khôi phục toàn bộ cài đặt mặc định và khởi động lại máy bay?
+Land aircraft to reset settings	Hạ cánh máy bay trước khi đặt lại cài đặt
+Reset successfully. Aircraft will restart soon	Đã đặt lại cài đặt. Máy bay sẽ sớm khởi động lại
+Reset successfully. Restart aircraft	Đã đặt lại cài đặt. Vui lòng khởi động lại máy bay
+Failed to reset settings. Try again	Không đặt lại được cài đặt. Vui lòng thử lại
+Failed to reset settings. Restart aircraft	Không đặt lại được cài đặt. Vui lòng khởi động lại máy bay
+Remote ID SN	Số sê-ri Remote ID
+Wi-Fi Name	Tên Wi-Fi
+Pure	Trong trẻo
+App Recording	Ghi hình trong ứng dụng
+Go to Settings > Camera to enable	Mở Cài đặt > Camera để bật
+%s available	Còn trống %s
+Auto Sync HD Photos	Tự động đồng bộ ảnh HD
+Diagonal	Đường chéo
+Format storage?	Định dạng bộ nhớ?
+Select Location to Format	Chọn bộ nhớ cần định dạng
+Frame Guide	Khung hướng dẫn bố cục
+2.39:1 (Widescreen)	2.39:1 (Màn ảnh rộng)
+Insert SD card in remote controller to use this feature	Lắp thẻ SD vào tay điều khiển để sử dụng tính năng này
+Failed to enable histogram. Livestream in progress	Không bật được biểu đồ phơi sáng khi đang phát trực tiếp
+DJI_YYYYMMDDhhmmss	DJI_YYYYMMDDhhmmss
+AUTO	TỰ ĐỘNG
+Max Video Cache Capacity	Dung lượng bộ nhớ đệm video tối đa
+Unavailable when vision assist is enabled	Không khả dụng khi đang bật hỗ trợ quan sát
+Panorama	Ảnh toàn cảnh
+Peaking Level	Mức tô nét vùng lấy nét
+Cache When Recording	Lưu bộ nhớ đệm khi quay video
+Camera settings will be reset to default. Confirm?	Cài đặt camera sẽ được khôi phục về mặc định. Xác nhận?
+Reset Camera Parameters	Đặt lại thông số camera
+Unable to reset camera parameters during shooting	Không thể đặt lại thông số camera khi đang chụp hoặc quay
+Aircraft internal storage unavailable	Không thể sử dụng bộ nhớ trong của máy bay
+Shooting Priority	Ưu tiên chụp/quay
+Composition	Bố cục
+Shot Frame	Khung hình
+When enabled, video bitrate will remain stable	Khi bật, tốc độ bit của video sẽ được giữ ổn định
+Video Subtitles	Phụ đề video
+Link Controller A	Ghép nối tay điều khiển A
+Link Controller B	Ghép nối tay điều khiển B
+Current Controller	Tay điều khiển hiện tại
+Dual-Control Mode	Chế độ hai tay điều khiển
+Attitude mode (A):	Chế độ ATTI (A):
+Cine mode (C):	Chế độ quay mượt (C):
+GNSS positioning functions properly	Hệ thống định vị GNSS hoạt động bình thường
+Normal mode (N):	Chế độ Thường (N):
+Sport mode (S):	Chế độ Thể thao (S):
+Transfer	Chuyển
+Cine	Quay mượt
+Brake Sensitivity	Độ nhạy phanh
+Up/Down	Lên/xuống
+Expo	Đường cong đáp ứng cần điều khiển (Expo)
+Pitch/Roll	Nghiêng trước sau/nghiêng ngang
+Yaw	Xoay hướng
+Max Ascent Speed	Tốc độ bay lên tối đa
+Max Descent Speed	Tốc độ hạ xuống tối đa
+Max Angular Velocity	Tốc độ xoay tối đa
+Yaw Smoothness	Độ mượt khi xoay hướng
+Max Control Speed (Tilt)	Tốc độ điều khiển tối đa (ngẩng/cúi)
+Max Roll Speed	Tốc độ nghiêng ngang tối đa
+Tilt Smoothness	Độ mượt khi ngẩng/cúi
+Roll Smoothness	Độ mượt khi nghiêng ngang
+Gain & Expo Tuning	Điều chỉnh độ nhạy và đường cong đáp ứng
+Adaptive	Thích ứng
+Adaptive Camera Motion	Chuyển động camera thích ứng
+Auto Subject Composition	Tự động căn bố cục chủ thể
+Advanced Control Settings	Cài đặt điều khiển nâng cao
+C1 Button	Nút C1
+Hold C1 + Right Dial	Giữ C1 + xoay bánh xe phải
+C2 Button	Nút C2
+Hold C2 + Right Dial	Giữ C2 + xoay bánh xe phải
+Hold C3 + Right Dial	Giữ C3 + xoay bánh xe phải
+Adjust Aperture	Điều chỉnh khẩu độ
+Adjust Shutter Speed	Điều chỉnh tốc độ màn trập
+Portrait/Landscape Mode Switch	Chuyển giữa khung hình dọc/ngang
+Switch Cameras	Chuyển camera
+Switch to lens with high zoom	Chuyển sang ống kính có mức phóng đại cao
+Switch to lens with low zoom	Chuyển sang ống kính có mức phóng đại thấp
+Playback	Xem lại
+Adjust Focal Length	Điều chỉnh tiêu cự
+Press and hold Fn key + dial	Nhấn giữ phím Fn + xoay bánh xe
+Hyperlapse Cruise Control	Giữ tốc độ bay khi quay Hyperlapse
+Auxiliary Light	Đèn hỗ trợ
+Vision Assist	Hỗ trợ quan sát
+Follow/FPV	Bám theo/FPV
+Gimbal switched to Follow mode	Gimbal đã chuyển sang chế độ bám theo
+Gimbal switched to FPV mode	Gimbal đã chuyển sang chế độ FPV
+Recenter/Tilt Down Gimbal	Đưa gimbal về giữa/hướng xuống
+WayPoint打点	Đánh dấu điểm bay
+Customize the functions for remote controller buttons.	Tùy chỉnh chức năng các nút trên tay điều khiển.
+Double-press Fn key	Nhấn đúp phím Fn
+Plan Waypoint Flight	Lập đường bay theo điểm
+Map/FPV Switch	Chuyển bản đồ/khung nhìn FPV
+Failed to reset button functions to default	Không khôi phục được chức năng mặc định của các nút
+Gimbal Roll	Nghiêng ngang gimbal
+Right Dial	Bánh xe phải
+Right	Phải
+Display Zoom	Thu phóng giao diện
+Pitch Speed	Tốc độ ngẩng/cúi
+Follow Mode	Chế độ bám theo
+The gimbal follows the movement of the aircraft.	Gimbal chuyển động theo máy bay.
+Gimbal Mode	Chế độ gimbal
+Allow Upward Gimbal Rotation	Cho phép gimbal ngẩng lên
+Calibrating gimbal. Keep aircraft stationary	Đang hiệu chuẩn gimbal. Giữ máy bay đứng yên
+Calibration failed	Hiệu chuẩn thất bại
+Horizontal	Ngang
+Calibration successful	Hiệu chuẩn thành công
+Recalibrate	Hiệu chuẩn lại
+Start Calibration	Bắt đầu hiệu chuẩn
+Do not operate aircraft during calibration	Không điều khiển máy bay trong lúc hiệu chuẩn
+Gimbal Center Calibration	Hiệu chuẩn vị trí giữa của gimbal
+Gimbal center calibration exited	Đã thoát hiệu chuẩn vị trí giữa của gimbal
+Gimbal center reset to default	Đã đặt lại vị trí giữa của gimbal về mặc định
+Solid	Sáng liên tục
+Breathing	Sáng tắt dần
+Virtual Joystick	Cần điều khiển ảo
+Tilt Angle Expansion in Portrait	Mở rộng góc ngẩng/cúi ở chế độ khung hình dọc
+RC Calibration	Hiệu chuẩn tay điều khiển
+Cancel (%1$s)	Hủy (%1$s)
+Linking failed	Ghép nối thất bại
+Remote controller disconnected	Tay điều khiển đã ngắt kết nối
+Remote controller not connected	Chưa kết nối tay điều khiển
+Linking successful	Ghép nối thành công
+Descend	Hạ xuống
+Forward	Tiến tới
+Left Stick	Cần điều khiển trái
+Power off aircraft and calibrate remote controller.	Tắt máy bay rồi hiệu chuẩn tay điều khiển.
+Remote Controller Calibration	Hiệu chuẩn tay điều khiển
+Re-pair to Aircraft (Link)	Ghép nối lại với máy bay
+Right Stick	Cần điều khiển phải
+Ascend	Bay lên
+Press & Takeoff	Nhấn để cất cánh
+Make Sure Surroundings are Safe for Flight	Đảm bảo khu vực xung quanh an toàn để bay
+Metric (km)	Hệ mét (km)
+Metric (m)	Hệ mét (m)
+Only letters and numbers allowed	Chỉ cho phép chữ cái và chữ số
+Function unavailable when customizing folder/file name	Không dùng được tính năng này khi tùy chỉnh tên thư mục/tệp
+Custom Folder Naming	Tùy chỉnh tên thư mục
+Details and settings	Thông tin chi tiết và cài đặt
+Custom File Naming	Tùy chỉnh tên tệp
+IMU calibration required	Cần hiệu chuẩn IMU
+IMU Initializing...	Đang khởi tạo IMU...
+IMU normal	IMU hoạt động bình thường
+IMU error	Lỗi IMU
+AirSense	Cảnh báo máy bay có người lái (AirSense)
+Not now	Để sau
+Disclaimer	Tuyên bố miễn trừ trách nhiệm
+BeiDou	Bắc Đẩu (BeiDou)
+Advanced Safety Settings	Cài đặt an toàn nâng cao
+Advanced Pilot Assistance Systems (APAS)	Hệ thống hỗ trợ bay nâng cao (APAS)
+Flight Assistance	Hỗ trợ bay
+Battery Cell Status	Trạng thái từng cell pin
+Power & Battery	Nguồn và pin
+Unfold Arm to Power on	Mở tay gập để bật nguồn
+Fold Arm to Power off	Gập tay để tắt nguồn
+Nifty	Linh hoạt (Nifty)
+Bypassing Options	Tùy chọn bay vòng tránh
+Compass calibration required	Cần hiệu chuẩn la bàn
+Rotate aircraft 360° horizontally.	Xoay máy bay 360° theo phương ngang.
+Make sure aircraft arms are unfolded and try again	Đảm bảo đã mở các tay gập của máy bay rồi thử lại
+Rotate aircraft 360° vertically.	Xoay máy bay 360° theo phương dọc.
+Compass error	Lỗi la bàn
+Vision Positioning and Obstacle Sensing	Định vị bằng hình ảnh và cảm biến chướng ngại vật
+Anytime (Use with caution)	Bất cứ lúc nào (sử dụng thận trọng)
+Aircraft LEDs	Đèn LED máy bay
+No Limit	Không giới hạn
+Sideways flight not allowed	Không cho phép bay ngang
+Disable for Current Flight Only	Chỉ tắt cho chuyến bay hiện tại
+Disable Permanently (Not Recommended)	Tắt vĩnh viễn (không khuyến nghị)
+Disable (Not Recommended)	Tắt (không khuyến nghị)
+Manual Obstacle Avoidance	Tự điều khiển tránh chướng ngại vật
+Obstacle Warning	Cảnh báo chướng ngại vật
+RTH	Quay về điểm cất cánh (RTH)
+Payload Mode	Chế độ mang tải
+xxxxxxxxxxxxxxxx-xxx	xxxxxxxxxxxxxxxx-xxx
+Operator Registration Number	Số đăng ký người vận hành
+Imported	Đã nhập
+Flight Information	Thông tin chuyến bay
+No satellite positioning signal. Move to open area	Không có tín hiệu định vị vệ tinh. Di chuyển tới nơi thoáng
+RC Track	RC Track
+Unable to set. Home Point in Restricted Zone	Không thể đặt điểm quay về trong khu vực hạn chế
+Controller	Tay điều khiển
+Home Point updated to current RC Track location	Đã cập nhật điểm quay về theo vị trí hiện tại của RC Track
+Home Point updated to current aircraft location	Đã cập nhật điểm quay về theo vị trí hiện tại của máy bay
+Drag to adjust Home Point location	Kéo để điều chỉnh vị trí điểm quay về
+Dynamic Home Point	Điểm quay về di động
+Dynamic Home Point:	Điểm quay về di động:
+Static Home Point:	Điểm quay về cố định:
+Home Point in GEO Zone. Fly with caution	Điểm quay về nằm trong khu vực GEO. Bay thận trọng
+Static Home Point	Điểm quay về cố định
+Failed to set Home Point. Try again	Không đặt được điểm quay về. Vui lòng thử lại
+Home Point set successfully	Đã đặt điểm quay về
+Optimal	Tối ưu
+Advanced RTH	Quay về nâng cao (RTH)
+Return to Home (RTH)	Quay về điểm cất cánh (RTH)
+Sensors	Cảm biến
+Unlock GEO Zone	Mở khóa khu vực GEO
+Wind Indicator	Chỉ báo gió
+Show AR Home Point	Hiển thị điểm quay về bằng AR
+Show AR Aircraft Shadow	Hiển thị bóng máy bay bằng AR
+Show AR Return-to-Home Route	Hiển thị đường quay về bằng AR
+Request Higher Altitude Limit	Yêu cầu nâng giới hạn độ cao
+Verifying...	Đang xác minh...
+Land and try again	Hạ cánh rồi thử lại
+Pairing error. Try again	Ghép nối bị lỗi. Vui lòng thử lại
+Paired successfully	Đã ghép nối thành công
+Only 8-digit numbers supported	Chỉ hỗ trợ số gồm 8 chữ số
+Pair	Ghép nối
+Pairing (%ss)	Đang ghép nối (%ss)
+Obtain CAAC Registration Mark	Lấy mã đăng ký CAAC
+XXXXXXXX	XXXXXXXX
+Aircraft Operational Identification Broadcast	Phát thông tin nhận dạng hoạt động máy bay
+Operational Identification Broadcast Settings	Cài đặt phát thông tin nhận dạng hoạt động
+Recenter Gimbal	Đưa gimbal về giữa
+Auxiliary Light off	Đã tắt đèn hỗ trợ
+Auxiliary Light on	Đã bật đèn hỗ trợ
+Drag to adjust the position of the home point.	Kéo để điều chỉnh vị trí điểm quay về.
+Refreshing initial home point. Wait and try again later	Đang cập nhật điểm quay về ban đầu. Vui lòng chờ rồi thử lại
+Use when aircraft is in flight	Sử dụng khi máy bay đang bay
+Updating home point failed. Check and try again	Không cập nhật được điểm quay về. Kiểm tra rồi thử lại
+Home point updated	Đã cập nhật điểm quay về
+Camera Motion	Chuyển động camera
+Cycling	Đạp xe
+Focus on subject with rapid response	Bám sát chủ thể với phản hồi nhanh
+Skiing	Trượt tuyết
+Follow fast moving subject with stability	Bám theo chủ thể chuyển động nhanh một cách ổn định
+Follow movement of subject at moderate speed	Bám theo chuyển động của chủ thể ở tốc độ vừa phải
+Inner circle	Vòng trong
+Inner Radius	Bán kính vòng trong
+Inner Height	Độ cao vòng trong
+FocusTrack Settings	Cài đặt bám chủ thể (FocusTrack)
+Outer circle	Vòng ngoài
+Outer Height	Độ cao vòng ngoài
+Reset FocusTrack Settings	Đặt lại cài đặt bám chủ thể (FocusTrack)
+Subject	Chủ thể
+Near-Ground Flight	Bay gần mặt đất
+Vehicle	Phương tiện
+Profile > Device Management > Accessories	Hồ sơ > Quản lý thiết bị > Phụ kiện
+Enhanced Transmission	Truyền tín hiệu tăng cường
+Aircraft Firmware not Compatible.	Firmware máy bay không tương thích.
+Remote Controller Firmware not Compatible.	Firmware tay điều khiển không tương thích.
+Real-Name Authentication	Xác thực danh tính
+Advanced	Nâng cao
+Dual-band	Hai băng tần
+Douyin	Douyin
+End Livestream	Kết thúc phát trực tiếp
+End	Kết thúc
+Failed to end livestream. Try again	Không kết thúc được phiên phát trực tiếp. Vui lòng thử lại
+Livestream Settings	Cài đặt phát trực tiếp
+Live Streaming Platforms	Nền tảng phát trực tiếp
+Mic	Micro
+Authorize	Cấp quyền
+Authorized	Đã cấp quyền
+Account Authorization	Cấp quyền tài khoản
+Such as rtmp://10.xx.30.live/	Ví dụ: rtmp://10.xx.30.live/
+RTMP Address	Địa chỉ RTMP
+Ignore if stream key is not available	Bỏ qua nếu không có khóa phát trực tiếp
+Stream Key	Khóa phát trực tiếp
+Bitrate	Tốc độ bit
+Start Livestream	Bắt đầu phát trực tiếp
+Failed to start livestream. Histogram in progress	Không bắt đầu được phát trực tiếp khi đang bật biểu đồ phơi sáng
+Livestream settings not saved. Check and try again	Chưa lưu được cài đặt phát trực tiếp. Kiểm tra rồi thử lại
+Starting livestream failed. Check and try again	Không bắt đầu được phát trực tiếp. Kiểm tra rồi thử lại
+Check RTMP address and stream key	Kiểm tra địa chỉ RTMP và khóa phát trực tiếp
+Failed to start livestream. Peaking display in progress	Không bắt đầu được phát trực tiếp khi đang bật tô nét vùng lấy nét
+Livestream error. Try again	Phát trực tiếp bị lỗi. Vui lòng thử lại
+Account not authorized	Tài khoản chưa được cấp quyền
+Definition	Độ nét
+Unstable	Không ổn định
+Switching channels will automatically restart Wi-Fi	Đổi kênh sẽ tự động khởi động lại Wi-Fi
+Flight Direction Indicator	Chỉ báo hướng bay
+Follow	Bám theo
+Flat	Ngang
+Rise	Bay lên
+DirectionTrack	Bám theo hướng (DirectionTrack)
+Low-Angle & Full	Góc thấp và toàn cảnh
+High-Angle & Close-up	Góc cao và cận cảnh
+High-Angle & Wide	Góc cao và góc rộng
+SelfieShot	Tự chụp chân dung (SelfieShot)
+Cycling Follow	Bám theo người đạp xe
+Far	Xa
+Skiing Follow	Bám theo người trượt tuyết
+Wide	Rộng
+Full	Toàn cảnh
+Turn up mobile device volume	Tăng âm lượng thiết bị di động
+Manual Fine-Tuning	Tinh chỉnh thủ công
+Toggle down:	Gạt xuống:
+Toggle up:	Gạt lên:
+Unable to enter album during auto return	Không thể mở thư viện ảnh khi máy bay đang tự quay về
+Auto flight in progress. Unable to enter album	Máy bay đang bay tự động. Không thể mở thư viện ảnh
+Reconnect and download again	Kết nối lại rồi tải lại
+Failed to download %1$s files. Tap to view	Không tải được %1$s tệp. Nhấn để xem
+Exporting %1$s files from app required	Cần xuất %1$s tệp từ ứng dụng
+Tap to View	Nhấn để xem
+%1$s files downloaded	Đã tải %1$s tệp
+Files downloaded	Đã tải các tệp
+Estimated completion: %1$s	Dự kiến hoàn tất: %1$s
+Using RC Track Control	Đang dùng RC Track để điều khiển
+Blush	Má hồng
+Dark Circles	Quầng thâm
+Brows	Lông mày
+Slim	Thon gọn
+Brighten	Làm sáng
+Body Effects	Hiệu ứng cơ thể
+Don't use Glamour Effects	Không dùng hiệu ứng làm đẹp
+Library updated. Glamour Effects available now	Đã cập nhật thư viện. Có thể sử dụng hiệu ứng làm đẹp
+Glamour Effects update in progress	Đang cập nhật hiệu ứng làm đẹp
+Preferences	Tùy chọn
+What Is Low-Res Preview?	Bản xem trước độ phân giải thấp là gì?
+Enhancing image quality. Please wait.	Đang cải thiện chất lượng ảnh. Vui lòng chờ.
+Updating firmware. Unable to access aircraft album	Đang cập nhật firmware. Không thể mở thư viện ảnh trên máy bay
+Updating FlySafe database. Aircraft album unavailable	Đang cập nhật dữ liệu FlySafe. Không thể mở thư viện ảnh trên máy bay
+Aircraft not activated. Aircraft album unavailable	Máy bay chưa được kích hoạt. Không thể mở thư viện ảnh trên máy bay
+Device disconnected	Thiết bị đã ngắt kết nối
+Do not show again	Không hiển thị lại
+Audio for %1$s files processing. Retry download later	Đang xử lý âm thanh của %1$s tệp. Vui lòng tải lại sau
+Audio for current file processing. Retry download later	Đang xử lý âm thanh của tệp hiện tại. Vui lòng tải lại sau
+Scan QR code to download DJI Fly	Quét mã QR để tải DJI Fly
+Downloading %1$s files. Unable to select	Đang tải %1$s tệp. Không thể chọn
+Download canceled	Đã hủy tải xuống
+Downloading file. Cancel download?	Đang tải tệp. Hủy tải xuống?
+Insert SD card in remote controller to download files	Lắp thẻ SD vào tay điều khiển để tải tệp
+Full Download	Tải toàn bộ
+Trimmed Download	Tải đoạn đã cắt
+Select Download Mode	Chọn chế độ tải xuống
+Check	Kiểm tra
+Processing Glamour Effects and others…	Đang xử lý hiệu ứng làm đẹp và các hiệu ứng khác…
+Failed to download %1$s files. Try again	Không tải được %1$s tệp. Vui lòng thử lại
+Cancel Export?	Hủy xuất tệp?
+Entering panorama export screen...	Đang mở màn hình xuất ảnh toàn cảnh...
+由于SDR传输方式的性能限制，无法使用一键短片功能您可使用【手机快传】将素材下载至手机中编辑与成片	Do giới hạn hiệu năng của truyền dẫn SDR, không thể dùng tính năng dựng phim một chạm. Bạn có thể dùng Truyền nhanh trên điện thoại để tải nội dung về, chỉnh sửa và tạo video
+Updating firmware. Unable to open Editor	Đang cập nhật firmware. Không thể mở trình chỉnh sửa
+How to Use FlyShare	Cách sử dụng FlyShare
+FlyShare automatically disabled for flight safety	FlyShare đã tự động tắt để đảm bảo an toàn bay
+Enabling Wi-Fi hotspot...	Đang bật điểm phát Wi-Fi...
+Aircraft in flight. Unable to connect	Máy bay đang bay. Không thể kết nối
+Device Album	Thư viện ảnh thiết bị
+Aircraft Album	Thư viện ảnh máy bay
+Export failed. Restart app and try again	Xuất tệp thất bại. Khởi động lại ứng dụng rồi thử lại
+Export failed. Try again	Xuất tệp thất bại. Vui lòng thử lại
+180° Pano (%1$s photos)	Toàn cảnh 180° (%1$s ảnh)
+Sphere Panorama (%1$s images)	Toàn cảnh hình cầu (%1$s ảnh)
+Vertical Pano (%1$s photos)	Toàn cảnh dọc (%1$s ảnh)
+Wide-angle Pano (%1$s photos)	Toàn cảnh góc rộng (%1$s ảnh)
+Video Cache	Bộ nhớ đệm video
+Tap here to modify Glamour Effects	Nhấn vào đây để điều chỉnh hiệu ứng làm đẹp
+Tap here to enable stabilization for Hyperlapse	Nhấn vào đây để bật chống rung cho Hyperlapse
+Tap Export to export files to mobile device	Nhấn Xuất để xuất tệp sang thiết bị di động
+Tap to enable or disable image quality optimization	Nhấn để bật hoặc tắt tối ưu chất lượng ảnh
+Tap to enable or disable QuickShots	Nhấn để bật hoặc tắt QuickShots
+How to enable caching?	Cách bật lưu bộ nhớ đệm?
+Videos	Video
+Right Dial (3/3)	Bánh xe phải (3/3)
+Dial & 5D Button (1/3)	Bánh xe và nút 5D (1/3)
+What are Live Photos	Ảnh động là gì?
+What is video cache?	Bộ nhớ đệm video là gì?
+Downloaded (DJI Album)	Đã tải (Thư viện DJI)
+%1$s more videos required to apply this template	Cần thêm %1$s video để dùng mẫu này
+One-Tap Edit	Chỉnh sửa một chạm
+%1$s items selected	Đã chọn %1$s mục
+Downloading all clips to local album (%1$s MB in total)	Đang tải toàn bộ đoạn video về thư viện cục bộ (tổng %1$s MB)
+Cancel File Download?	Hủy tải tệp?
+Failed to download %1$s files	Không tải được %1$s tệp
+Keep app running in the foreground during download	Giữ ứng dụng mở trên màn hình trong khi tải xuống
+%1$s files downloaded. Go to local album to view	Đã tải %1$s tệp. Mở thư viện cục bộ để xem
+Failed to save %1$s clips. Try again	Không lưu được %1$s đoạn video. Vui lòng thử lại
+Saving %1$s clips to local album...(%2$s MB in total)	Đang lưu %1$s đoạn video vào thư viện cục bộ...(tổng %2$s MB)
+Toggle:	Gạt:
+Rotate & Toggle:	Xoay và gạt:
+%1$s files in total	Tổng %1$s tệp
+Loading failed. Tap to try again	Tải thất bại. Nhấn để thử lại
+Download & Export	Tải xuống và xuất
+Panorama Download & Export	Tải xuống và xuất ảnh toàn cảnh
+Download Again	Tải lại
+Exporting %1$s/%2$s files...(%3$s MB in total)	Đang xuất %1$s/%2$s tệp...(tổng %3$s MB)
+Keep app running in the foreground during export	Giữ ứng dụng mở trên màn hình trong khi xuất tệp
+Failed to export %1$s files. Try again	Không xuất được %1$s tệp. Vui lòng thử lại
+%1$s files exported to local album	Đã xuất %1$s tệp vào thư viện cục bộ
+Export Captured Perspective View	Xuất góc nhìn đã chọn
+Captured View	Góc nhìn đã chọn
+Exited Captured Perspective View	Đã thoát góc nhìn đã chọn
+Burst shots. Download individual photo to add frame	Ảnh chụp liên tiếp. Tải từng ảnh để thêm khung
+Unable to add frame to sphere panorama photo	Không thể thêm khung vào ảnh toàn cảnh hình cầu
+Photo width or height too large. Unable to add frame	Chiều rộng hoặc chiều cao của ảnh quá lớn. Không thể thêm khung
+Photo width or height too small. Unable to add frame	Chiều rộng hoặc chiều cao của ảnh quá nhỏ. Không thể thêm khung
+Zoom photo or rewind/fast forward video	Thu phóng ảnh hoặc tua lùi/tua nhanh video
+Zoom in on photo or play video	Phóng to ảnh hoặc phát video
+5D Button (2/4)	Nút 5D (2/4)
+Press Custom Button To Preview Files	Nhấn nút tùy chỉnh để xem trước tệp
+Right Dial (4/4)	Bánh xe phải (4/4)
+Dial & 5D Button (1/4)	Bánh xe và nút 5D (1/4)
+Live Photos	Ảnh động
+Encoding Format	Định dạng mã hóa
+Low-Res Preview	Bản xem trước độ phân giải thấp
+Recording screen. Unable to play high-frame-rate videos	Đang ghi màn hình. Không thể phát video có tốc độ khung hình cao
+Preview file damaged. Trimmed Download unavailable	Tệp xem trước bị hỏng. Không thể tải đoạn đã cắt
+Preview file lost. Trimmed Download unavailable	Tệp xem trước bị mất. Không thể tải đoạn đã cắt
+Trimmed clip downloaded to mobile device	Đã tải đoạn video đã cắt về thiết bị di động
+How to Use QuickTransfer Mode?	Cách sử dụng chế độ truyền nhanh (QuickTransfer)?
+View reset to shooting perspective	Đã đặt lại góc nhìn theo góc quay ban đầu
+Connect to aircraft using QuickTransfer to edit file	Kết nối máy bay bằng QuickTransfer để chỉnh sửa tệp
+Video cache incomplete. Trimmed Download unavailable	Bộ nhớ đệm video không đầy đủ. Không thể tải đoạn đã cắt
+Video too short. Trimmed Download unavailable	Video quá ngắn. Không thể tải đoạn đã cắt
+No video cache. Trimmed Download unavailable	Không có bộ nhớ đệm video. Không thể tải đoạn đã cắt
+Aircraft Auto File Transfer disabled. Enable now?	Tự động truyền tệp từ máy bay đang tắt. Bật ngay?
+Enable Auto File Transfer in screen-off mode	Bật tự động truyền tệp khi màn hình tắt
+Share and view 360° photo via other platform	Chia sẻ và xem ảnh 360° trên nền tảng khác
+360° Photo	Ảnh 360°
+The app does not support sharing photos in DNG format	Ứng dụng không hỗ trợ chia sẻ ảnh định dạng DNG
+Allow QuickTransfer in Sleep	Cho phép truyền nhanh khi thiết bị ngủ
+360° Photo Viewer	Trình xem ảnh 360°
+Tap with one finger and drag to look around	Chạm bằng một ngón tay rồi kéo để nhìn xung quanh
+Insert SD card in remote controller to screenshot	Lắp thẻ SD vào tay điều khiển để chụp màn hình
+What's Hyperlapse Preview	Xem trước Hyperlapse là gì?
+Hyperlapse Preview	Xem trước Hyperlapse
+Start playback before dragging screen	Bắt đầu phát trước khi kéo trên màn hình
+Keep app running in foreground	Giữ ứng dụng mở trên màn hình
+Waking up device	Đang đánh thức thiết bị
+Connect to RC Track	Kết nối với RC Track
+Watch liveview on goggles	Xem hình ảnh trực tiếp trên kính
+Goggles in Use	Đang sử dụng kính
+Instructions of RC Track	Hướng dẫn sử dụng RC Track
+Flying the Aircraft	Điều khiển máy bay
+Flight Application	Đăng ký bay
+CAAC Registration	Đăng ký CAAC
+Locating...	Đang xác định vị trí...
+Regulatory Restricted Zones	Khu vực hạn chế theo quy định
+Special Altitude Zones	Khu vực giới hạn độ cao đặc biệt
+Check out where to fly and learn about drone rules	Tìm nơi được phép bay và tìm hiểu quy định về máy bay không người lái
+Log Upload	Tải nhật ký lên
+App Log	Nhật ký ứng dụng
+Submit Anyway	Vẫn gửi
+Exit Log Upload?	Thoát tải nhật ký lên?
+Issue Description	Mô tả sự cố
+Screenshots or Screen Recordings (if any)	Ảnh chụp hoặc video ghi màn hình (nếu có)
+Screenshot & Exit	Chụp màn hình và thoát
+Submitted. Thank you for your feedback	Đã gửi. Cảm ơn bạn đã phản hồi
+Select up to 6 files only	Chỉ được chọn tối đa 6 tệp
+No flight records in selected date	Không có nhật ký bay trong ngày đã chọn
+Select flight record or app log	Chọn nhật ký bay hoặc nhật ký ứng dụng
+Type up to 400 characters only	Chỉ được nhập tối đa 400 ký tự
+Copied last recorded location	Đã sao chép vị trí ghi nhận gần nhất
+Last Recorded Location	Vị trí ghi nhận gần nhất
+Use Other Maps	Dùng bản đồ khác
+Enable Flashing & Beeping	Bật đèn nhấp nháy và tiếng bíp
+Unable to start. Aircraft in flight	Không thể bắt đầu khi máy bay đang bay
+Current Storage Location	Vị trí lưu trữ hiện tại
+Auto-sync Flight Records	Tự động đồng bộ nhật ký bay
+Local Flight Record	Nhật ký bay cục bộ
+No RC SD card	Tay điều khiển chưa có thẻ SD
+RC Internal Storage	Bộ nhớ trong tay điều khiển
+RC SD Card	Thẻ SD tay điều khiển
+%s Used	Đã dùng %s
+Clear Aircraft Flight Record Cache	Xóa bộ nhớ đệm nhật ký bay của máy bay
+Clear Cache	Xóa bộ nhớ đệm
+Auto Flight Record Backup	Tự động sao lưu nhật ký bay
+DJI Device Hardware Info	Thông tin phần cứng thiết bị DJI
+DJI Device Location Info	Thông tin vị trí thiết bị DJI
+Approximate Location Info	Thông tin vị trí gần đúng
+Privacy	Quyền riêng tư
+DJI Product Improvement Project	Chương trình cải thiện sản phẩm DJI
+Replay Beginner Guide	Xem lại hướng dẫn cho người mới
+Function unavailable in Local Data Mode	Tính năng không khả dụng trong chế độ dữ liệu cục bộ
+Insufficient storage. Unable to download	Không đủ dung lượng lưu trữ để tải xuống
+Unable to download. Insert microSD card	Không thể tải xuống. Vui lòng lắp thẻ microSD
+Selected map size is about %1$s	Bản đồ đã chọn có dung lượng khoảng %1$s
+DJI GO Offline Map Download	Tải bản đồ ngoại tuyến DJI GO
+Downloaded	Đã tải
+Downloading…	Đang tải xuống…
+Offline Map(s) List	Danh sách bản đồ ngoại tuyến
+Name the new region	Đặt tên cho khu vực mới
+You are using cellular data.	Bạn đang dùng dữ liệu di động.
+Continue downloading using cellular data?	Tiếp tục tải bằng dữ liệu di động?
+Insert microSD card	Lắp thẻ microSD
+Available Mobile Device Storage:	Dung lượng trống trên thiết bị di động:
+Insufficient Storage	Không đủ dung lượng lưu trữ
+Check Storage Status	Kiểm tra tình trạng bộ nhớ
+Please wait.	Vui lòng chờ.
+Vision Assist Auto Display	Tự hiển thị hỗ trợ quan sát
+When enabled, if aircraft flight direction goes beyond visible range of camera liveview, flight direction view will be automatically displayed on bottom left	Khi bật, nếu máy bay bay theo hướng nằm ngoài vùng nhìn của camera, khung nhìn theo hướng bay sẽ tự xuất hiện ở góc dưới bên trái
+Firmware	Firmware thiết bị
+Firmware Update	Cập nhật firmware
+Gimbal Calibration	Hiệu chuẩn gimbal
+Vision System	Hệ thống cảm biến hình ảnh
+Return to Home	Quay về điểm cất cánh
+Return-to-Home	Quay về điểm cất cánh
+Home Point	Điểm quay về
+Gimbal	Cụm chống rung (gimbal)
+Normal Mode	Chế độ Thường
+Sport Mode	Chế độ Thể thao
+Hover	Giữ vị trí trên không
+When using MasterShots to record people, set the start point to Auto and the aircraft will automatically adjust the start point to optimize the shooting effect	Khi dùng MasterShots để quay người, đặt điểm bắt đầu là Tự động. Máy bay sẽ tự điều chỉnh điểm bắt đầu để tối ưu cảnh quay
+Push the sticks slowly for a smoother, safer flight	Di chuyển cần điều khiển từ từ để bay mượt và an toàn hơn
+Images appear more dynamic when shot at an angle	Chụp ở góc nghiêng giúp hình ảnh sinh động hơn
+To ensure images with proper focus, only shoot when the drone is hovering stably	Để ảnh đúng nét, chỉ chụp khi máy bay giữ vị trí ổn định
+Overtake Shot	Cảnh quay vượt qua chủ thể
+Master Shot Prediction State	Trạng thái dự đoán MasterShot
+Attitude Mode	Chế độ ATTI
+Automatic Exposure Lock not supported in current shooting mode	Chế độ chụp/quay hiện tại không hỗ trợ khóa phơi sáng tự động
+Aircraft storage full. Shooting will be in low quality. Screenshots and screen recordings will be saved to mobile device. Go to Album on home screen to view files	Bộ nhớ máy bay đầy. Chụp/quay sẽ dùng chất lượng thấp. Ảnh chụp và video ghi màn hình được lưu trên thiết bị di động. Mở Thư viện trên trang chủ để xem
+Increasing video length 1s will increase shooting duration %1$ss	Tăng độ dài video thêm 1s sẽ tăng thời gian chụp thêm %1$ss
+Swipe left or right to switch among map, attitude indicator, and vision assist	Vuốt trái hoặc phải để chuyển giữa bản đồ, chỉ báo tư thế và hỗ trợ quan sát
+Aircraft will fly to a max height and then shoot a sphere panorama	Máy bay sẽ lên độ cao tối đa rồi chụp toàn cảnh hình cầu
+Press to enter shooting function switch page	Nhấn để mở trang chuyển chế độ chụp/quay
+Single lens only supports FPV mode. Lens will tilt with aircraft's attitude to create more dynamic footage	Một ống kính chỉ hỗ trợ chế độ FPV. Ống kính nghiêng theo tư thế máy bay để cảnh quay sinh động hơn
+Press select buttons on aircraft side to switch shooting modes	Nhấn các nút chọn bên hông máy bay để đổi chế độ chụp/quay
+Press select buttons on aircraft side to switch shooting modes\nPreview above shows effect in current mode	Nhấn các nút chọn bên hông máy bay để đổi chế độ chụp/quay\nBản xem trước phía trên hiển thị hiệu ứng của chế độ hiện tại
+Shooting Parameter Adjustment	Điều chỉnh thông số chụp/quay
+When enabled, use gestures to adjust aircraft position and switch shooting mode	Khi bật, dùng cử chỉ để điều chỉnh vị trí máy bay và đổi chế độ chụp/quay
+Change shooting, gimbal, and general settings here	Thay đổi cài đặt chụp/quay, gimbal và cài đặt chung tại đây
+Swipe to select shooting mode, such as Panorama and Timelapse	Vuốt để chọn chế độ chụp/quay, như Toàn cảnh và Tua nhanh thời gian
+Not finish shooting	Chưa chụp/quay xong
+Shoot	Chụp/quay
+Back to shoot	Quay lại chụp/quay
+Connected. Start shooting	Đã kết nối. Bắt đầu chụp/quay
+Start Shooting	Bắt đầu chụp/quay
+Shoot with OM Series	Chụp/quay bằng dòng OM
+Creative Shots	Cảnh quay sáng tạo
+Shoot more clips for better results	Quay thêm đoạn video để có kết quả tốt hơn
+Sky mode does not support pre shooting	Chế độ Bầu trời không hỗ trợ chụp/quay trước
+Try shooting horizontal. Rotate phone for better results	Thử quay khung hình ngang. Xoay điện thoại để có kết quả tốt hơn
+Only forest, sea, field, or urban street scenes shot by drones are supported	Chỉ hỗ trợ cảnh rừng, biển, đồng hoặc phố đô thị quay bằng máy bay
+Motion Shot mode	Chế độ chụp/quay khi chuyển động
+Use Inspire Cam to shoot?	Dùng Inspire Cam để chụp/quay?
+Gimbal follows aircraft attitude changes	Gimbal chuyển động theo thay đổi tư thế máy bay
+Shooting Modes	Các chế độ chụp/quay
+Drag shooting modes below to display them on aircraft and adjust their order	Kéo các chế độ chụp/quay bên dưới để hiển thị trên máy bay và điều chỉnh thứ tự
+Close-up shot, half-body	Cận cảnh, nửa người
+Long-distance shot, full-body	Cảnh xa, toàn thân
+Close-up shot, full-body	Cận cảnh, toàn thân
+Shot Size	Cỡ cảnh
+Single Shot	Một cảnh
+Triple Shots	Ba cảnh
+Shot Size (Multiple Selection)	Cỡ cảnh (chọn nhiều)
+%s Sets per Shot Size	%s bộ cho mỗi cỡ cảnh
+%s Shot Sizes	%s cỡ cảnh
+Initializing resource data...	Đang khởi tạo dữ liệu tài nguyên...
+New dynamic FlySafe database available	Có bản cập nhật mới cho dữ liệu FlySafe động
+Exit Calibration	Thoát hiệu chuẩn
+Output of Hyperlapse video in preview quality does not have any jitter or flicker removed. Go to Camera View to adjust settings	Video Hyperlapse ở chất lượng xem trước chưa được loại bỏ rung hoặc nhấp nháy. Mở khung nhìn camera để điều chỉnh cài đặt
+How to Use FlyShare?	Cách sử dụng FlyShare?
+Advanced Gimbal Calibration	Hiệu chuẩn gimbal nâng cao
+Auto Glamour Effects	Tự động áp dụng hiệu ứng làm đẹp
+Fly at least 15 m away from the subject in the foreground to ensure a smoother Hyperlapse result	Bay cách chủ thể ở tiền cảnh ít nhất 15 m để video Hyperlapse mượt hơn

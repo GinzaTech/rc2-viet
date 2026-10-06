@@ -1,0 +1,81 @@
+Distance (km)	Khoảng cách (km)
+Altitude (m)	Độ cao (m)
+When using electronic ND filter and adjusting WB manually, adjust color temperature and tones for color correction. Tap Auto to refer to AWB calculation results and then fine tune manually	Khi dùng kính lọc ND điện tử và chỉnh cân bằng trắng (WB) thủ công, hãy điều chỉnh nhiệt độ màu và sắc độ để cân chỉnh màu. Nhấn Tự động để tham khảo kết quả cân bằng trắng tự động (AWB), sau đó tinh chỉnh thủ công
+Compass interference detected, which may affect capturing results. Calibrate before capture. Aircraft will automatically rotate during calibration	Phát hiện nhiễu la bàn, có thể ảnh hưởng đến kết quả chụp. Hiệu chuẩn trước khi chụp. Máy bay sẽ tự xoay trong quá trình hiệu chuẩn
+In accordance with NTSC standard, the effective recording frame rates for the options of 24, 30, 48, 60, and 120 fps are 23.97, 29.97, 47.95, 59.94, and 119.88 fps respectively	Theo tiêu chuẩn NTSC, các mức 24, 30, 48, 60 và 120 fps tương ứng với tốc độ khung hình thực tế là 23.97, 29.97, 47.95, 59.94 và 119.88 fps
+You can use mobile device, remote controller built-in mic, or external mic to record audio for aerial videos. Do not turn off screen or switch to other apps during recording	Bạn có thể dùng micro của thiết bị di động, micro tích hợp trên tay điều khiển hoặc micro ngoài để thu âm cho video quay trên không. Không tắt màn hình hoặc chuyển sang ứng dụng khác trong lúc thu âm
+Your mobile device's microphone needs to be used when recording. Allow DJI Fly to access microphone	Cần dùng micro của thiết bị di động khi thu âm. Hãy cho phép DJI Fly truy cập micro
+Downloaded offline maps can be used for map display in Find My Drone, Flight Data Center, and Camera View when there is no network connection. Deleted offline maps will not be displayed	Bản đồ ngoại tuyến đã tải có thể hiển thị trong Tìm máy bay, Trung tâm dữ liệu bay và khung nhìn camera khi không có mạng. Bản đồ đã xóa sẽ không còn hiển thị
+App cache includes caches in app album and editor, offline map data, and firmware and app installation packages. Clearing app cache does not affect functionality of the app	Bộ nhớ đệm ứng dụng gồm dữ liệu tạm của thư viện ảnh và trình chỉnh sửa, bản đồ ngoại tuyến, gói firmware và gói cài đặt ứng dụng. Xóa bộ nhớ đệm không ảnh hưởng đến chức năng của ứng dụng
+Flight records are important data generated during flight. Back up logs before clearing them	Nhật ký bay là dữ liệu quan trọng được tạo trong chuyến bay. Sao lưu nhật ký trước khi xóa
+All caches in album and editor will be cleared. Files in app album not affected	Toàn bộ bộ nhớ đệm của thư viện ảnh và trình chỉnh sửa sẽ bị xóa. Các tệp trong thư viện ảnh ứng dụng không bị ảnh hưởng
+Local Log serves as an important basis for DJI Support to analyze your issues. If you require feedback for any issues, contact DJI Support to upload logs before clearing them	Nhật ký cục bộ giúp bộ phận hỗ trợ DJI phân tích sự cố. Nếu cần hỗ trợ, hãy liên hệ DJI và tải nhật ký lên trước khi xóa
+Enable or disable DJI Fly notification in both the app and mobile device system settings for the setting to take effect	Để thay đổi có hiệu lực, hãy bật hoặc tắt thông báo DJI Fly trong cả ứng dụng và cài đặt hệ thống của thiết bị di động
+GPS information for a paired DJI device within 5-10 km that is required for maintaining normal functions in GEO zones. Prohibiting access to this information will result in app services being disabled to ensure flight safety.	Thông tin GPS của thiết bị DJI đã ghép nối trong phạm vi 5-10 km cần thiết để duy trì hoạt động bình thường trong khu vực GEO. Nếu không cho phép truy cập, các dịch vụ của ứng dụng sẽ bị tắt để đảm bảo an toàn bay.
+GPS information for the mobile device used with the app. Prohibiting DJI from accessing this information will result in being unable to use the following functions: Find My Drone and map in camera view.	Thông tin GPS của thiết bị di động dùng với ứng dụng. Nếu không cho DJI truy cập, bạn sẽ không dùng được Tìm máy bay và bản đồ trong khung nhìn camera.
+Welcome to DJI Product Improvement Project. By participating in the project, you will share your user data with DJI to help us provide better services to you in return. See %1$s for more details	Chào mừng bạn đến với chương trình cải thiện sản phẩm DJI. Khi tham gia, bạn sẽ chia sẻ dữ liệu sử dụng với DJI để chúng tôi cải thiện dịch vụ. Xem %1$s để biết thêm chi tiết
+After selecting Not Now, shared data will be deleted, and you will not be able to enjoy super contributor benefits. Continue?	Nếu chọn Để sau, dữ liệu đã chia sẻ sẽ bị xóa và bạn sẽ mất quyền lợi của người đóng góp đặc biệt. Tiếp tục?
+After selecting Contributor, shared data will be deleted, and you will not be able to enjoy super contributor benefits. Continue?	Nếu chọn Người đóng góp, dữ liệu đã chia sẻ sẽ bị xóa và bạn sẽ mất quyền lợi của người đóng góp đặc biệt. Tiếp tục?
+Your flight data will be transmitted to the UTMISS of CAAC in real-time via network connection or will be cached to your local device if the network connection does not work. The data will not be saved or used by any services supported by DJI. To learn more about which data is reported, tap %1$s	Dữ liệu bay sẽ được truyền theo thời gian thực tới UTMISS của CAAC qua mạng, hoặc lưu tạm trên thiết bị nếu mất kết nối. Dữ liệu này không được lưu hay sử dụng bởi các dịch vụ do DJI cung cấp. Nhấn %1$s để tìm hiểu những dữ liệu được báo cáo
+Regulations on Real-time Flight Data for Light and Small Civilian UAVs	Quy định về dữ liệu bay theo thời gian thực của máy bay không người lái dân dụng hạng nhẹ và cỡ nhỏ
+A set of records will be generated between when the aircraft takes off and lands. Only the previous three days of flight data transmission records are saved	Một bộ nhật ký được tạo từ khi máy bay cất cánh đến khi hạ cánh. Chỉ lưu nhật ký truyền dữ liệu bay của ba ngày gần nhất
+Exit Local Data Mode (LDM)? If you want to save data to the server, upload it manually. To avoid accidentally uploading flight data in LDM to the server, delete the flight data in this mode first	Thoát chế độ dữ liệu cục bộ (LDM)? Nếu muốn lưu dữ liệu trên máy chủ, bạn cần tải lên thủ công. Để tránh vô tình tải dữ liệu bay trong LDM lên máy chủ, hãy xóa dữ liệu bay của chế độ này trước
+When enabled, network data transmission is disabled and certain functions are unavailable	Khi bật, việc truyền dữ liệu qua mạng sẽ bị tắt và một số chức năng không dùng được
+Local Data mode unavailable in current region. Exited Local Data Mode	Khu vực hiện tại không hỗ trợ chế độ dữ liệu cục bộ. Đã thoát chế độ này
+DJI Fly locked. Close the app manually and reopen it again	DJI Fly đã khóa. Vui lòng tự đóng ứng dụng rồi mở lại
+DJI Fly requires restarting manually. Tap Close to close DJI Fly, then wait a moment and restart the app	Bạn cần tự khởi động lại DJI Fly. Nhấn Đóng để đóng ứng dụng, chờ một lúc rồi mở lại
+Downloading, processing, or saving files in app album. Try again later	Đang tải, xử lý hoặc lưu tệp trong thư viện ảnh ứng dụng. Vui lòng thử lại sau
+Unable to unlock GEO Zone	Không thể mở khóa khu vực GEO
+Unable to unlock,please restart app	Không thể mở khóa. Vui lòng khởi động lại ứng dụng
+Land aircraft and go to Settings > Unlock a Zone to import and enable unlocking license	Hạ cánh máy bay rồi mở Cài đặt > Mở khóa khu vực để nhập và bật giấy phép mở khóa
+DJI Fly unable to start normally without resource file. Exit and stop download?	DJI Fly không thể khởi động bình thường khi thiếu tệp tài nguyên. Thoát và dừng tải xuống?
+Unable to import unlocking license during flight. Land aircraft and try again	Không thể nhập giấy phép mở khóa khi đang bay. Hạ cánh rồi thử lại
+Unable to enable/disable unlocking license in flight	Không thể bật hoặc tắt giấy phép mở khóa khi đang bay
+Max Altitude Limit Unlocking	Mở khóa giới hạn độ cao tối đa
+Unlocking license available for current GEO Zone. Land aircraft and unlock zone	Có giấy phép mở khóa cho khu vực GEO hiện tại. Hạ cánh máy bay rồi mở khóa khu vực
+Once confirmed, aircraft will be prohibited from further use, and report submission cannot be canceled	Sau khi xác nhận, máy bay sẽ không được phép sử dụng tiếp và không thể hủy báo cáo đã gửi
+DJI Care Refresh Flyaway Coverage is still valid for your aircraft. Unbinding your devices will result in being unable to use this coverage	Máy bay của bạn vẫn được bảo hiểm DJI Care Refresh Flyaway. Hủy liên kết thiết bị sẽ khiến bạn không thể sử dụng quyền lợi này
+Unable to start. Aircraft not connected	Không thể bắt đầu. Chưa kết nối máy bay
+Aircraft in flight. Unable to sync data. Land promptly	Máy bay đang bay. Không thể đồng bộ dữ liệu. Hãy hạ cánh sớm
+Unable to load aircraft info. Restart aircraft and try again	Không tải được thông tin máy bay. Khởi động lại máy bay rồi thử lại
+Save Waypoint Hyperlapse routes to the task library when the battery level is low	Lưu đường quay Hyperlapse theo điểm bay vào thư viện tác vụ khi pin yếu
+The drone does not have left or right obstacle avoidance. Fly the drone in your line of sight	Máy bay không có tính năng tránh chướng ngại vật bên trái hoặc phải. Luôn giữ máy bay trong tầm nhìn
+Obstacle avoidance is unavailable in S mode	Chế độ S không hỗ trợ tránh chướng ngại vật
+Left and right obstacle avoidance are unavailable in Asteroid or Boomerang QuickShots	Khi quay QuickShots Tiểu hành tinh hoặc Boomerang, tránh chướng ngại vật bên trái và phải không hoạt động
+The max takeoff altitude for a DJI Air 2 is 5 km	Độ cao cất cánh tối đa của DJI Air 2 là 5 km
+Unable to see your drone at night? Manually enable the auxiliary LED	Không nhìn thấy máy bay vào ban đêm? Hãy tự bật đèn LED hỗ trợ
+Before recording a MasterShot, check the estimated flight time and plan according to the remaining battery power and storage space	Trước khi quay MasterShot, kiểm tra thời gian bay dự kiến và lập kế hoạch theo mức pin cùng dung lượng lưu trữ còn lại
+The max takeoff altitude for a DJI Mini series drone is 3 km	Độ cao cất cánh tối đa của dòng DJI Mini là 3 km
+Check whether the battery level is high enough before updating	Kiểm tra pin còn đủ trước khi cập nhật
+Store the battery in a cool, dry place	Cất pin ở nơi khô ráo, thoáng mát
+Reduce the battery level before long term storage	Giảm mức pin trước khi cất giữ lâu dài
+Store the battery at 60% charge to extend battery life	Cất pin ở mức sạc 60% để kéo dài tuổi thọ
+Store the battery at 60% charge for long term storage	Giữ pin ở mức sạc 60% khi cất lâu dài
+After long term storage, fully charge the battery before use	Sau thời gian cất giữ lâu dài, sạc đầy pin trước khi sử dụng
+For battery swelling, allow the battery to cool down and return to normal	Nếu pin bị phồng, để pin nguội và trở lại trạng thái bình thường
+If the battery is overheating, allow it to cool down before charging	Nếu pin quá nóng, để pin nguội trước khi sạc
+Short press the RTH button to make the drone hover	Nhấn nhanh nút RTH để máy bay giữ vị trí trên không
+Press and hold the RTH button to make the drone return to home	Nhấn giữ nút RTH để máy bay quay về điểm cất cánh
+Use the map on the bottom-left of the screen to check the flight route and RTH heading	Dùng bản đồ ở góc dưới bên trái để kiểm tra đường bay và hướng quay về (RTH)
+Tap the onscreen RTH button to engage Smart RTH	Nhấn nút RTH trên màn hình để bắt đầu quay về thông minh
+Enable Overexposure Warning to mark over-exposed areas with zebra stripes	Bật cảnh báo cháy sáng để đánh dấu các vùng dư sáng bằng vạch sọc
+Low battery level affects the drone's wind resistance	Pin yếu ảnh hưởng đến khả năng chịu gió của máy bay
+The drone is unable to detect nearby obstacles at night	Máy bay không thể phát hiện chướng ngại vật gần đó vào ban đêm
+Pay attention to landing area conditions. Manually adjust the drone's position when needed	Chú ý điều kiện tại nơi hạ cánh. Tự điều chỉnh vị trí máy bay khi cần
+Make the drone face away from you during takeoff and landing	Để máy bay hướng ra xa bạn khi cất cánh và hạ cánh
+When image transmission is lost, do not push the control sticks suddenly to avoid crashing	Khi mất hình ảnh truyền về, không đẩy cần điều khiển đột ngột để tránh va chạm
+Left and right obstacle avoidance are unavailable in Helix or Circle QuickShots	Khi quay QuickShots Xoắn ốc hoặc Vòng tròn, tránh chướng ngại vật bên trái và phải không hoạt động
+Apply for an unlocking license on the DJI official website to fly in a Restricted Zone	Đăng ký giấy phép mở khóa trên website chính thức của DJI để bay trong khu vực hạn chế
+Obstacle avoidance is unavailable in low ambient light	Tránh chướng ngại vật không hoạt động khi ánh sáng môi trường yếu
+When flying over large bodies of water, pay attention to the drone's altitude to avoid crashing	Khi bay trên vùng nước rộng, chú ý độ cao của máy bay để tránh rơi
+Positioning is unstable and collision risk increases when flying in narrow spaces	Định vị không ổn định và nguy cơ va chạm tăng khi bay trong không gian hẹp
+Warm up the battery to 5°C or higher when flying in cold environments	Làm ấm pin tới 5°C hoặc cao hơn khi bay trong môi trường lạnh
+Do not fly from windows or balconies	Không cho máy bay bay ra từ cửa sổ hoặc ban công
+Do not take off indoors	Không cất cánh trong nhà
+Vision systems cannot detect tiny obstacles	Hệ thống cảm biến hình ảnh không thể phát hiện chướng ngại vật quá nhỏ
+Vision systems cannot detect exterior glass walls	Hệ thống cảm biến hình ảnh không thể phát hiện các bức tường kính bên ngoài
+Drone performance reduces in high altitude areas. Pay attention to the max takeoff altitude	Hiệu năng máy bay giảm ở vùng cao. Chú ý giới hạn độ cao cất cánh tối đa
+Use a landing pad if taking off or landing on sandy surfaces	Dùng thảm đáp khi cất cánh hoặc hạ cánh trên bề mặt có cát
+Reduce flight altitude to minimize wind resistance and extend battery life	Giảm độ cao bay để giảm ảnh hưởng của gió và kéo dài thời gian dùng pin
+Max flight altitude is the upward distance the drone can travel from the takeoff point	Độ cao bay tối đa là khoảng cách theo chiều thẳng đứng máy bay có thể lên cao tính từ điểm cất cánh
+Not logging in will limit flight altitude and distance. Unable to activate aircraft	Nếu không đăng nhập, độ cao và khoảng cách bay sẽ bị giới hạn, đồng thời không thể kích hoạt máy bay

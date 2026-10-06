@@ -1,0 +1,114 @@
+[
+  {
+    "name": "fpv_wifi_guide_flight_teach_page_tracking_button",
+    "text": "\\\"Tôi không quay phim nữa.!\\\""
+  },
+  {
+    "name": "light_afflatus_back_feedback_name_describtion",
+    "text": "\\\"Cậu vẫn chưa quay phim\\\""
+  },
+  {
+    "name": "ABCfly_teach_tips_universal_operate_00002",
+    "text": "Nhấn giữ nút RTH để máy bay quay về vị trí ban đầu"
+  },
+  {
+    "name": "fpv_basic_flight_automatic_return_btn",
+    "text": "quay về vị trí ban đầu"
+  },
+  {
+    "name": "fpv_camera_mastershot_not_available_returning_toast",
+    "text": "Đang quay về vị trí ban đầu (RTH). Không thể dùng MasterShots"
+  },
+  {
+    "name": "fpv_camera_quickshot_not_available_returning_toast",
+    "text": "Không khả dụng trong lúc quay về vị trí ban đầu (RTH)"
+  },
+  {
+    "name": "fpv_environment_complex_content_rth_btn",
+    "text": "quay về vị trí ban đầu (RTH)"
+  },
+  {
+    "name": "fpv_flightrestrict_fpv_nfz_flying_contact_nfz_function_rth_tips",
+    "text": "quay về vị trí ban đầu"
+  },
+  {
+    "name": "fpv_nfz_flying_contact_nfz_function_rth_tips",
+    "text": "quay về vị trí ban đầu"
+  },
+  {
+    "name": "fpv_setting_control_advance_flight_gear_c_description_title",
+    "text": "Chế độ quay phim (C):"
+  },
+  {
+    "name": "fpv_setting_control_advance_flight_gear_switch_to_ans_description",
+    "text": "Chế độ ATTI (A) thay thế chế độ quay phim (C). Trong ATTI, máy bay dễ bị tác động bởi yếu tố bên ngoài và có thể trôi ngang; giữ vị trí chính xác và phanh không hoạt động. Bạn phải tự điều khiển để máy bay giữ vị trí"
+  },
+  {
+    "name": "fpv_setting_control_advanced_parameter_cine_btn",
+    "text": "quay phim"
+  },
+  {
+    "name": "fpv_setting_control_advanced_parameter_description",
+    "text": "Tinh chỉnh độ nhạy và đường cong của máy bay và gimbal"
+  },
+  {
+    "name": "fpv_setting_control_advanced_parameter_flight_exp_list",
+    "text": "đường cong cần điều khiển (Expo)"
+  },
+  {
+    "name": "fpv_setting_control_advanced_parameter_list",
+    "text": "điều chỉnh độ nhạy và đường cong"
+  },
+  {
+    "name": "fpv_setting_control_advanced_parameter_no_parameter_available_in_current_flight_mode_content",
+    "text": "Chế độ bay hiện tại không hỗ trợ điều chỉnh độ nhạy và đường cong"
+  },
+  {
+    "name": "fpv_setting_control_aircraft_mode_tripod_description_list",
+    "text": "Khi bật, máy bay giảm tốc và tăng quãng đường phanh để chụp hoặc quay phim hơn."
+  },
+  {
+    "name": "fpv_setting_control_aircraft_mode_tripod_list",
+    "text": "Chế độ quay phim"
+  },
+  {
+    "name": "fpv_setting_control_unit_kilometer_btn",
+    "text": "Hệ kilomet(Km)"
+  },
+  {
+    "name": "fpv_setting_safe_bypass_safety_title",
+    "text": "Tùy chọn tránh khi bay"
+  },
+  {
+    "name": "fpv_setting_safe_compass_normal_list",
+    "text": "La bàn hoạt động bình thường"
+  },
+  {
+    "name": "fpv_setting_safe_obstacle_radar_show_list",
+    "text": "Hiển thị bản đồ radar"
+  },
+  {
+    "name": "fpv_setting_safe_out_of_control_behavior_return_list",
+    "text": "quay về vị trí ban đầu (RTH)"
+  },
+  {
+    "name": "fpv_setting_safe_return_altitude_description_list",
+    "text": "Khi quay về vị trí ban đầu, máy bay sẽ lên độ cao đã đặt trước rồi quay về."
+  },
+  {
+    "name": "fpv_setting_safe_return_title",
+    "text": "quay về vị trí ban đầu (RTH)"
+  },
+  {
+    "name": "fpv_tips_mastershot_task_done",
+    "text": "MasterShot hoàn tất. Máy bay đang quay về vị trí ban đầu"
+  },
+  {
+    "name": "fpv_wp3_panel_global_end_rth_option",
+    "text": "quay về vị trí ban đầu (RTH)"
+  },
+  {
+    "name": "fpv_wp3_panel_global_out_of_control_rth_option",
+    "text": "quay về vị trí ban đầu (RTH)"
+  }
+]
