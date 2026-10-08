@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "desktop_tests": 142,
+  "core_coverage": 95.72,
+  "gui_smoke": "PASS",
+  "buttons_px": 30,
+  "window": "960x740 (minimum860x580; scroll enabled)",
+  "background": "#000000",
+  "reference": "RC2 Việt DesignSystem.ts; reference-only",
+  "launcher_bundled": "1.0-preview4 code4",
+  "exe_sha256": "4fab33536f5d3fcddeb1db70fe362d0376ed68786f68a30b386de6ab559de619",
+  "download_filename": "RC2-TiengViet-RC2 Việt.exe",
+  "old_download_exe": "retained; write restricted",
+  "public_release_updated": false
+}

@@ -1,0 +1,13 @@
+{
+  "home_bridge_version": "2.0",
+  "home_bridge_sha256": "c1d5685aa7e15b5ac57fbf4957afa9deb736fafc288c190607b953c9e0a8594e",
+  "tests_passed": 91,
+  "java_forwarding_scenarios": 6,
+  "core_service_coverage_percent": 94.44,
+  "compiled_gui_smoke_exit_code": 0,
+  "exe_sha256": "d10a4622b019d2af7e6214443abaf3478257274ec40ba0f0d7310791a13151ef",
+  "hardware_repeated_home": "PASS: 3 native Home taps returned to Lawnchair",
+  "boot_after_reboot": "PASS: foreground Lawnchair before any am-start from verification; boot_completed=1",
+  "published": false,
+  "home_tap_after_reboot": "PASS"
+}

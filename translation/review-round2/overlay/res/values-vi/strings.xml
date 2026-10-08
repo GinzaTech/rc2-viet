@@ -1696,7 +1696,7 @@ Ghi chú: Một số mô hình máy bay có thể có giới hạn trong việc 
     <string name="fpv_basic_flight_topbar_panel_strength_ordinary">Chế độ</string>
     <string name="fpv_basic_flight_topbar_panel_strength_strong">Mạnh mẽ</string>
     <string name="fpv_basic_flight_topbar_panel_strength_weak">Yếu</string>
-    <string name="fpv_basic_flight_topbar_panel_tof_obstacle_avoid_state">Hệ thống nhạy cảm</string>
+    <string name="fpv_basic_flight_topbar_panel_tof_obstacle_avoid_state">Hệ thống cảm biến</string>
     <string name="fpv_basic_flight_wifi_bt_auto_off_in_air_dialogue_content">Wi-Fi và Bluetooth tự động tắt để đảm bảo chất lượng truyền. Tự động bật chúng nếu cần thiết.</string>
     <string name="fpv_basic_flight_wifi_bt_auto_off_in_air_dialogue_ok_btn">Đồng ý</string>
     <string name="fpv_beacon_control_already_get_control_toast">Bấm và giữ nút GO trên đường ray RC để chuyển điều khiển máy bay</string>

@@ -2,7 +2,7 @@
 
 ## Tài nguyên, không thay mã DJI Fly
 
-Mục tiêu là `dji.go.v5` 1.21.8, code 3115809 và hash APK đã pin. Gói thay thế là `local.dji.fly.vietnamese`, reviewed5/code 7, SHA256 `2561aad5899e690abafb576841ffd6c716bdd2a42a73636f7fcb006e17f0a4ac`.
+Mục tiêu là `dji.go.v5` 1.21.8, code 3115809 và hash APK đã pin. Gói thay thế là `local.dji.fly.vietnamese`, reviewed6/code 8, SHA256 `3cad71fd887edab20b5ff89a742766766e9dddf2ed45546ad05c42e66f1de048`.
 
 APK này có manifest, bảng tài nguyên và dữ liệu XML biên dịch; `hasCode=false`, không DEX và không thư viện native. APK DJI Fly đích vẫn dùng chữ ký DJI. Cơ chế RRO được Android mô tả tại [AOSP](https://source.android.com/docs/core/runtime/rros); phần xử lý cache dưới đây là cách đặc thù đã dùng trên tay, không phải một trình cài RRO chuẩn cho mọi firmware.
 
@@ -14,7 +14,7 @@ Manifest overlay có targetPackage `dji.go.v5`, targetName `DJIFlyLocalTranslati
 
 Các dữ liệu làm việc được giữ trong repository:
 
-- XML cuối reviewed5, manifest và báo cáo summary/changes.
+- XML cuối reviewed6, manifest và báo cáo summary/changes.
 - Gói XML nền versionCode 3 ở `translation/overlay-full/res/values-vi` để đối chiếu lượt rà.
 - `localize_resources.py`: tách văn bản/biến được bảo vệ và kiểm tra định dạng.
 - `review-round2/review.py`: ghép câu đã rà, thuật ngữ và dữ liệu kỹ thuật theo các điều kiện giới hạn.

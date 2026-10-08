@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "home_key_foreground": "mResumedActivity: ActivityRecord{7e312f4 u0 dev.rclauncher.rc2.debug/dev.rclauncher.rc2.RCLauncher t81}",
+  "bridge_version": "3.0",
+  "reboot": "PASS observed after restart",
+  "sys_boot_completed": "1",
+  "observed_uptime_seconds": 278.75,
+  "startup_foreground": "dev.rclauncher.rc2.debug/dev.rclauncher.rc2.RCLauncher",
+  "startup_launch_by_agent": false,
+  "additional_settings_home_checks": "NOT_VERIFIED: later USB shell timeout/disconnect"
+}

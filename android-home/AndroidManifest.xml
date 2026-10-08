@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="local.rc2.home" android:versionCode="1" android:versionName="1.0">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="local.rc2.home" android:versionCode="3" android:versionName="3.0">
     <uses-sdk android:minSdkVersion="24" android:targetSdkVersion="30"/>
-    <application android:label="Mở Lawnchair khi bật máy" android:allowBackup="false" android:directBootAware="true" android:defaultToDeviceProtectedStorage="true" android:theme="@android:style/Theme.Material.NoActionBar">
+    <application android:label="RC Launcher khi bật máy" android:allowBackup="false" android:directBootAware="true" android:defaultToDeviceProtectedStorage="true" android:theme="@style/RC2HomeForwarding">
         <activity android:name="local.rc2.home.HomeActivity" android:exported="true" android:directBootAware="true" android:excludeFromRecents="true" android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

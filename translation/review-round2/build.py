@@ -22,7 +22,7 @@ def main():
     run(TOOLS/'zipalign.exe','-f','4',HERE/'unsigned.apk',HERE/'aligned.apk')
     config=json.loads((KEYS/'local-signing.json').read_text())
     os.environ['RC2VI_SIGN_PASS']=config['password']
-    apk=HERE/'DJI_Fly_Vietnamese_Reviewed5.apk'
+    apk=HERE/'DJI_Fly_Vietnamese_Reviewed6.apk'
     run(TOOLS/'apksigner.bat','sign','--ks',KEYS/'local-vietnamese-draft.jks',
         '--ks-key-alias',config['alias'],'--ks-pass','env:RC2VI_SIGN_PASS','--key-pass','env:RC2VI_SIGN_PASS','--out',apk,HERE/'aligned.apk')
     del os.environ['RC2VI_SIGN_PASS']
@@ -30,7 +30,7 @@ def main():
     with zipfile.ZipFile(apk) as archive:
         if any(n.endswith(('.dex','.so')) for n in archive.namelist()): raise ValueError('Unexpected executable payload')
     result={'apk':str(apk),'sha256':hashlib.sha256(apk.read_bytes()).hexdigest(),
-            'size':apk.stat().st_size,'versionCode':7,'signature_verified':True,'has_dex_or_native':False}
+            'size':apk.stat().st_size,'versionCode':8,'signature_verified':True,'has_dex_or_native':False}
     (HERE/'build-result.json').write_text(json.dumps(result,indent=2),encoding='utf-8')
     print(json.dumps(result))
 

@@ -2,7 +2,7 @@
 
 ## EXE Windows
 
-Yêu cầu Python 3.11 x64 trên Windows. Từ thư mục repository:
+Yêu cầu Python 3.11 x64 trên Windows và JDK 17 (`javac`/`java` trong PATH) để chạy đầy đủ kiểm thử chính sách chuyển Home. Người chạy EXE không cần JDK. Từ thư mục repository:
 
 ```powershell
 py -3.11 -m venv .venv
@@ -15,7 +15,7 @@ Dependencies pin: PyInstaller 6.16.0, pytest 9.1.1, pytest-cov 7.0.0, setuptools
 
 EXE dùng `sys._MEIPASS/assets` khi chạy frozen. ADB được gọi bằng đường dẫn tuyệt đối tới `assets/adb/adb.exe`, các DLL nằm cùng thư mục; không tìm adb từ PATH. Cấu hình/tiến trình phiên ở `%LOCALAPPDATA%\RC2Vietnamese`.
 
-Build EXE dùng APK có sẵn, không cần Android SDK hoặc khóa ký. Khi thay bất kỳ APK, phải kiểm tra provenance/chữ ký/hash, cập nhật pin có chủ đích trong core.py và manifest.json, chạy kiểm thử và xác minh lại trên tay. Không dùng thay pin như một cách bỏ lỗi tương thích.
+Build EXE dùng APK có sẵn, không cần Android SDK hoặc khóa ký; JDK chỉ phục vụ kiểm thử Java của cầu Home. Khi thay bất kỳ APK, phải kiểm tra provenance/chữ ký/hash, cập nhật pin có chủ đích trong core.py và manifest.json, chạy kiểm thử và xác minh lại trên tay. Không dùng thay pin như một cách bỏ lỗi tương thích.
 
 ## Kiểm thử riêng
 

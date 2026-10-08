@@ -15,16 +15,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /** Foreground Home bridge; no root, networking, flight or account access. */
-public final class HomeActivity extends Activity {
+public final class HomeActivity extends Activity implements HomeForwarder.Host {
     private final Handler handler = new Handler(Looper.getMainLooper());
     private TextView message;
-    private int attempts;
+    private HomeForwarder forwarder;
     private final Runnable launch = new Runnable() {
-        @Override public void run() { openWhenReady(); }
+        @Override public void run() { forwarder.retry(); }
     };
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
+        forwarder = new HomeForwarder(this);
+        forwarder.start();
+    }
+
+    @Override public void showFallback(boolean locked) {
+        if (message != null) {
+            message.setText(locked ? "Android chưa mở khóa dữ liệu. Mở khóa tay rồi nhấn Mở RC Launcher."
+                    : "Chưa mở được launcher. Kiểm tra RC Launcher đã được cài.");
+            return;
+        }
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setGravity(Gravity.CENTER);
@@ -33,15 +43,14 @@ public final class HomeActivity extends Activity {
         message = new TextView(this);
         message.setTextSize(20);
         message.setGravity(Gravity.CENTER);
-        message.setText("Đang chờ Android sẵn sàng để mở Lawnchair…");
+        message.setText(locked ? "Android chưa mở khóa dữ liệu. Mở khóa tay rồi nhấn Mở RC Launcher."
+                : "Chưa mở được launcher. Kiểm tra RC Launcher đã được cài.");
         layout.addView(message);
         Button retry = new Button(this);
-        retry.setText("Mở Lawnchair");
+        retry.setText("Mở RC Launcher");
         retry.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
-                attempts = 0;
-                handler.removeCallbacks(launch);
-                openWhenReady();
+                forwarder.start();
             }
         });
         layout.addView(retry);
@@ -58,29 +67,46 @@ public final class HomeActivity extends Activity {
 
     @Override public void onResume() {
         super.onResume();
-        attempts = 0;
-        handler.removeCallbacks(launch);
-        handler.post(launch);
+        if (!isFinishing()) forwarder.start();
     }
 
-    private void openWhenReady() {
+    @Override protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        if (!isFinishing()) forwarder.start();
+    }
+
+    @Override public boolean isUserUnlocked() {
         UserManager users = getSystemService(UserManager.class);
-        if (users == null || !users.isUserUnlocked()) {
-            if (++attempts <= 120) handler.postDelayed(launch, 500);
-            else message.setText("Android chưa mở khóa dữ liệu. Mở khóa tay rồi nhấn Mở Lawnchair.");
-            return;
-        }
-        if (!open("app.lawnchair", "app.lawnchair.LawnchairLauncher")) {
-            if (++attempts <= 40) handler.postDelayed(launch, 500);
-            else message.setText("Chưa mở được Lawnchair. Kiểm tra Lawnchair đã được cài.");
-        }
+        return users != null && users.isUserUnlocked();
+    }
+
+    @Override public boolean openLauncher() {
+        return LauncherDestination.open(new LauncherDestination.Starter() {
+            @Override public boolean open(String packageName,String className) {
+                return HomeActivity.this.open(packageName,className);
+            }
+        });
+    }
+
+    @Override public void scheduleRetry() {
+        handler.removeCallbacks(launch);
+        handler.postDelayed(launch, 500);
+    }
+
+    @Override public void cancelRetry() { handler.removeCallbacks(launch); }
+
+    @Override public void complete() {
+        finish();
+        overridePendingTransition(0, 0);
     }
 
     private boolean open(String packageName, String className) {
         try {
             Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.setComponent(new ComponentName(packageName, className));
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
+                    | Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);
             return true;
         } catch (ActivityNotFoundException | SecurityException exception) {
@@ -89,7 +115,7 @@ public final class HomeActivity extends Activity {
     }
 
     @Override public void onPause() {
-        handler.removeCallbacks(launch);
+        forwarder.pause();
         super.onPause();
     }
 

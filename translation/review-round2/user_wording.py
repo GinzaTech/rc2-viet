@@ -2,6 +2,7 @@
 import re
 
 REPLACEMENTS=(
+    (r'Hệ thống nhạy cảm','Hệ thống cảm biến'),
     (r'Tùy chọn bay vòng tránh','Tùy chọn tránh khi bay'),
     (r'Tinh chỉnh độ nhạy và đường cong đáp ứng của máy bay và gimbal',
      'Tinh chỉnh độ nhạy và đường cong của máy bay và gimbal'),

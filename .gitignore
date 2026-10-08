@@ -6,8 +6,17 @@ __pycache__/
 coverage.json
 htmlcov/
 build/
+phone-work/
+translation/review-round2/compiled.zip
+translation/review-round2/unsigned.apk
+translation/review-round2/aligned.apk
+translation/review-round2/DJI_Fly_Vietnamese_Reviewed*.apk
+translation/review-round2/*.apk.idsig
+translation/review-round2/build-result.json
 **/classes/
 **/dex/
+android-home/resources.zip
+docs/*coverage.json
 .env
 .env.*
 *.jks
@@ -20,3 +29,4 @@ device-backups/
 *.tar
 *.log
 dist/*.zip
+assets/*.idsig

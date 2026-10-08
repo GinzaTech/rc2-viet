@@ -6,7 +6,7 @@ import re
 import shlex
 import tempfile
 import uuid
-from .core import (OVERLAY_HASH, HOME_APK_HASH, LAWNCHAIR_APK_HASH, FREEFCC_APK_HASH, INITIAL_OVERLAY_HASH, FIRST_OVERLAY_HASH, PREVIOUS_OVERLAY_HASH, OLDER_OVERLAY_HASH, OVERLAY_PACKAGE, approve_idmap,
+from .core import (OVERLAY_HASH, REVIEWED5_OVERLAY_HASH, HOME_APK_HASH, LAWNCHAIR_APK_HASH, FREEFCC_APK_HASH, INITIAL_OVERLAY_HASH, FIRST_OVERLAY_HASH, PREVIOUS_OVERLAY_HASH, OLDER_OVERLAY_HASH, OVERLAY_PACKAGE, approve_idmap,
                    foreground_safe, validate_package_path, validate_target)
 
 
@@ -72,7 +72,7 @@ class Activator:
         upgrade=False
         if overlay:
             digest=adb.shell('sha256sum '+shlex.quote(overlay),timeout=30).split()[0]
-            if digest not in {OVERLAY_HASH,PREVIOUS_OVERLAY_HASH,OLDER_OVERLAY_HASH,FIRST_OVERLAY_HASH,INITIAL_OVERLAY_HASH}:
+            if digest not in {OVERLAY_HASH,REVIEWED5_OVERLAY_HASH,PREVIOUS_OVERLAY_HASH,OLDER_OVERLAY_HASH,FIRST_OVERLAY_HASH,INITIAL_OVERLAY_HASH}:
                 raise ValueError('Gói tiếng Việt trên tay khác bản đã kiểm chứng; đã dừng.')
             upgrade=digest!=OVERLAY_HASH
             if not upgrade and self._enabled(adb):

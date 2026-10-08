@@ -33,76 +33,85 @@ def paths():
 class App:
     def __init__(self,root,assets,work,start_worker=True):
         self.root=root;self.work=work;self.events=queue.Queue();self.entries=[];self.closing=False
-        self.last_status=None;self.worker=None;self.thread=None
-        root.title('RC2 Việt • Bộ công cụ DJI RC 2');root.geometry('800x690');root.minsize(760,660)
-        style=ttk.Style(root);style.theme_use('vista')
-        style.configure('.',font=('Segoe UI',10));style.configure('Title.TLabel',font=('Segoe UI',21,'bold'))
-        frame=ttk.Frame(root,padding=24);frame.pack(fill='both',expand=True)
-        ttk.Label(frame,text='RC2 Việt',style='Title.TLabel').pack(anchor='w')
-        ttk.Label(frame,text='DJI RC 2 • Tiếng Việt DJI Fly • Lawnchair • FreeFCC').pack(anchor='w',pady=(5,22))
-        box=ttk.LabelFrame(frame,text='Tay điều khiển',padding=12);box.pack(fill='x')
-        ttk.Label(box,text='Số sê-ri:').pack(side='left')
-        self.selector=ttk.Combobox(box,state='readonly',width=29);self.selector.pack(side='left',padx=10)
-        self.selector.bind('<<ComboboxSelected>>',lambda e:self.send('select',self.selector.get()))
-        ttk.Button(box,text='Kết nối lại',command=lambda:self.send('refresh')).pack(side='right')
-        self.auto=tk.BooleanVar(value=True)
-        ttk.Checkbutton(frame,text='Tự kiểm tra và bật tiếng Việt khi nhận RC 2',variable=self.auto,
-                        command=lambda:self.send('auto',self.auto.get())).pack(anchor='w',pady=(14,12))
-        self.status=tk.StringVar(value='Đang khởi tạo…')
-        ttk.Label(frame,textvariable=self.status,wraplength=700,font=('Segoe UI',11,'bold')).pack(anchor='w')
-        self.progress=ttk.Progressbar(frame,mode='indeterminate');self.progress.pack(fill='x',pady=12)
-        buttons=ttk.Frame(frame);buttons.pack(fill='x')
-        for title,action in [('Bật / cập nhật tiếng Việt','apply'),('Tắt bản dịch','disable'),('Mở DJI Fly','fly'),('Mở Lawnchair','lawnchair')]:
-            ttk.Button(buttons,text=title,command=lambda a=action:self.send(a)).pack(side='left',padx=(0,7))
-        device_buttons=ttk.Frame(frame);device_buttons.pack(fill='x',pady=(10,0))
-        ttk.Button(device_buttons,text='Cài Lawnchair',command=lambda:self.send('install_lawnchair')).pack(side='left',padx=(0,7))
-        ttk.Button(device_buttons,text='Cài FreeFCC',command=lambda:self.send('install_freefcc')).pack(side='left',padx=(0,7))
-        ttk.Button(device_buttons,text='Đặt Lawnchair làm màn hình chính',command=lambda:self.send('home')).pack(side='left',padx=(0,7))
-        ttk.Button(device_buttons,text='Bật chế độ nhà phát triển',command=self.open_developer_options).pack(side='left')
-        ttk.Label(frame,text='Nếu tay hiện Allow USB debugging, chọn Allow. Có thể chọn Always allow from this computer để lưu ghép nối.',
-                  wraplength=700).pack(anchor='w',pady=(15,8))
-        ttk.Label(frame,text='Về trang chủ trước khi cập nhật. Bản dịch 1.21.8-vi-reviewed5. Công cụ cần quyền root sẵn có trên tay.',wraplength=700).pack(anchor='w')
-        logbox=ttk.LabelFrame(frame,text='Tiến trình',padding=8);logbox.pack(fill='both',expand=True,pady=(12,5))
-        self.log=tk.Text(logbox,height=5,state='disabled',font=('Segoe UI',9),wrap='word',borderwidth=0)
-        self.log.pack(fill='both',expand=True)
-        ttk.Button(frame,text='Lưu báo cáo chẩn đoán',command=self.save_report).pack(anchor='e')
+        self.worker=None;self.phone_worker=None;self.thread=None;self.phone_thread=None;self.mode='rc'
+        self.platforms={mode:{'devices':(), 'selected':'', 'status':'Đang chờ kết nối…', 'state':'waiting', 'last':None}
+                        for mode in ('phone','rc')}
+        from rc2vi.desktop_view import build
+        build(self);self.set_mode('rc')
+        root.update_idletasks()
         root.protocol('WM_DELETE_WINDOW',self.close)
+        self.poll_after=None
+        root.bind('<Destroy>',self.on_root_destroyed,add='+')
         if start_worker:
             try:
+                from rc2vi.phone import PhoneWorker
+                self.phone_worker=PhoneWorker(assets,work/'phone',lambda *e:self.emit_for('phone',*e))
+                self.phone_thread=threading.Thread(target=self.phone_worker.run,daemon=True);self.phone_thread.start()
                 activation=Activator(assets,work/'cache',self.emit)
-                self.worker=Worker(assets,activation,self.emit)
+                self.worker=Worker(assets,activation,self.emit);self.worker.auto=False
                 self.thread=threading.Thread(target=self.worker.run,daemon=True);self.thread.start()
             except Exception as exc:self.emit('error',str(exc))
-        root.after(150,self.poll)
+        self.poll_after=root.after(150,self.poll)
 
-    def emit(self,*event):self.events.put(event)
+    def emit(self,*event):self.emit_for('rc',*event)
+    def emit_for(self,mode,*event):self.events.put((mode,*event))
+
+    def set_mode(self,mode):
+        if mode not in self.platforms:raise ValueError('Nền tảng không hợp lệ')
+        self.platforms[self.mode]['selected']=self.selector.get()
+        self.mode=mode;state=self.platforms[mode]
+        for name,button in self.tabs.items():
+            button.configure(style='Selected.Tab.TButton' if name==mode else 'Tab.TButton')
+        self.phone_actions.pack_forget();self.rc_actions.pack_forget()
+        (self.phone_actions if mode=='phone' else self.rc_actions).pack(fill='x')
+        self.device_heading.set('Điện thoại' if mode=='phone' else 'Tay RC 2')
+        self.selector['values']=state['devices'];self.selector.set(state['selected'])
+        self.status.set(state['status']);self.update_progress(state['state'])
 
     def send(self,command,value=None):
-        if self.worker and not self.closing:self.worker.request(command,value)
+        worker=self.phone_worker if self.mode=='phone' else self.worker
+        if worker and not self.closing:worker.request(command,value)
 
     def open_developer_options(self):
+        if self.mode!='rc':return
         if not self.closing and messagebox.askokcancel(
                 'Cảnh báo kết nối USB trên RC 2',DEVELOPER_WARNING,
                 parent=self.root,icon='warning',default='cancel'):
             self.send('developer')
 
+    def update_progress(self,state):
+        self.progress.stop()
+        if state in {'connecting','pairing','checking','applying'}:
+            self.progress.configure(mode='indeterminate');self.progress.start(12)
+        else:self.progress.configure(mode='determinate',value=0)
+
     def poll(self):
+        if self.poll_after is not None:
+            self.root.after_cancel(self.poll_after);self.poll_after=None
         while not self.events.empty():
-            state,message=self.events.get_nowait()
+            mode,state,message=self.events.get_nowait();platform=self.platforms[mode]
             if state=='devices':
-                self.selector['values']=message
-                if len(message)==1 and not self.selector.get():self.selector.set(message[0])
-                if not message:self.selector.set('')
+                platform['devices']=message
+                if platform['selected'] and platform['selected'] not in message:
+                    platform['status']='Thiết bị đã chọn đã ngắt kết nối.'
+                if len(message)==1 and not platform['selected']:platform['selected']=message[0]
+                if mode==self.mode:
+                    self.selector['values']=message;self.selector.set(platform['selected'])
                 continue
-            if (state,message)==self.last_status:continue
-            self.last_status=(state,message);self.status.set(message)
-            if state in {'connecting','pairing','checking','applying'}:self.progress.start(12)
-            else:self.progress.stop()
-            line=datetime.now().strftime('%H:%M:%S')+'  '+message
+            if (state,message)==platform['last']:continue
+            platform['last']=(state,message);platform['state']=state;platform['status']=message
+            if mode==self.mode:self.status.set(message);self.update_progress(state)
+            label='Android' if mode=='phone' else 'RC 2'
+            line=datetime.now().strftime('%H:%M:%S')+'  ['+label+']  '+message
             self.entries=(self.entries+[line])[-200:]
             self.log.configure(state='normal');self.log.delete('1.0','end');self.log.insert('end','\n'.join(self.entries));self.log.see('end');self.log.configure(state='disabled')
-        if self.closing and (not self.thread or not self.thread.is_alive()):self.root.destroy();return
-        self.root.after(150,self.poll)
+        if self.closing and all(not t or not t.is_alive() for t in (self.thread,self.phone_thread)):
+            self.root.destroy();return
+        self.poll_after=self.root.after(150,self.poll)
+
+    def on_root_destroyed(self,event):
+        if event.widget is self.root and self.poll_after is not None:
+            self.root.after_cancel(self.poll_after);self.poll_after=None
 
     def save_report(self):
         path=filedialog.asksaveasfilename(title='Lưu báo cáo',defaultextension='.txt',initialfile='RC2-chan-doan.txt')
@@ -113,6 +122,7 @@ class App:
     def close(self):
         self.closing=True;self.status.set('Đang đóng kết nối USB…')
         if self.worker:self.worker.close()
+        if self.phone_worker:self.phone_worker.close()
 
 
 def main():
@@ -120,8 +130,30 @@ def main():
     mode=parser.add_mutually_exclusive_group()
     mode.add_argument('--verify-once',action='store_true');mode.add_argument('--scan',action='store_true')
     mode.add_argument('--enable-dev-mode',action='store_true')
+    mode.add_argument('--phone-inspect',action='store_true')
+    mode.add_argument('--phone-verify',action='store_true')
+    parser.add_argument('--serial',default='')
     parser.add_argument('--report',type=Path);parser.add_argument('--gui-smoke',action='store_true')
     args=parser.parse_args();assets,work=paths()
+    if args.phone_inspect or args.phone_verify:
+        from rc2vi.phone import parse_devices,inspect_phone
+        from rc2vi.phone_overlay import PhoneOverlay
+        from rc2vi.transport import Adb,check_standard_server
+        events=[]
+        try:
+            verify_bundle(assets);check_standard_server()
+            devices=parse_devices(Adb(assets/'adb/adb.exe').command('devices','-l'))
+            devices=tuple(d for d in devices if d.device.lower()!='rc331' and d.model.lower()!='rc331')
+            chosen=next((d for d in devices if d.serial==args.serial),None) if args.serial else (devices[0] if len(devices)==1 else None)
+            if not chosen or chosen.state!='device':raise ValueError('Chọn đúng một điện thoại đã cho phép ADB; dùng --serial khi có nhiều thiết bị.')
+            adb=Adb(assets/'adb/adb.exe',serial=chosen.serial)
+            emit=lambda state,message:events.append({'state':state,'message':message})
+            report=PhoneOverlay(assets,work/'phone',emit).apply(adb) if args.phone_verify else inspect_phone(adb)
+            report=dict(report,serial=chosen.serial,events=events)
+        except Exception as exc:report={'status':'error','message':str(exc),'events':events}
+        if args.report:args.report.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
+        if sys.stdout:print(json.dumps(report,ensure_ascii=False))
+        return 1 if report['status']=='error' else 0
     if args.scan or args.verify_once or args.enable_dev_mode:
         events=[];report={};connection=None
         try:

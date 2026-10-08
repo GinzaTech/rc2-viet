@@ -4,10 +4,11 @@ import queue
 import threading
 from .transport import Connection
 from .usb_windows import discover as discover_usb
-from .launcher import make_lawnchair_home
+from .launcher import make_rc_launcher_home
 from .developer import enable_developer_options
 from .lawnchair import install_lawnchair
 from .freefcc import install_freefcc
+from .rc_launcher import install_rc_launcher,RC_LAUNCHER_COMPONENT
 
 
 def choose_device(devices,selected):
@@ -42,7 +43,9 @@ class Worker:
                 'lawnchair_installed':'Đã cài và kiểm tra Lawnchair. Bấm Mở Lawnchair để dùng.',
                 'lawnchair_already_installed':'Lawnchair đã được cài đúng bản. Bấm Mở Lawnchair để dùng.',
                 'freefcc_installed':'Đã cài và kiểm tra FreeFCC. Mở từ danh sách ứng dụng trên tay.',
-                'freefcc_already_installed':'FreeFCC đã được cài đúng bản. Mở từ danh sách ứng dụng trên tay.'}
+                'freefcc_already_installed':'FreeFCC đã được cài đúng bản. Mở từ danh sách ứng dụng trên tay.',
+                'rc_launcher_installed':'Đã cài RC Launcher gọn nhẹ. Bấm Mở RC Launcher để dùng.',
+                'rc_launcher_already_installed':'RC Launcher mới đã cài đúng bản. Bấm Mở RC Launcher để dùng.'}
         self.emit('ready',labels[result['status']])
 
     def _command(self,command,value):
@@ -57,15 +60,16 @@ class Worker:
             self._result(self.activator.apply(self.adb));self.handled=True
         elif command=='disable':
             self._result(self.activator.disable(self.adb));self.handled=True
-        elif command in {'fly','lawnchair'}:
+        elif command in {'fly','lawnchair','rc_launcher'}:
             component={'fly':'dji.go.v5/com.dji.component.application.activity.DJIPureLaunchActivity',
-                       'lawnchair':'app.lawnchair/app.lawnchair.LawnchairLauncher'}[command]
+                       'lawnchair':'app.lawnchair/app.lawnchair.LawnchairLauncher',
+                       'rc_launcher':RC_LAUNCHER_COMPONENT}[command]
             self.adb.shell('input keyevent 224')
             self.adb.shell('am start -n '+component)
-            self.emit('opened','Đã gửi lệnh mở '+('DJI Fly' if command=='fly' else 'Lawnchair')+'.')
+            self.emit('opened','Đã gửi lệnh mở '+{'fly':'DJI Fly','lawnchair':'Lawnchair','rc_launcher':'RC Launcher'}[command]+'.')
         elif command=='home':
-            make_lawnchair_home(self.adb,self.activator,self.assets)
-            self.emit('ready','Đã đặt Lawnchair làm màn hình chính của RC 2.')
+            make_rc_launcher_home(self.adb,self.activator,self.assets)
+            self.emit('ready','Đã đặt RC Launcher mới làm màn hình chính của RC 2.')
         elif command=='developer':
             self.emit('applying','Đang bật chế độ nhà phát triển…')
             enable_developer_options(self.adb)
@@ -76,6 +80,9 @@ class Worker:
         elif command=='install_freefcc':
             self.emit('applying','Đang kiểm tra trước khi cài FreeFCC…')
             self._result(install_freefcc(self.adb,self.assets,self.emit))
+        elif command=='install_rc_launcher':
+            self.emit('applying','Đang kiểm tra RC Launcher trước khi cài…')
+            self._result(install_rc_launcher(self.adb,self.assets,self.emit))
 
     def step(self):
         devices=self.discover()

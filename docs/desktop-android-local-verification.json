@@ -1,0 +1,20 @@
+{
+  "desktop_tests": 141,
+  "coverage_percent": 95.72,
+  "exe_sha256": "70604a34ff7f1f39f0665678644733078102bbbbd087cf40df1f2d0c68c70bde",
+  "phone": {
+    "runtime_verified_version": "1.21.12-vi2",
+    "latest_built": "1.21.12-vi3",
+    "latest_wording_install": "NOT_YET_APPLIED_PHONE_DISCONNECTED"
+  },
+  "rc": {
+    "latest_pack": "1.21.8-vi-reviewed6",
+    "install": "PASS",
+    "sensor_lookup": "Hệ thống cảm biến"
+  },
+  "github_release_updated": false,
+  "rc_launcher_pc_installer": "PASS matching installed APK",
+  "exe_gui_smoke": "PASS",
+  "frozen_phone_cli": "PASS imports/assets; expected no-device error",
+  "rclauncher_bundled_sha256": "89a7bf6d6c99657cc8b9233039fd1b57dba8b5d7eae26cd092315ef1ec187dfe"
+}

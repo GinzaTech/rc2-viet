@@ -36,7 +36,7 @@ def test_developer_button_requires_warning_before_queuing(tmp_path,monkeypatch,a
     finally:root.destroy()
 
 
-@pytest.mark.parametrize('title,action',[('Cài Lawnchair','install_lawnchair'),('Cài FreeFCC','install_freefcc')])
+@pytest.mark.parametrize('title,action',[('Cài RC Launcher','install_rc_launcher'),('Cài FreeFCC','install_freefcc')])
 def test_install_button_only_queues_worker_request(tmp_path,title,action):
     root=tk.Tk();root.withdraw()
     try:

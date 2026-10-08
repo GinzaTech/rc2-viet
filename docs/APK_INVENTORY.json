@@ -1,49 +1,29 @@
 {
-  "project": "RC2 Viet",
-  "date": "2026-10-06",
-  "apk_count": 7,
-  "apks": [
-    {
-      "path": "android-home/aligned.apk",
-      "sha256": "c0ddbb1d9158235c433e1ec78c31fe607d0aac8ff4bf775102de6aaf8bfa1848",
-      "bytes": 4034,
-      "usage": "unsigned_build_intermediate"
-    },
-    {
-      "path": "android-home/unsigned.apk",
-      "sha256": "c0ddbb1d9158235c433e1ec78c31fe607d0aac8ff4bf775102de6aaf8bfa1848",
-      "bytes": 4034,
-      "usage": "unsigned_build_intermediate"
-    },
-    {
-      "path": "assets/freefcc.apk",
-      "sha256": "da2c7dd3ce389d3bd04334188e5ec0fe060070d9c4ff9cf1127aadecf133f1e4",
+  "release": "v0.2.0",
+  "assets": {
+    "freefcc.apk": {
       "bytes": 19461348,
-      "usage": "bundled_installable"
+      "sha256": "da2c7dd3ce389d3bd04334188e5ec0fe060070d9c4ff9cf1127aadecf133f1e4"
     },
-    {
-      "path": "assets/home-bridge.apk",
-      "sha256": "7e4ecbe3fde296ae006f66be2577194284f002f0d2f914d0eb86e78c28907168",
+    "home-bridge.apk": {
       "bytes": 16787,
-      "usage": "bundled_installable"
+      "sha256": "6ea1a061342bf1f8d9e4eda9838c99efb8c741656d7c7c19e09b68d2bc913f9e"
     },
-    {
-      "path": "assets/lawnchair.apk",
-      "sha256": "d4200d0985169fd79ba1bd225d653f2a2fe7b50aa07cb0d05ca64c7623f86059",
+    "lawnchair.apk": {
       "bytes": 17314003,
-      "usage": "bundled_installable"
+      "sha256": "d4200d0985169fd79ba1bd225d653f2a2fe7b50aa07cb0d05ca64c7623f86059"
     },
-    {
-      "path": "assets/vietnamese-resources.apk",
-      "sha256": "2561aad5899e690abafb576841ffd6c716bdd2a42a73636f7fcb006e17f0a4ac",
+    "phone-vietnamese-resources.apk": {
+      "bytes": 2920794,
+      "sha256": "c1d9198c1abeca5022ee1bbc18c8c333f0619f2b188776878353c3a84edbeebf"
+    },
+    "rc-launcher.apk": {
+      "bytes": 158414,
+      "sha256": "4c6f914531a74158ae62fd12c3957bd245ca3054e7e0a34f57f04b9a5622e05d"
+    },
+    "vietnamese-resources.apk": {
       "bytes": 2048346,
-      "usage": "bundled_installable"
-    },
-    {
-      "path": "artifacts/reference/dpad_systemui.apk",
-      "sha256": "3ecc013cad279024431c86b051bfc49e80e27bae575cfe555653eee15c6dc5b2",
-      "bytes": 36386427,
-      "usage": "reference_only"
+      "sha256": "3cad71fd887edab20b5ff89a742766766e9dddf2ed45546ad05c42e66f1de048"
     }
-  ]
+  }
 }

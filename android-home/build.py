@@ -18,7 +18,9 @@ def main():
         '-d',classes,*sorted((HERE/'src').rglob('*.java')))
     run(TOOLS/'d8.bat','--lib',ANDROID,'--min-api','24','--output',dex,*sorted(classes.rglob('*.class')))
     unsigned=HERE/'unsigned.apk'
-    run(TOOLS/'aapt2.exe','link','--manifest',HERE/'AndroidManifest.xml','-I',ANDROID,'-o',unsigned)
+    run(TOOLS/'aapt2.exe','compile','--dir',HERE/'res','-o',HERE/'resources.zip')
+    run(TOOLS/'aapt2.exe','link','--manifest',HERE/'AndroidManifest.xml','-I',ANDROID,
+        '-R',HERE/'resources.zip','--auto-add-overlay','-o',unsigned)
     with zipfile.ZipFile(unsigned,'a',compression=zipfile.ZIP_DEFLATED) as z:z.write(dex/'classes.dex','classes.dex')
     run(TOOLS/'zipalign.exe','-f','4',unsigned,HERE/'aligned.apk')
     config=json.loads((KEYS/'local-signing.json').read_text())
