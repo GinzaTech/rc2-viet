@@ -4,6 +4,8 @@
 
 Yêu cầu Python 3.11 x64 trên Windows và JDK 17 (`javac`/`java` trong PATH) để chạy đầy đủ kiểm thử chính sách chuyển Home. Người chạy EXE không cần JDK. Từ thư mục repository:
 
+Từ0.4.0, test Android HUD cần SDK platform30 và build-tools36.1.0 ở `%LOCALAPPDATA%\Android\Sdk` để compile source và so DEX nhúng. Đây là yêu cầu kiểm thử/build source; người chạy EXE vẫn dùng runtime đã nhúng.
+
 ```powershell
 py -3.11 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install --upgrade "pip>=26.2.1"
@@ -17,6 +19,24 @@ EXE dùng `sys._MEIPASS/assets` khi chạy frozen. ADB được gọi bằng đ�
 
 Build EXE dùng APK có sẵn, không cần Android SDK hoặc khóa ký; JDK chỉ phục vụ kiểm thử Java của cầu Home. Khi thay bất kỳ APK, phải kiểm tra provenance/chữ ký/hash, cập nhật pin có chủ đích trong core.py và manifest.json, chạy kiểm thử và xác minh lại trên tay. Không dùng thay pin như một cách bỏ lỗi tương thích.
 
+Từ0.3.0, EXE còn nhúng `assets/hud/toolchain.zip` và manifest hash cùng DEX HUD/helper khôi phục. Dùng bộ đã đóng gói thì không cần SDK để build EXE. Muốn dựng lại công cụ HUD, dùng JDK17 và build-tools36.1.0, APKtool2.12.1:
+
+```powershell
+.\.venv\Scripts\python.exe scripts/bundle_hud_tools.py --java-home 'C:\Program Files\Microsoft\jdk-17.0.20.8-hotspot' --sdk-tools "$env:LOCALAPPDATA\Android\Sdk\build-tools\36.1.0" --apktool 'C:\tools\apktool_2.12.1.jar'
+```
+
+Script biên dịch `android-hud/HudTool.java`, dựng Java runtime tối thiểu qua jlink, giữ license và tạo manifest SHA256 từng tệp. DEX ở `android-hud/dex/classes.dex` phải được dựng từ source Android HUD bằng javac/D8 trước; `assets/hud/restore-owner` được biên dịch từ `android-hud/RestoreOwner.c` bằng NDK cho ARMv7/API30. Đây là các đầu vào build, không phải tệp tải tùy ý. Thay toolchain/payload làm receipt cũ không còn khớp; tạo lại APK/receipt bằng bản EXE mới.
+
+Khi chỉ sửa handler Android, dùng script dưới để cập nhật DEX và payload hash mà giữ nguyên toolchain/khóa:
+
+```powershell
+.\.venv\Scripts\python.exe scripts/build_hud_payload.py --java-home 'C:\Program Files\Microsoft\jdk-17.0.20.8-hotspot' --sdk "$env:LOCALAPPDATA\Android\Sdk"
+```
+
+`tests/test_hud_android.py` chạy các bài kiểm tra JVM trong `android-hud/test/` và compile toàn bộ helper bằng Android11/D8 để bảo đảm DEX nhúng khớp source. Không có lệnh gửi tới tay/máy bay trong các tests; TCP thử nghiệm chỉ là server loopback trên PC.
+
+Luồng HUD đọc APK người dùng, ký bằng khóa ngoài bundle theo tài khoản Windows, rồi kiểm tra chữ ký và recipe. Build EXE không nhúng APK Fly gốc, khóa riêng hoặc bản sao lưu. [Hướng dẫn HUD](HUD_APK.md) giải thích quy trình và profile được pin. `build.ps1` đóng gói Portable ZIP/report/checksum từ EXE vừa build và kiểm tra chúng khớp nhau; thao tác đó chỉ tạo tệp cục bộ.
+
 ## Kiểm thử riêng
 
 ```powershell
@@ -26,6 +46,8 @@ Build EXE dùng APK có sẵn, không cần Android SDK hoặc khóa ký; JDK ch
 ```
 
 Các bài tests trong tests/ dùng fake ADB hoặc nút Tk thật với câu trả lời dialog được intercept; không gửi lệnh tới RC 2. `--gui-smoke` không mở worker. Kiểm chứng phần cứng cần một bước riêng, không chạy `--verify-once` trong lúc bay hoặc chưa muốn cài/bật bản dịch.
+
+Để thử pipeline thật, dùng `--hud-build <APK_gốc> --report <JSON>` theo [HUD_APK.md](HUD_APK.md). Exit0/receipt không chứng minh boot: phải cài đúng đầu ra, đọc hash/foreground và quan sát sau reboot riêng. Các lượt0.3/0.4 dùng fake ADB; lượt0.6 có RC và cập nhật cùng chữ ký giữ dữ liệu. Bằng chứng từng chức năng ở báo cáo cài/kiểm tra, không suy từ coverage host.
 
 pytest.ini chọn `--capture=sys`: trong môi trường Windows đã thử, capture native file descriptor mặc định của pytest gây lỗi khởi tạo lại Tcl/Tk, còn capture Python-level chạy đủ các kiểm thử nút/dialog. Không bỏ qua test Tk hoặc thay bằng assert mô phỏng để che lỗi.
 

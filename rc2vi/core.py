@@ -4,6 +4,8 @@ import re
 import struct
 
 SUPPORTED_APK = 'cfbf67368fa812c6e7d51430a07518ab47d056605bf373fcc69277e540caa32e'
+HUD_APK = 'abeff2051350dde3dfc524cd1f3ebd63864349e7366cd9f84406cee9778ba750'
+SUPPORTED_RC_FLY_APKS = frozenset({SUPPORTED_APK, HUD_APK})
 OVERLAY_HASH = '3cad71fd887edab20b5ff89a742766766e9dddf2ed45546ad05c42e66f1de048'
 REVIEWED5_OVERLAY_HASH = '2561aad5899e690abafb576841ffd6c716bdd2a42a73636f7fcb006e17f0a4ac'
 PREVIOUS_OVERLAY_HASH = 'cc3ee8af5b1ce71fc4f22252881e0fc4dc536d26523f0e497b03858f138f4f38'
@@ -81,7 +83,7 @@ def validate_target(model: str, device: str, identity: str, version: str, code: 
         raise ValueError('Thiết bị không phải DJI RC 2 đã hỗ trợ.')
     if not identity.startswith('uid=0('):
         raise ValueError('Tay điều khiển chưa cung cấp shell root; công cụ không tự root thiết bị.')
-    if version!='1.21.8' or code!=3115809 or digest.lower()!=SUPPORTED_APK:
+    if version!='1.21.8' or code!=3115809 or digest.lower() not in SUPPORTED_RC_FLY_APKS:
         raise ValueError('Bản DJI Fly khác 1.21.8 đã kiểm chứng; chưa áp dụng bản dịch.')
 
 def transport_conflict(output: str, serial: str) -> bool:

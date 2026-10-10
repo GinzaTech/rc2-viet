@@ -1,0 +1,2 @@
+package local.rc2.hud;import java.util.ArrayList;import java.util.List;
+final class ExternalOutput {interface Cancel {void cancel();}private boolean hud=true;final List<Runnable> observers=new ArrayList<>();int cancelled;Cancel observe(Runnable observer){observers.add(observer);return ()->{observers.remove(observer);cancelled++;};}boolean withHud(){return hud;}void setWithHud(boolean value){hud=value;publish();}String statusText(){return hud?"Có HUD":"Không HUD";}void publish(){for(Runnable observer:new ArrayList<>(observers))observer.run();}}

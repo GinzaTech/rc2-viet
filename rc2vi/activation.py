@@ -8,6 +8,7 @@ import tempfile
 import uuid
 from .core import (OVERLAY_HASH, REVIEWED5_OVERLAY_HASH, HOME_APK_HASH, LAWNCHAIR_APK_HASH, FREEFCC_APK_HASH, INITIAL_OVERLAY_HASH, FIRST_OVERLAY_HASH, PREVIOUS_OVERLAY_HASH, OLDER_OVERLAY_HASH, OVERLAY_PACKAGE, approve_idmap,
                    foreground_safe, validate_package_path, validate_target)
+from .core import SUPPORTED_APK, SUPPORTED_RC_FLY_APKS
 
 
 def verify_bundle(assets: Path) -> None:
@@ -23,8 +24,9 @@ def verify_bundle(assets: Path) -> None:
 
 
 class Activator:
-    def __init__(self,assets: Path,work: Path,emit,verify_assets=True):
+    def __init__(self,assets: Path,work: Path,emit,verify_assets=True,trusted_hud=None):
         self.assets=assets; self.work=work; self.emit=emit
+        self.trusted_hud=trusted_hud
         if verify_assets: verify_bundle(assets)
 
     def _path(self,adb,package,required=True):
@@ -47,8 +49,14 @@ class Activator:
         code=re.search(r'versionCode=(\d+)',info)
         target=self._path(adb,'dji.go.v5')
         digest=adb.shell('sha256sum '+shlex.quote(target),timeout=90).split()[0]
+        validated_digest=digest
+        if digest not in SUPPORTED_RC_FLY_APKS and self.trusted_hud is not None:
+            receipt=self.trusted_hud(digest)
+            if receipt.get('digest')!=digest or receipt.get('source_digest')!=SUPPORTED_APK:
+                raise ValueError('APK HUD chưa khớp công thức gốc đã kiểm chứng.')
+            validated_digest=SUPPORTED_APK
         validate_target(model,device,identity,version[1] if version else '',
-                        int(code[1]) if code else 0,digest)
+                        int(code[1]) if code else 0,validated_digest)
         return target
 
     def _enabled(self,adb):

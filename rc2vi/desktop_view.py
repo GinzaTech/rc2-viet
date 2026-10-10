@@ -99,7 +99,7 @@ def build(app):
     actions(app.phone_actions,[('Bật / cập nhật tiếng Việt','apply'),('Tắt bản dịch','disable'),('Mở DJI Fly','fly'),('Kiểm tra tương thích','inspect')],app)
     ttk.Label(app.phone_actions,text='Nếu chưa có DJI Fly, tải bản chính thức tại dji.com/downloads/djiapp/dji-fly.',style='CardMuted.TLabel',wraplength=840).pack(anchor='w',pady=(12,0))
     app.rc_actions=card(app.action_host,'DJI Fly trên tay DJI RC 2',
-                       'DJI Fly 1.21.8 / Android 11. Cập nhật khi tay ở trang chủ hoặc Lawnchair.')
+                       'DJI Fly 1.21.8 / Android 11. Cập nhật khi tay ở trang chủ hoặc RC Launcher.')
     actions(app.rc_actions,[('Bật / cập nhật tiếng Việt','apply'),('Tắt bản dịch','disable'),('Mở DJI Fly','fly'),('Mở RC Launcher','rc_launcher')],app)
     app.tools=ttk.Frame(app.rc_actions,style='Card.TFrame')
     app.tools.pack(fill='x',pady=(14,0))
@@ -107,6 +107,13 @@ def build(app):
     for i,(label,command) in enumerate([('Cài RC Launcher','install_rc_launcher'),('Cài FreeFCC','install_freefcc'),('Đặt RC Launcher làm màn hình chính','home')]):
         ttk.Button(tools,text=label,command=lambda c=command:app.send(c)).grid(row=0,column=i,sticky='w',padx=(0,6))
     ttk.Button(app.tools,text='Bật chế độ nhà phát triển',command=app.open_developer_options).pack(anchor='w',pady=(10,0))
+    hud=ttk.Frame(app.rc_actions,style='Card.TFrame');hud.pack(fill='x',pady=(14,0))
+    ttk.Label(hud,text='Menu trên tay',style='Heading.TLabel').pack(anchor='w')
+    ttk.Label(hud,text='Tự lấy DJI Fly từ RC 2, patch, ký và cài lại.',
+              style='CardMuted.TLabel',wraplength=800).pack(anchor='w',pady=(3,6))
+    hudrow=ttk.Frame(hud,style='Card.TFrame');hudrow.pack(fill='x')
+    ttk.Button(hudrow,text='Cài / cập nhật menu',command=app.patch_menu,
+               style='Primary.TButton').pack(anchor='w')
     app.auto=tk.BooleanVar(value=False)
     ttk.Checkbutton(app.rc_actions,text='Tự kiểm tra và bật tiếng Việt khi nhận RC 2',variable=app.auto,style='Card.TCheckbutton',
                     command=lambda:app.send('auto',app.auto.get())).pack(anchor='w',pady=(12,0))

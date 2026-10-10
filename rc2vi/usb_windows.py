@@ -130,9 +130,11 @@ class UsbLink:
         if actual.value!=len(data):
             raise IOError('USB short write')
 
-    def read(self) -> bytes:
-        buffer=C.create_string_buffer(65536); actual=W.ULONG()
-        if not usb.WinUsb_ReadPipe(self.handle,0x84,buffer,65536,C.byref(actual),None):
+    def read(self, size=65536) -> bytes:
+        if type(size) is not int or not 1<=size<=65536:
+            raise ValueError('USB read size outside the bounded frame range')
+        buffer=C.create_string_buffer(size); actual=W.ULONG()
+        if not usb.WinUsb_ReadPipe(self.handle,0x84,buffer,size,C.byref(actual),None):
             error=C.get_last_error()
             if error==121:
                 raise TimeoutError('USB wait')

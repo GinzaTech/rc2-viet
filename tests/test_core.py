@@ -51,6 +51,11 @@ def test_target_guards():
     for args in [('Phone','other','uid=0(root)','1.21.8',3115809,SUPPORTED_APK),('DJI RC 2','rc331','uid=2000(shell)','1.21.8',3115809,SUPPORTED_APK),('DJI RC 2','rc331','uid=0(root)','1.22.0',3115809,SUPPORTED_APK),('DJI RC 2','rc331','uid=0(root)','1.21.8',3115809,'0'*64)]:
         with pytest.raises(ValueError): validate_target(*args)
 
+
+def test_installed_hud_build_is_explicitly_allowed():
+    validate_target('DJI RC 2', 'rc331', 'uid=0(root)', '1.21.8', 3115809,
+                    'abeff2051350dde3dfc524cd1f3ebd63864349e7366cd9f84406cee9778ba750')
+
 def test_other_transports_are_not_interrupted():
     assert not transport_conflict('List of devices attached\nRC2 offline\n','RC2')
     assert transport_conflict('List of devices attached\nRC2 offline\nPHONE device\n','RC2')

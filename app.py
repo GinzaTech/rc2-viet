@@ -34,6 +34,7 @@ class App:
     def __init__(self,root,assets,work,start_worker=True):
         self.root=root;self.work=work;self.events=queue.Queue();self.entries=[];self.closing=False
         self.worker=None;self.phone_worker=None;self.thread=None;self.phone_thread=None;self.mode='rc'
+        self.hud_source=None
         self.platforms={mode:{'devices':(), 'selected':'', 'status':'Đang chờ kết nối…', 'state':'waiting', 'last':None}
                         for mode in ('phone','rc')}
         from rc2vi.desktop_view import build
@@ -48,7 +49,14 @@ class App:
                 self.phone_worker=PhoneWorker(assets,work/'phone',lambda *e:self.emit_for('phone',*e))
                 self.phone_thread=threading.Thread(target=self.phone_worker.run,daemon=True);self.phone_thread.start()
                 activation=Activator(assets,work/'cache',self.emit)
-                self.worker=Worker(assets,activation,self.emit);self.worker.auto=False
+                from rc2vi.hud_build import HudBuilder
+                from rc2vi.hud_install import HudInstaller
+                cancel=threading.Event()
+                builder=HudBuilder(assets,work/'hud',self.emit,cancel=cancel)
+                installer=HudInstaller(assets,work/'hud',self.emit,builder,cancel=cancel)
+                activation.trusted_hud=installer.trusted_artifact
+                self.worker=Worker(assets,activation,self.emit,hud_builder=builder,hud_installer=installer,
+                                   stop_event=cancel);self.worker.auto=False
                 self.thread=threading.Thread(target=self.worker.run,daemon=True);self.thread.start()
             except Exception as exc:self.emit('error',str(exc))
         self.poll_after=root.after(150,self.poll)
@@ -79,6 +87,46 @@ class App:
                 parent=self.root,icon='warning',default='cancel'):
             self.send('developer')
 
+    def select_hud_source(self,reselect=False):
+        if self.mode!='rc' or self.closing:return
+        if self.hud_source and self.hud_source.is_file():
+            if not reselect:return self.hud_source
+        else:self.hud_source=None
+        source=filedialog.askopenfilename(parent=self.root,title='Chọn APK DJI Fly RC 2 gốc chính thức 1.21.8',
+                                          filetypes=[('Android APK','*.apk')])
+        if self.mode!='rc' or self.closing or not source:return
+        source=Path(source)
+        if not source.is_file() or source.suffix.lower()!='.apk':
+            self.emit('error','Chọn tệp APK DJI Fly RC 2 gốc chính thức 1.21.8 còn tồn tại.')
+            return
+        self.hud_source=source
+        return source
+
+    def choose_hud_source(self):
+        self.select_hud_source(reselect=True)
+
+    def build_hud(self):
+        source=self.select_hud_source()
+        if source:self.send('hud_build',Path(source))
+
+    def patch_menu(self):
+        if self.mode=='rc' and not self.closing:self.send('hud_patch_menu')
+
+    def install_hud(self):
+        if self.mode=='rc' and not self.closing:self.send('hud_install')
+
+    def open_hud_folder(self):
+        folder=self.work/'hud';folder.mkdir(parents=True,exist_ok=True)
+        try:os.startfile(folder)
+        except OSError:self.emit('error','Không mở được thư mục HUD.')
+
+    def confirm_hud(self,plan):
+        if self.closing or not self.worker:return
+        approved=messagebox.askokcancel(title='Xác nhận thay DJI Fly trên RC 2',
+                    message=plan['summary'],parent=self.root,icon='warning',default='cancel')
+        self.worker.request('hud_approve' if approved else 'hud_cancel',
+                            {'token':plan['token'],'serial':plan['serial']})
+
     def update_progress(self,state):
         self.progress.stop()
         if state in {'connecting','pairing','checking','applying'}:
@@ -98,6 +146,11 @@ class App:
                 if mode==self.mode:
                     self.selector['values']=message;self.selector.set(platform['selected'])
                 continue
+            if state=='hud_confirm':
+                self.confirm_hud(message);continue
+            if state=='hud_built':
+                message='Đã tạo và kiểm tra APK HUD: '+str(message['apk'])
+                state='ready'
             if (state,message)==platform['last']:continue
             platform['last']=(state,message);platform['state']=state;platform['status']=message
             if mode==self.mode:self.status.set(message);self.update_progress(state)
@@ -132,9 +185,20 @@ def main():
     mode.add_argument('--enable-dev-mode',action='store_true')
     mode.add_argument('--phone-inspect',action='store_true')
     mode.add_argument('--phone-verify',action='store_true')
+    mode.add_argument('--hud-build',type=Path,metavar='APK_GOC')
     parser.add_argument('--serial',default='')
     parser.add_argument('--report',type=Path);parser.add_argument('--gui-smoke',action='store_true')
     args=parser.parse_args();assets,work=paths()
+    if args.hud_build:
+        from rc2vi.hud_build import HudBuilder
+        events=[]
+        try:
+            report=HudBuilder(assets,work/'hud',lambda s,m:events.append({'state':s,'message':m})).build(args.hud_build)
+        except Exception as exc:report={'status':'error','message':str(exc)}
+        report=dict(report,events=events)
+        if args.report:args.report.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
+        if sys.stdout:print(json.dumps(report,ensure_ascii=False))
+        return 1 if report['status']=='error' else 0
     if args.phone_inspect or args.phone_verify:
         from rc2vi.phone import parse_devices,inspect_phone
         from rc2vi.phone_overlay import PhoneOverlay

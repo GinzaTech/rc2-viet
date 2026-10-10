@@ -100,6 +100,8 @@ class Relay:
         self.stop_event=threading.Event(); self.connected=threading.Event()
         self.error=''; self.client=None; self.threads=[]
         self.write_lock=threading.Lock()
+        self.pair_lock=threading.Lock(); self.pair_sent=False
+        self.pair_timer=None
         self.listener=socket.socket()
         self.listener.bind(('127.0.0.1',0)); self.listener.listen(1); self.listener.settimeout(1)
         self.address='127.0.0.1:'+str(self.listener.getsockname()[1])
@@ -127,7 +129,26 @@ class Relay:
             self.link.write(wire[:24]); self.link.write(wire[24:])
 
     def _pair(self):
-        self._send_usb(pack('AUTH',3,0,self.public_key))
+        # DJI's challenge workaround is AUTH3 after AUTH1, once per USB
+        # session. An early/duplicate AUTH3 is not trusted-key authentication.
+        with self.pair_lock:
+            if self.pair_sent or self.stop_event.is_set() or self.connected.is_set(): return
+            self.pair_sent=True
+            self.emit('pairing','Chọn Allow USB debugging trên RC 2 nếu có hộp thoại.')
+            self._send_usb(pack('AUTH',3,0,self.public_key))
+
+    def _schedule_pair_fallback(self):
+        # Preserve the existing RC2 compatibility request for firmware that
+        # does not send a token, while allowing normal challenge ordering first.
+        def request():
+            try:self._pair()
+            except (OSError,RuntimeError) as exc:
+                if not self.stop_event.is_set():self.error=str(exc)
+                self.stop_event.set()
+        with self.pair_lock:
+            if self.stop_event.is_set() or self.pair_timer is not None:return
+            self.pair_timer=threading.Timer(2,request)
+            self.pair_timer.daemon=True; self.pair_timer.start()
 
     def _receive_usb(self,sock):
         parser=PacketBuffer()
@@ -135,7 +156,13 @@ class Relay:
         try:
             while not self.stop_event.is_set():
                 try:
-                    data=self.link.read()
+                    pending=len(parser.pending)
+                    if pending<24:
+                        read_size=24-pending
+                    else:
+                        payload_size=int.from_bytes(parser.pending[12:16],'little')
+                        read_size=min(65536,24+payload_size-pending)
+                    data=self.link.read(read_size)
                 except TimeoutError:
                     if not self.connected.is_set() and time.monotonic()>deadline:
                         raise TimeoutError('Hết thời gian chờ Allow USB debugging trên RC 2')
@@ -180,8 +207,8 @@ class Relay:
                     raise ValueError('Không đúng gói khởi tạo ADB')
                 self._send_usb(frame.wire)
                 if first:
-                    self.emit('pairing','Chọn Allow USB debugging trên RC 2 nếu có hộp thoại.')
-                    self._pair(); first=False
+                    self._schedule_pair_fallback()
+                    first=False
         except Exception as exc:
             if not self.stop_event.is_set():
                 self.error=str(exc)
@@ -189,6 +216,8 @@ class Relay:
 
     def close(self):
         self.stop_event.set()
+        with self.pair_lock:
+            if self.pair_timer is not None:self.pair_timer.cancel()
         if self.client:
             try: self.client.shutdown(socket.SHUT_RDWR)
             except OSError: pass
@@ -213,6 +242,17 @@ class Connection:
         binary=self.assets/'adb'/'adb.exe'
         check_standard_server()
         standard=Adb(binary)
+        devices=standard.command('devices','-l')
+        rows=[line.split() for line in devices.splitlines()]
+        ready=[row for row in rows if len(row)>=2 and row[0]==self.device.serial and row[1]=='device']
+        if len(ready)==1:
+            target=Adb(binary,serial=self.device.serial)
+            if (target.command('get-state',timeout=5,check=False)!='device'
+                    or target.shell('getprop ro.serialno').strip()!=self.device.serial):
+                raise ValueError('Phiên ADB sẵn sàng không khớp RC 2 đã chọn.')
+            self.adb=target;self.owned=False
+            self.emit('connected','Đã dùng phiên ADB sẵn sàng của RC 2.')
+            return target
         key_path=Path.home()/'.android'/'adbkey'
         if not key_path.exists():
             key_path.parent.mkdir(parents=True,exist_ok=True)
@@ -221,7 +261,6 @@ class Connection:
         public=public_path.read_bytes().strip()+b'\0'
         if len(public)<100 or len(public)>8192:
             raise ValueError('Khóa ADB hiện tại không hợp lệ; công cụ không xóa hoặc thay khóa.')
-        devices=standard.command('devices','-l')
         if transport_conflict(devices,self.device.serial):
             target=Adb(binary,serial=self.device.serial)
             target.command('reconnect',timeout=8,check=False)
@@ -256,7 +295,10 @@ class Connection:
             self.close(); raise
 
     def alive(self):
-        return self.relay is not None and not self.relay.stop_event.is_set()
+        if self.relay is not None:return not self.relay.stop_event.is_set()
+        if self.adb is None:return False
+        try:return self.adb.command('get-state',timeout=3,check=False)=='device'
+        except (OSError,RuntimeError,subprocess.TimeoutExpired):return False
 
     def close(self):
         if self.adb and self.owned:
@@ -267,4 +309,4 @@ class Connection:
         if self.relay:
             self.relay.close(); self.relay=None
         if self.lease:self.lease.close();self.lease=None
-        self.owned=False
+        self.owned=False;self.adb=None

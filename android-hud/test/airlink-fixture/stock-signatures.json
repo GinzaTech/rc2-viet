@@ -1,0 +1,25 @@
+{
+  "stock_version": "1.21.8",
+  "stock_sha256": "cfbf67368fa812c6e7d51430a07518ab47d056605bf373fcc69277e540caa32e",
+  "dex": "classes12.dex",
+  "keys": {"w": "AreaCodeFromSky", "x": "AreaCodeFromGround"},
+  "key_info_name": "UAVKeyInfoBase.e()Ljava/lang/String;",
+  "key_factory": "UAVKey.i(Luav/sdk/keyvalue/key/UAVKeyInfoBase;)Luav/sdk/keyvalue/key/UAVKey;",
+  "get": "UAVKeyManager.t(Luav/sdk/keyvalue/key/UAVKey;Luav/sdk/keyvalue/callback/IGetCallback;)V",
+  "callback_success": "IGetCallback.b(Luav/sdk/keyvalue/key/UAVKey;Ljava/lang/Object;)V",
+  "callback_failure": "IGetCallback.a(Luav/sdk/keyvalue/key/UAVKey;ILjava/lang/String;)V",
+  "area_value_class": "uav.sdk.keyvalue.value.common.AreaCodeInfo",
+  "area_getter": "getAreaCode()Ljava/lang/String;",
+  "ac_getter": "getAcValue()Ljava/lang/Integer;",
+  "effective_mode_mapping_verified": false,
+  "candidates": {
+    "N": {
+      "name": "SDRHdOffsetParams",
+      "value_type": "uav.sdk.keyvalue.value.airlink.SDRHdOffsetParams",
+      "getters": ["getTxPowerOffset", "getDistOffset", "getPathLossOffset", "getRcLinkOffset"],
+      "getter_return_type": "java.lang.Integer",
+      "fcc_ce_semantics": "unknown"
+    },
+    "U": {"name": "SDRAveragePower", "value_type": "java.lang.Integer", "fcc_ce_semantics": "unknown"}
+  }
+}
