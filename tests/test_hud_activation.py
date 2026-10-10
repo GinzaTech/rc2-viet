@@ -23,9 +23,9 @@ def test_dynamic_hud_requires_independently_verified_stock_recipe(tmp_path):
     assert activator.verify(Adb()) == '/data/app/dji/base.apk'
 
 
-def test_dynamic_hud_does_not_accept_callback_digest_or_source_mismatch(tmp_path):
+def test_untrusted_recipe_does_not_select_the_legacy_resource_pack(tmp_path):
     for result in [{'digest': 'b' * 64, 'source_digest': SUPPORTED_APK},
                    {'digest': 'a' * 64, 'source_digest': 'b' * 64}]:
         activator = Activator(tmp_path, tmp_path, lambda *e: None, False, trusted_hud=lambda digest: result)
-        with pytest.raises(ValueError):
-            activator.verify(Adb())
+        activator.verify(Adb())
+        assert not activator._legacy_supported()

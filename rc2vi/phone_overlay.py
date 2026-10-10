@@ -1,4 +1,4 @@
-"""Phone-only resource overlay for the verified official Android APK."""
+"""Phone resource overlays with a pinned fast path and adaptive Fly versions."""
 import hashlib
 from pathlib import Path
 import re
@@ -43,18 +43,30 @@ def safe_foreground(root):
 
 
 class PhoneOverlay:
-    def __init__(self,assets:Path,work:Path,emit):self.assets=assets;self.work=work;self.emit=emit
+    def __init__(self,assets:Path,work:Path,emit,adaptive=None,cancel=None):
+        self.assets=assets;self.work=work;self.emit=emit
+        self.adaptive=adaptive;self.cancel=cancel;self.legacy=False
+
+    def _adaptive(self):
+        if self.adaptive is None:
+            from .translation_install import AdaptiveTranslation
+            self.adaptive=AdaptiveTranslation(self.assets,self.work/'adaptive',self.emit,cancel=self.cancel)
+        return self.adaptive
 
     def verify(self,adb):
         info=inspect_phone(adb)
         if info['status']=='fly_missing':raise ValueError(info['message'])
         if not info['root']:raise ValueError('Việt hóa điện thoại cần quyền root cho ADB. DJI Fly vẫn giữ nguyên chữ ký DJI.')
-        if (info['sdk'],info['version'],info['version_code'])!=('35','1.21.12',3131451):
-            raise ValueError('Gói điện thoại hiện hỗ trợ Android 15 / DJI Fly chính thức 1.21.12 (3131451). Phiên bản khác cần đối chiếu tài nguyên riêng.')
+        if info['sdk']!='35':
+            raise ValueError('Đường Việt hóa điện thoại hiện hỗ trợ idmap Android 15. Phiên bản DJI Fly không bị giới hạn.')
+        if not info['version'] or info['version_code']<=0:
+            raise ValueError('Không đọc được phiên bản DJI Fly.')
         root=RootShell(adb);target=package_path(root,'dji.go.v5')
-        if root.shell('sha256sum '+shlex.quote(target),timeout=90).split()[0]!=TARGET_HASH:
-            raise ValueError('APK DJI Fly khác bản chính thức đã kiểm chứng; đã dừng.')
-        if hashlib.sha256((self.assets/'phone-vietnamese-resources.apk').read_bytes()).hexdigest()!=OVERLAY_HASH:
+        digest=root.shell('sha256sum '+shlex.quote(target),timeout=90).split()[0]
+        if not re.fullmatch(r'[0-9a-fA-F]{64}',digest):
+            raise ValueError('Không đọc được hash APK DJI Fly.')
+        self.legacy=(info['version'],info['version_code'],digest.lower())==('1.21.12',3131451,TARGET_HASH)
+        if self.legacy and hashlib.sha256((self.assets/'phone-vietnamese-resources.apk').read_bytes()).hexdigest()!=OVERLAY_HASH:
             raise ValueError('Gói tài nguyên điện thoại bị thay đổi; đã dừng.')
         return root,target
 
@@ -65,7 +77,26 @@ class PhoneOverlay:
 
     def apply(self,adb,enable=True):
         self.emit('checking','Đang kiểm tra bản DJI Fly điện thoại và quyền root…')
-        root,target=self.verify(adb);overlay=package_path(root,PACKAGE,required=False)
+        if not enable:
+            model=adb.shell('getprop ro.product.model').lower()
+            device=adb.shell('getprop ro.product.device').lower()
+            if device=='rc331' or model in {'rc331','dji rc 2'}:
+                raise ValueError('Đây là RC 2. Chọn trang Tay DJI RC 2.')
+            if adb.shell('getprop ro.build.version.sdk')!='35':
+                raise ValueError('Đường Việt hóa điện thoại hiện hỗ trợ Android 15.')
+            root=RootShell(adb)
+            if not root.shell('id').startswith('uid=0('):
+                raise ValueError('Tắt bản dịch điện thoại cần quyền root cho ADB.')
+            if 'local.dji.fly.vi.auto.' in root.shell('cmd overlay list --user 0 dji.go.v5'):
+                safe_foreground(root)
+                return self._adaptive().disable(root,lambda:safe_foreground(root))
+        root,target=self.verify(adb)
+        dynamic='local.dji.fly.vi.auto.' in root.shell('cmd overlay list --user 0 dji.go.v5')
+        if (enable and not self.legacy) or dynamic:
+            safe_foreground(root)
+            tool=self._adaptive()
+            return tool.apply(adb,root,35,lambda:safe_foreground(root)) if enable else tool.disable(root,lambda:safe_foreground(root))
+        overlay=package_path(root,PACKAGE,required=False)
         digest=root.shell('sha256sum '+shlex.quote(overlay)).split()[0] if overlay else None
         upgrade=digest in {PREVIOUS_OVERLAY_HASH,OLDER_OVERLAY_HASH}
         if overlay and digest not in {OVERLAY_HASH,PREVIOUS_OVERLAY_HASH,OLDER_OVERLAY_HASH}:

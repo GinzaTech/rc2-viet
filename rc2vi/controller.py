@@ -60,7 +60,7 @@ class Worker:
                 'freefcc_already_installed':'FreeFCC đã được cài đúng bản. Mở từ danh sách ứng dụng trên tay.',
                 'rc_launcher_installed':'Đã cài RC Launcher gọn nhẹ. Bấm Mở RC Launcher để dùng.',
                 'rc_launcher_already_installed':'RC Launcher mới đã cài đúng bản. Bấm Mở RC Launcher để dùng.'}
-        self.emit('ready',labels[result['status']])
+        self.emit('ready',result.get('message') or labels[result['status']])
 
     def _hud_result(self,result):
         if result['status']=='hud_confirmation_required':self.emit('hud_confirm',result)

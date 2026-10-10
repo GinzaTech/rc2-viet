@@ -1,5 +1,7 @@
 # HUD, menu RC và FCC trong APK mod
 
+EXE0.7.0 mở khóa số phiên bản cho **Việt hóa tài nguyên**. Profile patch mã menu/HUD mô tả dưới đây vẫn dành riêng cho FlyRC1.21.8.
+
 Bản cục bộ0.6.3 dành cho DJI Fly RC2 1.21.8/code3115809 trên RC331/Android11/API30. EXE nhúng Python, ADB, Java, APKtool, apksigner và zipalign; không cần cài riêng các công cụ đó. Windows vẫn cần driver USB phù hợp và tay phải cho phép USB debugging. Chưa có profile HUD điện thoại.
 
 ## Tạo và cài

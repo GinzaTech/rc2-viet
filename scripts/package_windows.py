@@ -14,13 +14,16 @@ PORTABLE = 'RC2-TiengViet-Portable.zip'
 REPORT = 'release-verification.json'
 SUMS = 'SHA256SUMS.txt'
 STOCK_APK_SHA256 = 'cfbf67368fa812c6e7d51430a07518ab47d056605bf373fcc69277e540caa32e'
-FLAGS = {'version': '0.6.3-local', 'hud_pipeline_bundled': True,
+FLAGS = {'version': '0.7.0-local', 'hud_pipeline_bundled': True,
          'hud_menu_patch_one_click': True,
+         'translation_version_independent': True, 'translation_device_tested': False,
          'hud_source_from_device': True, 'stock_recovery_template_bundled': True,
          'java_required_on_host': False, 'stock_fly_apk_embedded': False,
          'private_signing_key_embedded': False, 'github_published': False,
          'menu_functionality_verified': False, 'device_acceptance_complete': False}
 DOCS = {'README.md': 'README.md', 'THIRD_PARTY_NOTICES.md': 'THIRD_PARTY_NOTICES.md',
+        'CHANGELOG.md': 'CHANGELOG.md', 'docs/VIETNAMESE.md': 'docs/VIETNAMESE.md',
+        'docs/ANDROID_PHONE.md': 'docs/ANDROID_PHONE.md',
         'docs/HUD_APK.md': 'docs/HUD_APK.md', 'docs/FREEFCC_LICENSE.txt': 'docs/FREEFCC_LICENSE.txt'}
 PRIVATE = re.compile(r'private|backup|stock|input|signer|signing|credential|secret|password|cookie|token|camera|account', re.I)
 

@@ -1,5 +1,19 @@
 # Chi tiết gói tiếng Việt DJI Fly
 
+## Từ 0.7.0: không khóa số phiên bản DJI Fly
+
+Nút Bật / cập nhật tiếng Việt nhận các phiên bản DJI Fly bất kỳ có cấu trúc APK nguyên khối đọc được trên nền tảng đang hỗ trợ. App lấy APK từ đúng thiết bị, kiểm tra nguồn không đổi, chọn bản dịch theo tài nguyên, dựng và ký RRO riêng rồi bật/đọc lại. APK DJI Fly không bị thay hoặc ký lại trong luồng Việt hóa.
+
+- Nguồn từ điển: `assets/translation/catalog.json`, 11.141 mục dùng lại từ XML reviewed6 và nguồnRC1.21.8. Selector so sánh kiểu/tên/văn bản gốc, thứ tự mảng, quantity của plurals, placeholder và markup. Bảy ứng viên phần trăm mơ hồ được loại bảo thủ khi dựng từ điển.
+- Không dịch đoán câu mới. App báo số tài nguyên đã dịch và giữ nguyên; số lượng này không phải coverage màn hình UI. Không cần mô hình lớn, dịch vụ dịch online hay API key.
+- Java/AAPT2/framework/APKtool đã nhúng. Java bổ sung module desktop cho bộ giải mã tài nguyên. Khóa RRO tạo riêng trên PC và được Windows DPAPI bảo vệ.
+- RRO mới có tên `local.dji.fly.vi.auto.r<source>c<catalog>s<signer>`. Không ghi đè gói cùng tên khác hash. Gói cũ chỉ được tắt trong giao dịch bật gói mới; lỗi đọc lại sẽ phục hồi cache và trạng thái trước đó.
+- Giữ yêu cầu RC331/Android11/root và điện thoại Android15/root tương ứng hai định dạng idmap đã xử lý. Không tự root, không bỏ qua Allow USB debugging.
+- Kiểm chứng cục bộ: Fly1.21.8 có11.141/11.923 tài nguyên khớp, Fly1.21.12 có11.141/11.925; cả hai dựng, căn chỉnh và ký gói không có DEX/native thành công. Không thực hiện kiểm tra trên thiết bị ở lượt cập nhật này theo yêu cầu người dùng.
+
+Phần dưới mô tả gói dựng sẵn dành cho nguồn đã biết; đây là đường nhanh, không còn là danh sách khóa phiên bản của luồng Việt hóa thích ứng.
+
+
 ## Tài nguyên, không thay mã DJI Fly
 
 Mục tiêu là `dji.go.v5` 1.21.8, code 3115809 và hash APK đã pin. Gói thay thế là `local.dji.fly.vietnamese`, reviewed6/code 8, SHA256 `3cad71fd887edab20b5ff89a742766766e9dddf2ed45546ad05c42e66f1de048`.

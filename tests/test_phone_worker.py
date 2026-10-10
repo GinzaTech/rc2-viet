@@ -74,7 +74,8 @@ def test_inspect_fly_root_absent_and_missing_fly(setup,fail):
 def test_worker_routes_overlay_requests_and_rejects_rc_actions(setup,monkeypatch):
     worker,state,events=setup;worker.step();calls=[]
     class Overlay:
-        def __init__(self,*args):pass
+        def __init__(self,*args,cancel=None):
+            assert cancel is worker.stop_event
         def apply(self,adb,enable):calls.append((adb.serial,enable));return {'message':'done'}
     monkeypatch.setattr('rc2vi.phone_overlay.PhoneOverlay',Overlay)
     worker.execute('apply',None);worker.execute('disable',None);worker.execute('inspect',None)

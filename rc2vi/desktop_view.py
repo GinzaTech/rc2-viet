@@ -99,7 +99,7 @@ def build(app):
     actions(app.phone_actions,[('Bật / cập nhật tiếng Việt','apply'),('Tắt bản dịch','disable'),('Mở DJI Fly','fly'),('Kiểm tra tương thích','inspect')],app)
     ttk.Label(app.phone_actions,text='Nếu chưa có DJI Fly, tải bản chính thức tại dji.com/downloads/djiapp/dji-fly.',style='CardMuted.TLabel',wraplength=840).pack(anchor='w',pady=(12,0))
     app.rc_actions=card(app.action_host,'DJI Fly trên tay DJI RC 2',
-                       'DJI Fly 1.21.8 / Android 11. Cập nhật khi tay ở trang chủ hoặc RC Launcher.')
+                       'Không khóa phiên bản DJI Fly. Cập nhật khi tay ở trang chủ hoặc RC Launcher.')
     actions(app.rc_actions,[('Bật / cập nhật tiếng Việt','apply'),('Tắt bản dịch','disable'),('Mở DJI Fly','fly'),('Mở RC Launcher','rc_launcher')],app)
     app.tools=ttk.Frame(app.rc_actions,style='Card.TFrame')
     app.tools.pack(fill='x',pady=(14,0))

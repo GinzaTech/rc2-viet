@@ -78,11 +78,15 @@ def approve_idmap(raw: bytes, target: str, overlay: str) -> bytes:
         raise ValueError('Cache tài nguyên không thuộc hai ứng dụng đã chọn.')
     return raw[:20]+b'\x01'+raw[21:]
 
-def validate_target(model: str, device: str, identity: str, version: str, code: int, digest: str) -> None:
+def validate_rc_device(model: str, device: str, identity: str) -> None:
     if model.replace('_',' ').strip()!='DJI RC 2' or device.strip()!='rc331':
         raise ValueError('Thiết bị không phải DJI RC 2 đã hỗ trợ.')
     if not identity.startswith('uid=0('):
         raise ValueError('Tay điều khiển chưa cung cấp shell root; công cụ không tự root thiết bị.')
+
+
+def validate_target(model: str, device: str, identity: str, version: str, code: int, digest: str) -> None:
+    validate_rc_device(model, device, identity)
     if version!='1.21.8' or code!=3115809 or digest.lower() not in SUPPORTED_RC_FLY_APKS:
         raise ValueError('Bản DJI Fly khác 1.21.8 đã kiểm chứng; chưa áp dụng bản dịch.')
 

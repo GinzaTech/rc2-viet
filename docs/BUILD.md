@@ -17,6 +17,10 @@ Dependencies pin: PyInstaller 6.16.0, pytest 9.1.1, pytest-cov 7.0.0, setuptools
 
 EXE dùng `sys._MEIPASS/assets` khi chạy frozen. ADB được gọi bằng đường dẫn tuyệt đối tới `assets/adb/adb.exe`, các DLL nằm cùng thư mục; không tìm adb từ PATH. Cấu hình/tiến trình phiên ở `%LOCALAPPDATA%\RC2Vietnamese`.
 
+Từ0.7.0, `assets/translation/catalog.json` chứa từ điển nguồn/bản dịch có hash pin trong `translation_build.py`. Tạo lại bằng `translation_catalog.make_catalog(<nguồn đã decode>/res, translation/review-round2/overlay/res)` rồi cập nhật hash có chủ đích. Toolchain Java cần module `java.desktop` để Apktool đọc tài nguyên. Các công cụ AAPT2/framework được lấy từ JAR Apktool đã kiểm tra hash; không dùng SDK hệ thống khi chạy EXE.
+
+Kiểm chứng bộ dựng dịch cục bộ, không kết nối thiết bị: `RC2-TiengViet.exe --translation-build <APK_DJI_FLY> --translation-sdk 30 --report <JSON>`. Dùng `--translation-sdk 35` cho profile điện thoại Android15. Đây là CLI phục vụ kiểm chứng; giao diện người dùng chỉ cần Bật / cập nhật tiếng Việt và app tự lấy APK. Gói thích ứng luôn chỉ chứa tài nguyên; thành công cục bộ không chứng minh overlay đã chạy trên thiết bị.
+
 Build EXE dùng APK có sẵn, không cần Android SDK hoặc khóa ký; JDK chỉ phục vụ kiểm thử Java của cầu Home. Khi thay bất kỳ APK, phải kiểm tra provenance/chữ ký/hash, cập nhật pin có chủ đích trong core.py và manifest.json, chạy kiểm thử và xác minh lại trên tay. Không dùng thay pin như một cách bỏ lỗi tương thích.
 
 Từ0.3.0, EXE còn nhúng `assets/hud/toolchain.zip` và manifest hash cùng DEX HUD/helper khôi phục. Dùng bộ đã đóng gói thì không cần SDK để build EXE. Muốn dựng lại công cụ HUD, dùng JDK17 và build-tools36.1.0, APKtool2.12.1:

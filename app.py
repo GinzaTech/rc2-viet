@@ -52,6 +52,7 @@ class App:
                 from rc2vi.hud_build import HudBuilder
                 from rc2vi.hud_install import HudInstaller
                 cancel=threading.Event()
+                activation.cancel=cancel
                 builder=HudBuilder(assets,work/'hud',self.emit,cancel=cancel)
                 installer=HudInstaller(assets,work/'hud',self.emit,builder,cancel=cancel)
                 activation.trusted_hud=installer.trusted_artifact
@@ -186,9 +187,22 @@ def main():
     mode.add_argument('--phone-inspect',action='store_true')
     mode.add_argument('--phone-verify',action='store_true')
     mode.add_argument('--hud-build',type=Path,metavar='APK_GOC')
+    mode.add_argument('--translation-build',type=Path,metavar='APK_DJI_FLY')
+    parser.add_argument('--translation-sdk',type=int,choices=(30,35),default=30)
     parser.add_argument('--serial',default='')
     parser.add_argument('--report',type=Path);parser.add_argument('--gui-smoke',action='store_true')
     args=parser.parse_args();assets,work=paths()
+    if args.translation_build:
+        from rc2vi.translation_build import TranslationBuilder
+        events=[]
+        try:
+            report=TranslationBuilder(assets,work/'translation-offline',lambda s,m:events.append({'state':s,'message':m}),sdk=args.translation_sdk).build(args.translation_build)
+            report=dict(report,status='translation_built')
+        except Exception as exc:report={'status':'error','message':str(exc)}
+        output=json.dumps(dict(report,events=events),ensure_ascii=False,indent=2,default=str)
+        if args.report:args.report.write_text(output,encoding='utf-8')
+        if sys.stdout:print(output)
+        return 1 if report['status']=='error' else 0
     if args.hud_build:
         from rc2vi.hud_build import HudBuilder
         events=[]

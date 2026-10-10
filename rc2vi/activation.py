@@ -1,4 +1,4 @@
-"""Pinned resource activation. Never replace or re-sign the DJI application."""
+"""Resource-only translation: pinned fast path and version-independent RROs."""
 import hashlib
 import json
 from pathlib import Path
@@ -7,8 +7,8 @@ import shlex
 import tempfile
 import uuid
 from .core import (OVERLAY_HASH, REVIEWED5_OVERLAY_HASH, HOME_APK_HASH, LAWNCHAIR_APK_HASH, FREEFCC_APK_HASH, INITIAL_OVERLAY_HASH, FIRST_OVERLAY_HASH, PREVIOUS_OVERLAY_HASH, OLDER_OVERLAY_HASH, OVERLAY_PACKAGE, approve_idmap,
-                   foreground_safe, validate_package_path, validate_target)
-from .core import SUPPORTED_APK, SUPPORTED_RC_FLY_APKS
+                   foreground_safe, validate_package_path)
+from .core import SUPPORTED_APK, SUPPORTED_RC_FLY_APKS, validate_rc_device
 
 
 def verify_bundle(assets: Path) -> None:
@@ -24,9 +24,12 @@ def verify_bundle(assets: Path) -> None:
 
 
 class Activator:
-    def __init__(self,assets: Path,work: Path,emit,verify_assets=True,trusted_hud=None):
+    def __init__(self,assets: Path,work: Path,emit,verify_assets=True,trusted_hud=None,adaptive=None):
         self.assets=assets; self.work=work; self.emit=emit
         self.trusted_hud=trusted_hud
+        self.adaptive=adaptive
+        self.cancel=None
+        self.target_info={}
         if verify_assets: verify_bundle(assets)
 
     def _path(self,adb,package,required=True):
@@ -49,15 +52,31 @@ class Activator:
         code=re.search(r'versionCode=(\d+)',info)
         target=self._path(adb,'dji.go.v5')
         digest=adb.shell('sha256sum '+shlex.quote(target),timeout=90).split()[0]
-        validated_digest=digest
-        if digest not in SUPPORTED_RC_FLY_APKS and self.trusted_hud is not None:
-            receipt=self.trusted_hud(digest)
-            if receipt.get('digest')!=digest or receipt.get('source_digest')!=SUPPORTED_APK:
-                raise ValueError('APK HUD chưa khớp công thức gốc đã kiểm chứng.')
-            validated_digest=SUPPORTED_APK
-        validate_target(model,device,identity,version[1] if version else '',
-                        int(code[1]) if code else 0,validated_digest)
+        validate_rc_device(model,device,identity)
+        if not version or not code or int(code[1])<=0 or not re.fullmatch(r'[0-9a-fA-F]{64}',digest):
+            raise ValueError('Không đọc được phiên bản/hash hợp lệ của DJI Fly.')
+        self.target_info={'version':version[1],'code':int(code[1]),'digest':digest.lower()}
         return target
+
+    def _adaptive(self):
+        if self.adaptive is None:
+            from .translation_install import AdaptiveTranslation
+            self.adaptive=AdaptiveTranslation(self.assets,self.work/'adaptive',self.emit,cancel=self.cancel)
+        return self.adaptive
+
+    def _legacy_supported(self):
+        info=self.target_info
+        if (info['version'],info['code'])!=('1.21.8',3115809):return False
+        if info['digest'] in SUPPORTED_RC_FLY_APKS:return True
+        if self.trusted_hud is not None:
+            try:
+                receipt=self.trusted_hud(info['digest'])
+                return receipt.get('digest')==info['digest'] and receipt.get('source_digest')==SUPPORTED_APK
+            except (ValueError,OSError):return False
+        return False
+
+    def _has_adaptive(self,adb):
+        return 'local.dji.fly.vi.auto.' in adb.shell('cmd overlay list --user 0 dji.go.v5')
 
     def _enabled(self,adb):
         state=adb.shell('cmd overlay dump '+OVERLAY_PACKAGE)
@@ -76,6 +95,9 @@ class Activator:
 
     def apply(self,adb):
         target=self.verify(adb)
+        if not self._legacy_supported() or self._has_adaptive(adb):
+            self._safe(adb)
+            return self._adaptive().apply(adb,adb,30,lambda:self._safe(adb))
         overlay=self._path(adb,OVERLAY_PACKAGE,required=False)
         upgrade=False
         if overlay:
@@ -132,7 +154,12 @@ class Activator:
         return {'status':'enabled','sample':'Kết nối máy bay'}
 
     def disable(self,adb):
-        self.verify(adb); self._safe(adb)
+        validate_rc_device(adb.shell('getprop ro.product.model'),adb.shell('getprop ro.product.device'),adb.shell('id'))
+        if adb.shell('getprop ro.build.version.sdk')!='30':
+            raise ValueError('Công cụ này chỉ hỗ trợ Android 11 đã kiểm chứng.')
+        self._safe(adb)
+        if self._has_adaptive(adb):
+            return self._adaptive().disable(adb,lambda:self._safe(adb))
         self._run(adb,'cmd overlay disable --user 0 '+OVERLAY_PACKAGE)
         if 'STATE_ENABLED' in adb.shell('cmd overlay dump '+OVERLAY_PACKAGE):
             raise RuntimeError('Chưa xác nhận được bản dịch đã tắt.')

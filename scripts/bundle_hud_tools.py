@@ -24,9 +24,9 @@ def main():
     parser.add_argument('--apktool',type=Path,required=True)
     args=parser.parse_args()
     stage=ROOT/'build/hud-toolchain-stage';stage.mkdir(parents=True,exist_ok=True)
-    runtime=ROOT/'build/hud-jre'
+    runtime=ROOT/'build/hud-jre-desktop'
     if not (runtime/'bin/java.exe').is_file():
-        run(args.java_home/'bin/jlink.exe','--add-modules','java.base,java.logging,java.xml,jdk.crypto.ec,jdk.unsupported',
+        run(args.java_home/'bin/jlink.exe','--add-modules','java.base,java.logging,java.xml,java.desktop,jdk.crypto.ec,jdk.unsupported',
             '--strip-debug','--no-header-files','--no-man-pages','--compress=2','--output',runtime)
     shutil.copytree(runtime,stage/'java',dirs_exist_ok=True)
     (stage/'lib').mkdir(exist_ok=True);(stage/'bin').mkdir(exist_ok=True);(stage/'licenses').mkdir(exist_ok=True)

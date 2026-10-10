@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.7.0 — Việt hóa không khóa phiên bản DJI Fly (2026-10-10)
+
+- Bỏ chặn phiên bản Fly trong luồng Việt hóa RC 2 và điện thoại. APK khác bản dựng sẵn được lấy từ thiết bị và xử lý bằng bộ dựng RRO thích ứng.
+- Nhúng từ điển11.141 tài nguyên, kiểm tra kiểu/tên/văn bản nguồn/placeholder/mảng/số nhiều. Câu mới hoặc thay nghĩa giữ nguyên và báo số lượng; không tuyên bố dịch100% mọi phiên bản.
+- Dựng, căn chỉnh và ký gói chỉ chứa tài nguyên bằng toolchain nhúng, giữ khóa riêng trên PC. Kiểm tra hash/serial xuyên suốt, phục hồi overlay khi thao tác lỗi.
+- Bổ sung Java desktop phục vụ giải mã tài nguyên; không yêu cầu người dùng cài Java/SDK.
+- Dựng/ký cục bộ thành công với nguồn Fly1.21.8 và1.21.12. Không kết nối hoặc kiểm tra thiết bị theo yêu cầu người dùng. Menu/HUD sửa mã vẫn giữ profile tương thích riêng.
+- Kiểm chứng cuối: 1.114 test nguồn đạt, coverage Python `rc2vi` 88,40%; EXE tự dựng được gói dịch1.21.12/profileAndroid15 khi PATH chỉ có System32 và không có JAVA_HOME/CLASSPATH. Báo cáo ở `docs/translation-version-verification.json`.
+
 ## 0.6.3 — menu một nút và cập nhật EXE (2026-10-10)
 
 - Bỏ toàn bộ hàng Nâng cao và các nút Tạo APK HUD, Cài APK HUD, Mở thư mục HUD, Chọn APK gốc. Đổi tiêu đề thành Menu trên tay.

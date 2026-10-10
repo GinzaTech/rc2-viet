@@ -1,10 +1,16 @@
 # RC2 Việt — công cụ Windows và launcher cho DJI RC 2
 
-Bản cục bộ **0.6.3**, ngày 10/10/2026, có nút **Cài / cập nhật menu** tự lấy APK DJI Fly từ RC 2, patch, ký và cài lại. Bạn không cần chọn file APK. Menu trên tay dùng các hàng điều khiển gọn trên nền tối; LED Trước/Sau bật-tắt riêng sau mỗi lần bấm và đọc trạng thái thực khi mở. App Windows giữ hai trang riêng **Điện thoại Android** / **Tay DJI RC 2**, launcher mặc định **RC Launcher**. Kết quả thiết bị và các phần chưa xác minh nằm trong [hướng dẫn HUD](docs/HUD_APK.md).
+**Bản 0.7.0 bỏ giới hạn phiên bản DJI Fly trong nút Bật / cập nhật tiếng Việt ở cả hai tab.** EXE tự lấy APK trên thiết bị, đối chiếu tài nguyên thực tế và tạo/ký gói tiếng Việt riêng. Giữ yêu cầu nền tảng hiện có: RC 2 Android 11/root hoặc điện thoại Android 15/root. Không cần tự chuẩn bị APK, cài Java/SDK hoặc nhập khóa API.
+
+Từ điển nhúng có 11.141 tài nguyên đã đối chiếu. Chuỗi, mảng hoặc số nhiều mới/đổi nghĩa được giữ nguyên và app báo số lượng chưa dịch; hỗ trợ số phiên bản bất kỳ không đồng nghĩa Việt hóa 100% mọi bản tương lai. Luồng mới đã dựng/ký APK tài nguyên cục bộ với Fly1.21.8 và1.21.12. Chưa cài/kiểm tra trên thiết bị ở lượt này theo yêu cầu người dùng. [Chi tiết Việt hóa](docs/VIETNAMESE.md).
+
+Phạm vi bỏ khóa là **Việt hóa**. Nút **Cài / cập nhật menu** sửa mã APK vẫn dùng profile1.21.8 đã kiểm chứng.
+
+Bản cục bộ **0.7.0**, ngày 10/10/2026, có nút **Cài / cập nhật menu** tự lấy APK DJI Fly từ RC 2, patch, ký và cài lại. Bạn không cần chọn file APK. Menu trên tay dùng các hàng điều khiển gọn trên nền tối; LED Trước/Sau bật-tắt riêng sau mỗi lần bấm và đọc trạng thái thực khi mở. App Windows giữ hai trang riêng **Điện thoại Android** / **Tay DJI RC 2**, launcher mặc định **RC Launcher**. Kết quả thiết bị và các phần chưa xác minh nằm trong [hướng dẫn HUD](docs/HUD_APK.md).
 
 Bấm **Cài / cập nhật menu** trong tab RC 2 khi đã kết nối ADB và tay ở trang chủ/Launcher. App lấy đúng APK đang cài trên tay và kiểm tra hash/phiên bản/serial. Nếu là bản HUD/menu đã kiểm chứng, template nhỏ1,6MB tái tạo đúng nguồn gốc1.21.8 từ phần dữ liệu nén được giữ nguyên; không cần file gốc hoặc cache từ PC khác. Java, Python, ADB và công cụ APK đã nhúng; toàn bộ APK Fly468MB và khóa riêng không nhúng. Nguồn khác phiên bản hoặc mod không được hỗ trợ bị từ chối trước cài.
 
-Luồng một nút: lấy APK từ tay → phục hồi nguồn đã pin nếu cần → patch menu/HUD → căn chỉnh/ký → kiểm chứng → cài đúng APK mới. Cùng chữ ký cập nhật giữ dữ liệu; khác chữ ký vẫn yêu cầu xác nhận sao lưu và gỡ/cài. Phần menu chỉ có nút **Cài / cập nhật menu**; đã bỏ hàng Nâng cao và các nút thao tác APK thủ công. App dùng lại ADB thường đã sẵn sàng thay vì mở thêm phiên USB. Bản 0.6.3 được cập nhật trực tiếp trong repository; các gói ở GitHub Releases vẫn là bản phát hành trước đó.
+Luồng một nút: lấy APK từ tay → phục hồi nguồn đã pin nếu cần → patch menu/HUD → căn chỉnh/ký → kiểm chứng → cài đúng APK mới. Cùng chữ ký cập nhật giữ dữ liệu; khác chữ ký vẫn yêu cầu xác nhận sao lưu và gỡ/cài. Phần menu chỉ có nút **Cài / cập nhật menu**; đã bỏ hàng Nâng cao và các nút thao tác APK thủ công. App dùng lại ADB thường đã sẵn sàng thay vì mở thêm phiên USB. Bản 0.7.0 được cập nhật trực tiếp trong repository; các gói ở GitHub Releases vẫn là bản phát hành trước đó.
 
 Chạm nhanh hai lần gần cùng vị trí trong preview để ẩn HUD; chạm hai lần tiếp để hiện lại. Menu RC lưu lựa chọn cử chỉ. LED chỉ điều khiển trong menu trang chủ: bấm Trước hoặc Sau đảo trạng thái nhóm đó, giữ nguyên nhóm còn lại; Bật hết/Tắt hết điều khiển cả hai nhóm. Mở menu hiện đang đọc/chưa xác định và khóa LED đến khi GET thành công; không suy ra tắt từ dữ liệu thiếu. Trạng thái và màu chỉ theo dữ liệu đọc thực. Sau gồm rear/status; bật một phần được hiển thị “Một phần” và bấm sẽ tắt cả nhóm sau. Bộ xử lý yêu cầu máy bay còn kết nối, đã hạ cánh/động cơ dừng, dùng SDK của Fly, giữ bit ngoài nhóm đã chọn, ghi một lần và đọc lại. Lỗi/timeout không báo thành công. Kết quả vật lý bản cũ được lưu riêng; bản toggle mới cần kiểm tra riêng trên tay. Đường socket LED DUML trực tiếp của bản0.4 đã loại khỏi runtime.
 
@@ -14,9 +20,9 @@ Mục **FCC / vùng gốc** dùng SDK stock trong APK mod, không cài/mở Free
 
 ## Tải và dùng
 
-Tệp cục bộ0.6.3 ở `dist/RC2-TiengViet.exe` và `dist/RC2-TiengViet-Portable.zip`; metadata ở [dist/release-verification.json](dist/release-verification.json). Các liên kết GitHub dưới đây vẫn trỏ tới bản đã phát hành trước đó.
+Tệp cục bộ0.7.0 ở `dist/RC2-TiengViet.exe` và `dist/RC2-TiengViet-Portable.zip`; metadata ở [dist/release-verification.json](dist/release-verification.json). Các liên kết GitHub dưới đây vẫn trỏ tới bản đã phát hành trước đó.
 
-**EXE 0.6.3 mới nhất trong repository:** [Tải RC2-TiengViet.exe](https://github.com/GinzaTech/rc2-viet/raw/refs/heads/codex/initial-release/dist/RC2-TiengViet.exe). Đối chiếu SHA256 với [checksum hiện tại](dist/SHA256SUMS.txt). Trường `github_published=false` trong metadata của build nói về gói GitHub Release riêng; bản cập nhật Git này không tạo Release/tag mới.
+**EXE 0.7.0 mới nhất trong repository:** [Tải RC2-TiengViet.exe](https://github.com/GinzaTech/rc2-viet/raw/refs/heads/codex/initial-release/dist/RC2-TiengViet.exe). Đối chiếu SHA256 với [checksum hiện tại](dist/SHA256SUMS.txt). Trường `github_published=false` trong metadata của build nói về gói GitHub Release riêng; bản cập nhật Git này không tạo Release/tag mới.
 
 - [RC2-TiengViet.exe](https://github.com/GinzaTech/rc2-viet/releases/latest/download/RC2-TiengViet.exe): Windows x64, Python runtime/ADB/DLL và APK đã nhúng.
 - [Portable ZIP kèm hướng dẫn](https://github.com/GinzaTech/rc2-viet/releases/latest/download/RC2-TiengViet-Portable.zip).
@@ -28,7 +34,7 @@ Tệp cục bộ0.6.3 ở `dist/RC2-TiengViet.exe` và `dist/RC2-TiengViet-Porta
 2. Bấm Allow USB debugging trên thiết bị nếu được hỏi; chọn đúng trang và sê-ri. Công cụ không tự bỏ qua xác nhận này.
 3. Với RC: bấm **Cài RC Launcher**, **Mở RC Launcher**, rồi **Đặt RC Launcher làm màn hình chính** khi không bay và tay ở launcher/trang chủ/Settings.
 4. **Bật / cập nhật tiếng Việt** áp dụng đúng gói theo platform/SDK/APK hash. **Tắt bản dịch** phục hồi tài nguyên gốc; không xóa DJI Fly/tài khoản.
-5. Với điện thoại: **Kiểm tra tương thích** trước khi bật dịch. Bản đang hỗ trợ Android15 có root, Fly chính thức1.21.12/code3131451. Không tự root điện thoại.
+5. Với điện thoại: **Kiểm tra tương thích** trước khi bật dịch. Điện thoại yêu cầu Android15 có root; phiên bản DJI Fly không bị khóa. Không tự root điện thoại.
 6. Có nút cài FreeFCC và mở Developer options. Cài FreeFCC không tự kích hoạt FCC. Cảnh báo trước Developer options nói rõ nguy cơ mất ADB nếu tắt thủ công.
 7. Muốn cài menu/HUD: chọn trang **Tay DJI RC 2**, bấm **Cài / cập nhật menu** khi tay đã kết nối ADB, máy bay đã tắt/hạ cánh và tay ở trang chủ/Launcher. App tự lấy APK, patch, ký và cài; không cần chọn file. Nếu khác chữ ký, app kiểm tra sao lưu rồi hỏi đồng ý gỡ/cài; thao tác này có thể mất đăng nhập và khóa Keystore. Giữ cáp/nguồn đến khi có kết quả.
 
@@ -61,7 +67,7 @@ APK debug launcher cài được. APK release unsigned của repo launcher phả
 
 Chức năng **Bật / cập nhật tiếng Việt** cài một runtime resource overlay riêng, ánh xạ chuỗi/plural/array, giữ APK/chữ ký/mã thực thi của Fly. RC dùng idmapv4/Android11; điện thoại dùng idmapv9/Android15. Mỗi profile kiểm tra phiên bản/code/hash, root, foreground và schema/path trước khi áp dụng; lỗi có rollback cache. Chức năng HUD riêng có sửa mã khởi động/manifest và ký lại APK Fly; gói do EXE tạo chỉ được dùng với tiếng Việt sau khi xác minh lại receipt và toàn bộ recipe.
 
-RC: Fly1.21.8/code3115809, stock SHA pinned. Phone: Fly chính thức1.21.12/code3131451. Builder điện thoại chỉ dùng lại bản dịch khi toàn bộ cây nguồn tiếng Anh khớp, giữ gốc các mục thay đổi theo vùng. Chi tiết và hash ở docs/VIETNAMESE.md, docs/ANDROID_PHONE.md.
+Từ0.7.0, Việt hóa không còn khóa phiên bản Fly: EXE chọn bản dịch theo từng tài nguyên nguồn, dựng RRO riêng và xác nhận lại hash/serial trước cài. Các APK1.21.8RC và1.21.12Android vẫn có đường nhanh dùng gói dịch đã pin. Chi tiết và hash ở docs/VIETNAMESE.md, docs/ANDROID_PHONE.md.
 
 Không dịch HTML/server hoặc chữ nằm trong ảnh bằng RRO. Đây là bản dịch đã rà và kiểm chứng một số màn hình, không tuyên bố100% UI/độ ổn định bay. Phone vi2 đã quan sát; vi3 có trong EXE để cập nhật, chưa áp dụng dòng mới trên điện thoại sau khi người dùng chuyển cáp sang RC.
 

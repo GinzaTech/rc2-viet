@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-10",
+  "version": "0.7.0",
+  "source_tests_passed": 1114,
+  "python_rc2vi_coverage_percent": 88.4,
+  "exe_sha256": "db44ce0f8c9728cc2dc3e6796523a3a8c0494b1b1698ecc2ec1d4dccba9cabd9",
+  "exe_bytes": 95023477,
+  "fly_version_whitelist_removed_for_translation": true,
+  "menu_hud_profile_still_pinned": true,
+  "catalog_entries": 11141,
+  "rc_sdk": 30,
+  "phone_sdk": 35,
+  "local_rc_1_21_8": {
+    "resource_build_signed": true,
+    "matched": 11141,
+    "target_total": 11923
+  },
+  "frozen_phone_1_21_12": {
+    "status": "translation_built",
+    "profile_sdk": 35,
+    "target_name": "DJIFlyPhoneTranslation",
+    "report": {
+      "matched": 11141,
+      "skipped": 0,
+      "total": 11141,
+      "reasons": {},
+      "target_total": 11925,
+      "target_untranslated": 784,
+      "catalog_total": 11141
+    },
+    "signature_and_installer_artifact_validation": true,
+    "compiled_manifest_target_name_verified": true
+  },
+  "frozen_gui_smoke": true,
+  "frozen_host_path_system32_only": true,
+  "frozen_java_home_and_classpath_removed": true,
+  "device_actions_after_user_prohibition": false,
+  "device_runtime": "NOT VERIFIED: user requested no device testing",
+  "unknown_or_changed_resources": "Remain original; actual target unmatched counts shown",
+  "review_fixes": [
+    "Disable without Fly path/version checks",
+    "Profile-specific overlay manifest and cache",
+    "Remove only newly owned RRO on failed installation"
+  ],
+  "python_dependency_audit": "No known vulnerabilities found"
+}

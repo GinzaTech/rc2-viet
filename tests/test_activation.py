@@ -21,6 +21,7 @@ class FakeAdb:
         if cmd.startswith('sha256sum'):
             return (OVERLAY_HASH if self.overlay in cmd else self.hash_value)+'  '+self.target
         if cmd.startswith('cmd overlay dump'): return 'STATE_ENABLED' if self.active else 'STATE_NO_IDMAP'
+        if cmd.startswith('cmd overlay list'): return ''
         if cmd.startswith('cmd overlay lookup'): return 'Kết nối máy bay' if self.active else 'Connect to Aircraft'
         if cmd.startswith('dumpsys activity'): return 'dji.go.v5/com.dji.fpv.DJIFpvActivity' if self.flight else 'dji.go.v5/com.dji.mainpageui.device.DJIDeviceActivity'
         self.mutations.append(cmd)
@@ -46,7 +47,7 @@ def test_already_enabled_is_read_only(activator):
     assert result['status']=='already_enabled'
     assert adb.mutations==[]
 
-@pytest.mark.parametrize('kwargs',[{'hash_value':'0'*64},{'root':False}])
+@pytest.mark.parametrize('kwargs',[{'hash_value':'invalid'},{'root':False}])
 def test_unsupported_target_has_no_mutations(activator,kwargs):
     adb=FakeAdb(**kwargs)
     with pytest.raises(ValueError): activator.apply(adb)

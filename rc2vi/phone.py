@@ -69,7 +69,7 @@ class PhoneWorker:
         if command=='inspect':self.inspect()
         elif command in {'apply','disable'}:
             from .phone_overlay import PhoneOverlay
-            result=PhoneOverlay(self.assets,self.work,self.emit).apply(self.adb,enable=command=='apply')
+            result=PhoneOverlay(self.assets,self.work,self.emit,cancel=self.stop_event).apply(self.adb,enable=command=='apply')
             self.emit('ready',result['message'])
         elif command=='fly':
             result=self.inspect()

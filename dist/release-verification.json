@@ -1,7 +1,9 @@
 {
-  "version": "0.6.3-local",
+  "version": "0.7.0-local",
   "hud_pipeline_bundled": true,
   "hud_menu_patch_one_click": true,
+  "translation_version_independent": true,
+  "translation_device_tested": false,
   "hud_source_from_device": true,
   "stock_recovery_template_bundled": true,
   "java_required_on_host": false,
@@ -10,6 +12,6 @@
   "github_published": false,
   "menu_functionality_verified": false,
   "device_acceptance_complete": false,
-  "exe_sha256": "d408b809cbdf7c588b9fc6be476858a7731bb0d8fd5e50a3d3130de3992ad30c",
-  "exe_bytes": 84672100
+  "exe_sha256": "db44ce0f8c9728cc2dc3e6796523a3a8c0494b1b1698ecc2ec1d4dccba9cabd9",
+  "exe_bytes": 95023477
 }
