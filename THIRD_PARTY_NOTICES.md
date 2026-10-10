@@ -27,3 +27,12 @@ LED handler0.4.0 là triển khai Java riêng, đối chiếu trường giao th�
 Các lớp NativeRadio.java, RadioProtocol.java, RadioTransport.java và tests radio mang SPDX AGPL-3.0-only, ghi nguồn lệnh FreeFCC1.5.5/commit597157bd52120dfeb9677f79a8ad46b6027ce8dc. License ở docs/FREEFCC_LICENSE.txt; source ở android-hud/src và android-hud/test. Lệnh FCC/khôi phục vùng gốc nhúng trực tiếp vào helper, không cần APK FreeFCC riêng. EXE không nhúng APK Fly gốc.
 
 Dự án chưa lựa chọn một giấy phép nguồn mở riêng cho phần mã RC2 Việt còn lại. Không áp dụng giấy phép bên thứ ba cho toàn bộ repository theo suy đoán.
+
+
+## Engine dịch cục bộ0.8.0
+
+- [Helsinki-NLP/opus-mt-en-vi](https://huggingface.co/Helsinki-NLP/opus-mt-en-vi), revision `989c9fb9ec63987901022baf0182dcec3e149be6`, Apache2.0; chuyển đổi tại máy build sang CTranslate2 int8.
+- [Helsinki-NLP/opus-mt-zh-vi](https://huggingface.co/Helsinki-NLP/opus-mt-zh-vi), revision `67ea2dbfbaf13a16772a40346d3d72b59e591443`, Apache2.0; chuyển đổi sang CTranslate2 int8, không dùng prefix `>>vie<<` của model Anh.
+- CTranslate2 4.8.2 (MIT), SentencePiece 0.2.1 (Apache2), NumPy 2.4.6 và các thư viện runtime có license/provenance đầy đủ trong `artifacts/translation-engine/<id>/LICENSE.runtime.txt`, `LICENSE.model.txt`, `provenance.json`.
+
+Hai model chạy CPU trên PC; văn bản không được gửi tới dịch vụ dịch online. Dịch máy chưa được xác nhận hoàn hảo về ngữ nghĩa; chương trình kiểm tra cấu trúc và chặn lỗi đã nhận diện, không coi test host là chứng minh an toàn bay.

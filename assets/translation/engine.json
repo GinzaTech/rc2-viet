@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "engine_id": "236088ebe23ba5a7a523c636",
+  "files": {
+    "worker.exe": {
+      "bytes": 29263243,
+      "sha256": "65ddbec3948008f55dd39886788baafe113fd27fcf8cc34eec576fb76f576610"
+    },
+    "model/model.bin": {
+      "bytes": 73683315,
+      "sha256": "1d18bc1c4fa11ac7535cf62e9e4cf2fc437666368e9c2e15263fee0dea101b26"
+    },
+    "model/config.json": {
+      "bytes": 233,
+      "sha256": "72901fbd8abd89fb5cf4a388f26fc681f5c4c58a1e1a88b30b879f107270e7ee"
+    },
+    "model/shared_vocabulary.json": {
+      "bytes": 988753,
+      "sha256": "33b19841fdf4e381982c610258ca698072d7593435b86bd9051813e039d63fe8"
+    },
+    "model/source.spm": {
+      "bytes": 808612,
+      "sha256": "fdd9ab486ca8ea060967105e30db7d8928729c78a67448711d2dd7c3153b37cd"
+    },
+    "model/target.spm": {
+      "bytes": 756198,
+      "sha256": "fb8ad63c818f073c246952c91b2cb1f16aa30728bf51b5c179b8481bc0e20bb5"
+    },
+    "model-zh/model.bin": {
+      "bytes": 79567635,
+      "sha256": "488da6baa02675083a7f3e01e788e58e18b77e94b4cf9d2bfb4bcd4406204542"
+    },
+    "model-zh/config.json": {
+      "bytes": 233,
+      "sha256": "72901fbd8abd89fb5cf4a388f26fc681f5c4c58a1e1a88b30b879f107270e7ee"
+    },
+    "model-zh/shared_vocabulary.json": {
+      "bytes": 1260903,
+      "sha256": "6b7f62e96a2e7e8a284fb3c3e24b6b48ec9513266cf602b12552dde7fe99bd59"
+    },
+    "model-zh/source.spm": {
+      "bytes": 750285,
+      "sha256": "d617117f90da08f471ef72c649401748a26e9ffb22289986379a9b44f7d8810e"
+    },
+    "model-zh/target.spm": {
+      "bytes": 766197,
+      "sha256": "eb082ee05298800b89d0cfa7101ef9e468b2554459a8e7635cb56cc17d0f3f02"
+    },
+    "LICENSE.model.txt": {
+      "bytes": 11930,
+      "sha256": "e2624a89b25f0ad546110d5e252624ea6bdc1e5077622bc919bfccdad2057c3b"
+    },
+    "LICENSE.runtime.txt": {
+      "bytes": 172097,
+      "sha256": "c3361ccc9a225e89049b9be1876693ac23d8b8dafff269aab60ebf85aa2ce361"
+    },
+    "provenance.json": {
+      "bytes": 550,
+      "sha256": "dfe5a8b8c8862f43cf1d2c8cfc8fd28fc1a39056e66e1e497e985bc432e13c87"
+    }
+  }
+}

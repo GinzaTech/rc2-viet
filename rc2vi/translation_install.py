@@ -139,6 +139,21 @@ def _local(path):
     return path
 
 
+def _complete_report(report):
+    counts = ('eligible_total', 'reviewed', 'machine', 'matched', 'unresolved',
+              'target_untranslated', 'preserved', 'skipped', 'total', 'target_total')
+    if (not isinstance(report, dict) or report.get('complete') is not True
+            or report.get('machine_meaning_verified') is not False
+            or any(type(report.get(k)) is not int or not 0 <= report[k] <= 1000000 for k in counts)
+            or report['matched'] <= 0
+            or not report['eligible_total'] == report['reviewed'] + report['machine'] == report['matched']
+            or not report['unresolved'] == report['target_untranslated'] == 0
+            or report['preserved'] != report['skipped']
+            or not report['total'] == report['target_total'] == report['matched'] + report['preserved']):
+        raise ValueError('Thống kê bản dịch chưa đầy đủ hoặc không hợp lệ; không cài gói thiếu.')
+    return dict(report)
+
+
 class AdaptiveTranslation:
     def __init__(self, assets: Path, work: Path, emit, cancel=None, builder=None):
         self.assets, self.work = Path(assets), Path(work).absolute()
@@ -178,16 +193,7 @@ class AdaptiveTranslation:
                 or not value['package'].startswith('local.dji.fly.vi.auto.r' + before['digest'][:16])
                 or type(value.get('version_code')) is not int or value['version_code'] != before['version_code']):
             raise ValueError('Artifact không thuộc APK nguồn/thư mục build.')
-        report, samples = value.get('report'), value.get('samples')
-        if (not isinstance(report, dict) or any(type(report.get(k)) is not int or not 0 <= report[k] <= 1000000
-                for k in ('matched', 'skipped', 'total')) or report['matched'] <= 0
-                or report['matched'] + report['skipped'] != report['total']):
-            raise ValueError('Thống kê bản dịch không hợp lệ.')
-        if any(k in report for k in ('target_total', 'target_untranslated')) and (
-                any(type(report.get(k)) is not int or not 0 <= report[k] <= 1000000
-                    for k in ('target_total', 'target_untranslated'))
-                or report['target_total'] != report['matched'] + report['target_untranslated']):
-            raise ValueError('Thống kê tài nguyên nguồn không hợp lệ.')
+        report, samples = _complete_report(value.get('report')), value.get('samples')
         if not isinstance(samples, list) or not 0 < len(samples) <= min(64, report['matched']):
             raise ValueError('Cần mẫu chuỗi để đọc lại bản dịch.')
         for sample in samples:
@@ -198,7 +204,7 @@ class AdaptiveTranslation:
                 raise ValueError('Mẫu đọc lại không phải chuỗi đơn hợp lệ.')
         if len({s['name'] for s in samples}) != len(samples) or self._digest(apk) != value['digest']:
             raise ValueError('Hash APK/mẫu đọc lại không hợp lệ.')
-        return {**value, 'report': dict(report), 'samples': [dict(s) for s in samples]}
+        return {**value, 'report': report, 'samples': [dict(s) for s in samples]}
 
     def _guard(self, root, before, safe=None):
         self._cancel()
@@ -279,12 +285,12 @@ class AdaptiveTranslation:
             artifact = self._artifact(self.builder.build(source), before)
             self._guard(root, before)
             report = artifact['report']
-            total, untranslated = report.get('target_total'), report.get('target_untranslated')
-            counts = (f"{report['matched']}/{total} tài nguyên DJI Fly đã dịch; {untranslated} giữ nguyên."
-                      if total is not None else f"{report['matched']}/{report['total']} khớp từ điển; {report['skipped']} bỏ qua.")
+            counts = (f"{report['matched']}/{report['eligible_total']} tài nguyên cần dịch đã hoàn tất: "
+                      f"{report['reviewed']} đã duyệt, {report['machine']} do máy dịch; "
+                      f"{report['preserved']} tài nguyên kỹ thuật giữ nguyên.")
+            if report['machine'] > 0:
+                counts += ' Phần do máy dịch chỉ được kiểm tra định dạng; chưa xác minh ý nghĩa bản dịch.'
             self.emit('applying', 'Bản dịch: ' + counts)
-            if (untranslated if total is not None else report['skipped']):
-                self.emit('warning', 'Bản dịch một phần; câu không khớp giữ nguyên ngôn ngữ gốc.')
             result = self._deploy(adb, root, before, safe, artifact, local)
             return dict(result, message=result['message'] + ' ' + counts)
 

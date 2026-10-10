@@ -189,6 +189,7 @@ def main():
     mode.add_argument('--hud-build',type=Path,metavar='APK_GOC')
     mode.add_argument('--translation-build',type=Path,metavar='APK_DJI_FLY')
     parser.add_argument('--translation-sdk',type=int,choices=(30,35),default=30)
+    parser.add_argument('--translation-no-memory',action='store_true')
     parser.add_argument('--serial',default='')
     parser.add_argument('--report',type=Path);parser.add_argument('--gui-smoke',action='store_true')
     args=parser.parse_args();assets,work=paths()
@@ -196,7 +197,7 @@ def main():
         from rc2vi.translation_build import TranslationBuilder
         events=[]
         try:
-            report=TranslationBuilder(assets,work/'translation-offline',lambda s,m:events.append({'state':s,'message':m}),sdk=args.translation_sdk).build(args.translation_build)
+            report=TranslationBuilder(assets,work/'translation-offline',lambda s,m:events.append({'state':s,'message':m}),sdk=args.translation_sdk,use_memories=not args.translation_no_memory).build(args.translation_build)
             report=dict(report,status='translation_built')
         except Exception as exc:report={'status':'error','message':str(exc)}
         output=json.dumps(dict(report,events=events),ensure_ascii=False,indent=2,default=str)

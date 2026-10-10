@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.8.0 — dựng bản dịch hoàn chỉnh từ APK đích (2026-10-10)
+
+- Mọi phiên bản RC/điện thoại đều dùng bộ dựng thích ứng; bỏ nhánh cài RRO cố định1.21.8/1.21.12 và bỏ phụ thuộc các APK dịch cũ.
+- So khớp nhiều nguồn đã rà theo ngữ cảnh/nguồn/contract, tái dùng theo nội dung khi tên resource thay đổi và không có mâu thuẫn. Các nguồn này là tùy chọn; có thể dựng khi bộ nhớ dịch rỗng.
+- Dịch phần chưa có bằng OPUS-MT Anh→Việt và Trung→Việt, chạy CPU cục bộ qua worker độc lập; kiểm tra hash engine/model trước dùng, không gửi văn bản tới API dịch online.
+- Chặn gói chưa hoàn chỉnh trước deployment: mọi mục cần dịch phải có đầu ra hợp lệ, bảo toàn placeholder/mảng/plural/markup và phân biệt phần kỹ thuật giữ nguyên. Ghi riêng số mục đã rà, do máy dịch và phần được giữ nguyên.
+- Bổ sung kiểm tra lỗi comparator rõ ràng và bản dịch đã rà cho một số thông báo nguồn Trung; dịch máy vẫn chưa được bảo đảm đúng nghĩa hoàn toàn.
+- Portable kèm engine/model để chạy offline; EXE đơn lẻ tự tải payload công khai đã pin khi thiếu. Giữ khóa ký, dữ liệu thiết bị và tệp làm việc ngoài Git.
+- Kiểm chứng: RC1.21.8 dựng/ký11.313 mục đủ điều kiện, phone1.21.12 dựng/ký11.315 mục, đều0 unresolved;610 mục kỹ thuật giữ nguyên. EXE dựng/ký4 câu mới Anh/Trung của APK thử99.0.1 với toàn bộ memory tắt.
+- Bộ test đầy đủ1.794 ca đạt, coverage Python89,17%; các sửa cuối có kiểm tra mục tiêu riêng. Chi tiết tại `docs/complete-translation-verification.json`; không thử/cài trên thiết bị theo yêu cầu.
+
 ## 0.7.0 — Việt hóa không khóa phiên bản DJI Fly (2026-10-10)
 
 - Bỏ chặn phiên bản Fly trong luồng Việt hóa RC 2 và điện thoại. APK khác bản dựng sẵn được lấy từ thiết bị và xử lý bằng bộ dựng RRO thích ứng.

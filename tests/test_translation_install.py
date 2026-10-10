@@ -23,6 +23,10 @@ OVERLAY = '/data/app/candidate/base.apk'
 CACHE = '/data/resource-cache/data@app@candidate@base.apk@idmap'
 SAMPLES = [{'name': 'connect_drone', 'value': 'Kết nối máy bay'},
            {'name': 'settings', 'value': 'Cài đặt'}]
+COMPLETE_REPORT = {'complete': True, 'eligible_total': 8, 'reviewed': 5, 'machine': 3,
+                   'matched': 8, 'unresolved': 0, 'target_untranslated': 0,
+                   'preserved': 2, 'skipped': 2, 'total': 10, 'target_total': 10,
+                   'machine_meaning_verified': False}
 
 
 def digest(data):
@@ -159,7 +163,7 @@ def setup(tmp_path):
     apk.write_bytes(PACK)
     artifact = {'apk': apk, 'digest': digest(PACK), 'source_digest': digest(SOURCE),
                 'package': PACKAGE, 'version': '9.99.1', 'version_code': 123456,
-                'report': {'matched': 8, 'skipped': 2, 'total': 10}, 'samples': SAMPLES}
+                'report': dict(COMPLETE_REPORT), 'samples': SAMPLES}
     events, sources = [], []
 
     def build(source):
@@ -182,11 +186,12 @@ def test_success_counts_both_idmap_formats_and_root_nesting(setup, sdk):
     root = RootShell(s.adb) if sdk == 35 else s.adb
     result = s.tool.apply(s.adb, root, sdk, s.safe)
     assert result['status'] == 'enabled'
-    assert result['report'] == {'matched': 8, 'skipped': 2, 'total': 10}
+    assert result['report'] == COMPLETE_REPORT
     assert s.adb.overlays == {LEGACY: False, PREVIOUS: False, FOREIGN: True, PACKAGE: True}
     assert s.adb.files[CACHE][20] == 1
-    assert any('8' in event[1] and '2' in event[1] for event in s.events)
-    assert any(event[0] == 'warning' for event in s.events)
+    assert any('5 đã duyệt' in e[1] and '3 do máy dịch' in e[1] and '2 tài nguyên kỹ thuật' in e[1] for e in s.events)
+    assert 'chỉ được kiểm tra định dạng' in result['message']
+    assert not any('một phần' in e[1] for e in s.events)
     assert len([c for c in s.adb.calls if isinstance(c, str) and 'overlay lookup' in c]) == 2
     assert all(not path.exists() for path in s.sources)
     assert not any(path.startswith('/data/local/tmp/') for path in s.adb.files)
@@ -539,22 +544,70 @@ def test_real_builder_is_lazy_and_injected_builder_never_imports_it(setup, monke
     assert calls[0][1]['sdk'] == sdk
 
 
-def test_target_resource_counts_take_precedence_over_catalog_counts(setup):
+@pytest.mark.parametrize('machine', [0, 3, 8])
+def test_complete_counts_distinguish_reviewed_machine_and_technical_preservation(setup, machine):
     s = setup
-    s.artifact['report'].update(target_total=100, target_untranslated=92)
+    s.artifact['report'] = {**COMPLETE_REPORT, 'machine': machine, 'reviewed': 8 - machine,
+                            'total': 100, 'target_total': 100, 'preserved': 92, 'skipped': 92}
     result = s.tool.apply(s.adb, s.adb, 30, s.safe)
     assert result['report']['target_total'] == 100
-    assert any('8/100' in event[1] and '92' in event[1] for event in s.events)
+    assert result['report']['complete'] is True and result['report']['target_untranslated'] == 0
+    assert f'{8 - machine} đã duyệt' in result['message'] and f'{machine} do máy dịch' in result['message']
+    assert '92 tài nguyên kỹ thuật giữ nguyên' in result['message']
+    assert ('chỉ được kiểm tra định dạng' in result['message']) is (machine > 0)
+    assert not any('một phần' in e[1] or e[0] == 'warning' for e in s.events)
 
 
-@pytest.mark.parametrize('report', [{'target_total': 100},
-                                  {'target_total': 100, 'target_untranslated': 93},
-                                  {'target_total': True, 'target_untranslated': 0}])
-def test_invalid_target_resource_counts_rejected(setup, report):
-    setup.artifact['report'].update(report)
-    with pytest.raises(ValueError):
-        setup.tool.apply(setup.adb, setup.adb, 30, setup.safe)
-    assert not setup.adb.writes
+@pytest.mark.parametrize('sdk', [30, 35])
+@pytest.mark.parametrize('report', [
+    'missing-report', None, {}, {'matched': 8, 'skipped': 2, 'total': 10},
+    *[{k: v for k, v in COMPLETE_REPORT.items() if k != missing} for missing in COMPLETE_REPORT],
+    *[{**COMPLETE_REPORT, field: invalid}
+      for field in COMPLETE_REPORT if field not in {'complete', 'machine_meaning_verified'}
+      for invalid in (None, True, False, '0', 0.0, -1, 1000001)],
+    *[{**COMPLETE_REPORT, 'complete': value} for value in (False, 1, 'true')],
+    *[{**COMPLETE_REPORT, 'machine_meaning_verified': value} for value in (True, 0, 'false')],
+    *[{**COMPLETE_REPORT, field: value} for field, value in (
+        ('eligible_total', 7), ('reviewed', 4), ('machine', 2), ('matched', 7),
+        ('unresolved', 1), ('target_untranslated', 1), ('preserved', 3),
+        ('skipped', 3), ('total', 11), ('target_total', 11))],
+    {**COMPLETE_REPORT, 'matched': 0, 'eligible_total': 0, 'reviewed': 0, 'machine': 0,
+     'preserved': 10, 'skipped': 10},
+    # Old 0.7 cache: all APK identity/hash fields remain valid, but translation is partial.
+    {'matched': 7, 'skipped': 3, 'total': 10, 'target_total': 10, 'target_untranslated': 3},
+])
+def test_incomplete_or_missing_report_fields_never_reach_deployment(setup, sdk, report):
+    s = setup
+    s.adb.sdk = sdk
+    if report == 'missing-report':
+        s.artifact.pop('report')
+    else:
+        s.artifact['report'] = report
+    before = (dict(s.adb.files), dict(s.adb.packages), dict(s.adb.overlays))
+    assert digest(s.artifact['apk'].read_bytes()) == s.artifact['digest']
+    calls_after_build = []
+    build = s.tool.builder.build
+    def finish(source):
+        artifact = build(source)
+        s.adb.hook = calls_after_build.append
+        return artifact
+    s.tool.builder.build = finish
+    with pytest.raises(ValueError, match='bản dịch'):
+        s.tool.apply(s.adb, RootShell(s.adb) if sdk == 35 else s.adb, sdk, s.safe)
+    assert not s.adb.writes and not calls_after_build and not s.events
+    assert (s.adb.files, s.adb.packages, s.adb.overlays) == before
+    assert s.sources and all(not path.exists() for path in s.sources)
+
+
+def test_already_enabled_partial_cache_still_fails_complete_gate(setup):
+    s = setup
+    s.artifact['report'] = {'matched': 7, 'skipped': 3, 'total': 10}
+    s.adb.packages[PACKAGE], s.adb.files[OVERLAY] = OVERLAY, PACK
+    s.adb.overlays = {PACKAGE: True}
+    with pytest.raises(ValueError, match='bản dịch'):
+        s.tool.apply(s.adb, s.adb, 30, s.safe)
+    assert not s.adb.writes and s.adb.overlays == {PACKAGE: True}
+    assert not any('cmd overlay' in str(c) for c in s.adb.calls)
 
 
 @pytest.mark.parametrize('native_clone', [False, True])

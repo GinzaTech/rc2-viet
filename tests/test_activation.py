@@ -1,5 +1,9 @@
 from pathlib import Path
 import struct
+import hashlib
+import json
+from unittest.mock import Mock
+from rc2vi import activation as module
 import pytest
 from rc2vi.activation import Activator
 from rc2vi.core import SUPPORTED_APK,OVERLAY_HASH
@@ -39,74 +43,129 @@ class FakeAdb:
 @pytest.fixture
 def activator(tmp_path):
     assets=tmp_path/'assets'; assets.mkdir()
-    return Activator(assets,tmp_path/'work',lambda *args:None,verify_assets=False)
+    adaptive=Mock()
+    adaptive.apply.return_value={'status':'enabled'}
+    adaptive.disable.return_value={'status':'disabled'}
+    return Activator(assets,tmp_path/'work',Mock(),verify_assets=False,adaptive=adaptive)
 
-def test_already_enabled_is_read_only(activator):
-    adb=FakeAdb()
-    result=activator.apply(adb)
-    assert result['status']=='already_enabled'
-    assert adb.mutations==[]
 
-@pytest.mark.parametrize('kwargs',[{'hash_value':'invalid'},{'root':False}])
-def test_unsupported_target_has_no_mutations(activator,kwargs):
-    adb=FakeAdb(**kwargs)
-    with pytest.raises(ValueError): activator.apply(adb)
-    assert adb.mutations==[]
+@pytest.mark.parametrize('active', [True, False])
+def test_known_rc_always_delegates_without_prepared_pack(activator, active):
+    adb=FakeAdb(active=active)
+    assert not (activator.assets/'vietnamese-resources.apk').exists()
+    assert activator.apply(adb) is activator.adaptive.apply.return_value
+    args=activator.adaptive.apply.call_args.args
+    assert args[:3]==(adb,adb,30)
+    args[3]()
+    adb.flight=True
+    with pytest.raises(ValueError):args[3]()
+    assert not adb.mutations
 
-def test_active_flight_screen_blocks_cache_changes(activator):
-    adb=FakeAdb(active=False,flight=True)
-    with pytest.raises(ValueError): activator.apply(adb)
-    assert adb.mutations==[]
 
-def test_apply_verified_inactive_pack(activator):
-    adb=FakeAdb(active=False)
-    result=activator.apply(adb)
-    assert result['status']=='enabled'
-    assert any(isinstance(x,str) and x.startswith('cmd overlay enable') for x in adb.mutations)
-    assert not any('uninstall' in str(x) or 'reboot' in str(x) for x in adb.mutations)
+@pytest.mark.parametrize('command,response', [
+    ('getprop ro.product.model','Phone'),
+    ('getprop ro.product.device','wrong'),
+    ('getprop ro.build.version.sdk','35'),
+    ('id','uid=2000(shell)'),
+    ('dumpsys package dji.go.v5','versionName=2.0 versionCode=0'),
+    ('dumpsys package dji.go.v5','versionCode=3'),
+    ('dumpsys package dji.go.v5','versionName=2.0'),
+    ('pm path dji.go.v5',''),
+    ('pm path dji.go.v5','package:/data/app/base.apk\npackage:/data/app/split.apk'),
+    ('pm path dji.go.v5','package:/data/app/../../bad.apk'),
+    ('sha256sum',''),
+    ('sha256sum','invalid file'),
+    ('dumpsys activity',''),
+    ('dumpsys activity','dji.go.v5/com.dji.fpv.DJIFpvActivity'),
+])
+def test_rc_guards_block_adaptive_and_writes(activator, command, response):
+    class Device(FakeAdb):
+        def shell(self, cmd, **kwargs):
+            return response if cmd.startswith(command) else super().shell(cmd, **kwargs)
+    adb=Device()
+    with pytest.raises(ValueError):activator.apply(adb)
+    activator.adaptive.apply.assert_not_called()
+    assert not adb.mutations
 
-def test_failed_readback_disables_pack_and_restores_previous_cache(activator):
-    class FailedReadback(FakeAdb):
-        def shell(self,cmd,timeout=20):
-            if cmd.startswith('cmd overlay lookup'):return 'Connect to Aircraft'
-            return super().shell(cmd,timeout)
-    adb=FailedReadback(active=False)
-    with pytest.raises(RuntimeError,match='Đọc lại'):activator.apply(adb)
-    assert any('cmd overlay disable' in str(x) for x in adb.mutations)
-    assert any('/previous' in str(x) and 'restorecon' in str(x) for x in adb.mutations)
 
-def test_missing_overlay_is_installed_without_touching_fly(activator):
-    class MissingOverlay(FakeAdb):
-        installed=False
-        def shell(self,cmd,timeout=20):
-            if cmd=='pm path local.dji.fly.vietnamese' and not self.installed:return ''
-            if cmd.startswith('pm install'):self.installed=True
-            return super().shell(cmd,timeout)
-    adb=MissingOverlay(active=False)
-    assert activator.apply(adb)['status']=='enabled'
-    assert adb.installed
+@pytest.mark.parametrize('command,response', [
+    ('getprop ro.product.model','Phone'), ('getprop ro.product.device','wrong'),
+    ('getprop ro.build.version.sdk','35'), ('id','uid=2000(shell)'),
+    ('dumpsys activity',''), ('dumpsys activity','dji.go.v5/.Camera'),
+])
+def test_rc_disable_keeps_identity_and_foreground_guards(activator, command, response):
+    class Device(FakeAdb):
+        def shell(self, cmd, **kwargs):
+            return response if cmd.startswith(command) else super().shell(cmd, **kwargs)
+    adb=Device()
+    with pytest.raises(ValueError):activator.disable(adb)
+    activator.adaptive.disable.assert_not_called()
+    assert not adb.mutations
 
-def test_disable_has_readback_and_guard(activator):
-    class Disabled(FakeAdb):
-        def shell(self,cmd,timeout=20):
-            if cmd.startswith('cmd overlay disable'):self.active=False
-            return super().shell(cmd,timeout)
-    assert activator.disable(Disabled())['status']=='disabled'
-    with pytest.raises(RuntimeError):activator.disable(FakeAdb())
 
-def test_bundle_integrity_before_any_device_call(tmp_path):
-    import hashlib,json
-    from rc2vi.activation import verify_bundle
-    from rc2vi.core import HOME_APK_HASH,LAWNCHAIR_APK_HASH,FREEFCC_APK_HASH
+def test_optional_package_path_remains_available_for_launchers(activator):
+    adb=Mock();adb.shell.return_value=''
+    assert activator._path(adb,'launcher',required=False) is None
+    with pytest.raises(ValueError):activator._path(adb,'launcher')
+    adb.shell.return_value='package:/data/app/launcher/base.apk'
+    assert activator._path(adb,'launcher')=='/data/app/launcher/base.apk'
+
+
+BUNDLE_FILES=('adb/adb.exe','adb/AdbWinApi.dll','adb/AdbWinUsbApi.dll',
+              'home-bridge.apk','lawnchair.apk','freefcc.apk')
+
+
+@pytest.fixture
+def bundle(tmp_path, monkeypatch):
     assets=tmp_path/'assets';(assets/'adb').mkdir(parents=True)
-    names=['adb/adb.exe','adb/AdbWinApi.dll','adb/AdbWinUsbApi.dll','vietnamese-resources.apk','home-bridge.apk','lawnchair.apk','freefcc.apk']
-    for name in names:(assets/name).write_bytes(b'tampered')
-    manifest={name:hashlib.sha256(b'tampered').hexdigest() for name in names}
-    (assets/'manifest.json').write_text(json.dumps(manifest))
-    with pytest.raises(ValueError):verify_bundle(assets)
-    manifest['vietnamese-resources.apk']=OVERLAY_HASH
-    manifest['home-bridge.apk']=HOME_APK_HASH
-    manifest['lawnchair.apk']=LAWNCHAIR_APK_HASH
-    manifest['freefcc.apk']=FREEFCC_APK_HASH
-    (assets/'manifest.json').write_text(json.dumps(manifest))
-    with pytest.raises(ValueError,match='bị thay đổi'):verify_bundle(assets)
+    manifest={}
+    for name in BUNDLE_FILES:
+        payload=name.encode();(assets/name).write_bytes(payload)
+        manifest[name]=hashlib.sha256(payload).hexdigest()
+    for name,constant in [('home-bridge.apk','HOME_APK_HASH'),
+                          ('lawnchair.apk','LAWNCHAIR_APK_HASH'),('freefcc.apk','FREEFCC_APK_HASH')]:
+        monkeypatch.setattr(module,constant,manifest[name])
+    (assets/'manifest.json').write_text(json.dumps(manifest),encoding='utf-8')
+    return assets,manifest
+
+
+@pytest.mark.parametrize('legacy_row', [False, True])
+def test_bundle_does_not_require_or_read_legacy_pack(bundle, legacy_row):
+    assets,manifest=bundle
+    if legacy_row:
+        manifest={**manifest,'vietnamese-resources.apk':'ignored obsolete hash'}
+        (assets/'manifest.json').write_text(json.dumps(manifest),encoding='utf-8')
+    module.verify_bundle(assets)
+    # A directory at the old APK path makes accidental reads fail.
+    (assets/'vietnamese-resources.apk').mkdir()
+    Activator(assets,assets/'work',Mock())
+
+
+@pytest.mark.parametrize('name', BUNDLE_FILES)
+def test_bundle_still_rejects_each_tampered_required_file(bundle,name):
+    assets,_=bundle
+    (assets/name).write_bytes(b'tampered')
+    with pytest.raises(ValueError,match='bị thay đổi'):module.verify_bundle(assets)
+
+
+@pytest.mark.parametrize('name', BUNDLE_FILES)
+def test_bundle_still_requires_each_manifest_entry(bundle,name):
+    assets,manifest=bundle
+    manifest={key:value for key,value in manifest.items() if key!=name}
+    (assets/'manifest.json').write_text(json.dumps(manifest),encoding='utf-8')
+    with pytest.raises(ValueError,match='Danh sách'):module.verify_bundle(assets)
+
+
+@pytest.mark.parametrize('name', ['home-bridge.apk','lawnchair.apk','freefcc.apk'])
+def test_bundle_pins_required_apks_even_if_manifest_matches_tampering(bundle,name):
+    assets,manifest=bundle
+    (assets/name).write_bytes(b'tampered')
+    manifest={**manifest,name:hashlib.sha256(b'tampered').hexdigest()}
+    (assets/'manifest.json').write_text(json.dumps(manifest),encoding='utf-8')
+    with pytest.raises(ValueError,match='Danh sách'):module.verify_bundle(assets)
+
+
+def test_bundle_rejects_unexpected_manifest_path(bundle):
+    assets,manifest=bundle
+    (assets/'manifest.json').write_text(json.dumps({**manifest,'../unexpected.exe':'ignored'}),encoding='utf-8')
+    with pytest.raises(ValueError,match='Danh sách'):module.verify_bundle(assets)

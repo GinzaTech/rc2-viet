@@ -14,9 +14,10 @@ PORTABLE = 'RC2-TiengViet-Portable.zip'
 REPORT = 'release-verification.json'
 SUMS = 'SHA256SUMS.txt'
 STOCK_APK_SHA256 = 'cfbf67368fa812c6e7d51430a07518ab47d056605bf373fcc69277e540caa32e'
-FLAGS = {'version': '0.7.0-local', 'hud_pipeline_bundled': True,
+FLAGS = {'version': '0.8.0-local', 'hud_pipeline_bundled': True,
          'hud_menu_patch_one_click': True,
-         'translation_version_independent': True, 'translation_device_tested': False,
+         'translation_version_independent': True, 'translation_complete_required': True,
+         'local_translation_engine_bundled_in_portable': True, 'translation_device_tested': False,
          'hud_source_from_device': True, 'stock_recovery_template_bundled': True,
          'java_required_on_host': False, 'stock_fly_apk_embedded': False,
          'private_signing_key_embedded': False, 'github_published': False,
@@ -26,6 +27,28 @@ DOCS = {'README.md': 'README.md', 'THIRD_PARTY_NOTICES.md': 'THIRD_PARTY_NOTICES
         'docs/ANDROID_PHONE.md': 'docs/ANDROID_PHONE.md',
         'docs/HUD_APK.md': 'docs/HUD_APK.md', 'docs/FREEFCC_LICENSE.txt': 'docs/FREEFCC_LICENSE.txt'}
 PRIVATE = re.compile(r'private|backup|stock|input|signer|signing|credential|secret|password|cookie|token|camera|account', re.I)
+
+
+def engine_payload(root):
+    """Only the public, inventoried inference payload may enter the portable ZIP."""
+    required = {'worker.exe'} | {folder + '/' + name for folder in ('model', 'model-zh')
+                                for name in ('model.bin', 'config.json', 'shared_vocabulary.json', 'source.spm', 'target.spm')}
+    optional = {'LICENSE.model.txt', 'LICENSE.runtime.txt', 'provenance.json'}
+    manifest = json.loads(guard(root / 'assets/translation/engine.json').read_text(encoding='utf-8'))
+    engine_id, files = manifest.get('engine_id'), manifest.get('files')
+    if (manifest.get('schema') != 1 or not isinstance(engine_id, str)
+            or not re.fullmatch(r'[0-9a-f]{24}', engine_id) or not isinstance(files, dict)
+            or not required <= files.keys() <= required | optional):
+        raise ValueError('Invalid public translation engine inventory.')
+    result = {}
+    for name, item in files.items():
+        path = guard(root / 'artifacts/translation-engine' / engine_id / name)
+        if (not isinstance(item, dict) or type(item.get('bytes')) is not int
+                or not 0 < item['bytes'] <= 100 * 1024 * 1024
+                or path.stat().st_size != item['bytes'] or file_digest(path) != item.get('sha256')):
+            raise ValueError('Public translation engine file is missing or stale.')
+        result['translation-engine/' + engine_id + '/' + name] = path
+    return result
 
 
 def guard(path):
@@ -93,8 +116,9 @@ def verify_package(root=ROOT, *, outputs=None):
     expected = {**FLAGS, 'exe_sha256': file_digest(exe), 'exe_bytes': exe.stat().st_size}
     if report != expected or any(type(report.get(key)) is not type(value) for key, value in expected.items()):
         raise ValueError('EXE report is stale or has invalid public flags.')
+    engine = engine_payload(root)
     with zipfile.ZipFile(guard(outputs / PORTABLE)) as archive:
-        expected_names = {EXE, REPORT, *DOCS}
+        expected_names = {EXE, REPORT, *DOCS, *engine}
         if len(archive.namelist()) != len(expected_names) or set(archive.namelist()) != expected_names:
             raise ValueError('Portable ZIP must contain only the public release files.')
         with archive.open(EXE) as source:
@@ -107,6 +131,10 @@ def verify_package(root=ROOT, *, outputs=None):
             with archive.open(name) as source:
                 if stream_digest(source) != file_digest(root / relative):
                     raise ValueError('Portable ZIP documentation is stale.')
+        for name, path in engine.items():
+            with archive.open(name) as source:
+                if stream_digest(source) != file_digest(path):
+                    raise ValueError('Portable translation engine payload is stale.')
     if read_checksums(outputs / SUMS) != public_artifacts(dist, outputs):
         raise ValueError('Release SHA256 checksums are stale or include unsupported inputs.')
     return report
@@ -126,7 +154,7 @@ def package_windows(root=ROOT):
         stage = guard(Path(temporary))
         (stage / REPORT).write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
         members = {EXE: exe, REPORT: stage / REPORT,
-                   **{name: root / relative for name, relative in DOCS.items()}}
+                   **{name: root / relative for name, relative in DOCS.items()}, **engine_payload(root)}
         with zipfile.ZipFile(stage / PORTABLE, 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
             for name, path in members.items():
                 archive.write(guard(path), arcname=name)

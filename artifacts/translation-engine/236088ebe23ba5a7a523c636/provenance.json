@@ -1,0 +1,16 @@
+{
+  "model_repository": "Helsinki-NLP/opus-mt-en-vi",
+  "model_revision": "989c9fb9ec63987901022baf0182dcec3e149be6",
+  "model_license": "Apache-2.0",
+  "converted_compute_type": "int8",
+  "runtime": "CTranslate2 4.8.2 CPU",
+  "tokenizer": "SentencePiece 0.2.1",
+  "worker_source": "translation-engine/worker.py",
+  "inference_network_access": false,
+  "chinese_model": {
+    "repository": "Helsinki-NLP/opus-mt-zh-vi",
+    "revision": "67ea2dbfbaf13a16772a40346d3d72b59e591443",
+    "license": "Apache-2.0",
+    "prefix": null
+  }
+}

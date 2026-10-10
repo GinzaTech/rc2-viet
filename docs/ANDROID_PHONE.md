@@ -1,5 +1,7 @@
 # DJI Fly tiếng Việt trên điện thoại Android
 
+**Từ0.8.0:** mọi phiên bản, gồm1.21.12, đi qua bộ dựng đầy đủ từ APK đích. Gói phone-vietnamese-resources.apk không còn là dependency hoặc đường cài nhanh. Xem [cơ chế0.8](VIETNAMESE.md). Các số liệu/gói cố định bên dưới là lịch sử.
+
 Từ **0.7.0**, tab điện thoại không khóa phiên bản DJI Fly. Android15/root vẫn cần thiết cho đường idmap hiện có. APK ngoài nguồn1.21.12 bên dưới dùng bộ dựng tài nguyên thích ứng: tự kéo APK, đối chiếu từ điển, dựng/ký RRO riêng và báo các tài nguyên chưa dịch. Xem [Việt hóa đa phiên bản](VIETNAMESE.md). Các kiểm chứng thiết bị bên dưới là lịch sử của gói cố định; luồng thích ứng mới chưa kiểm tra trên điện thoại theo yêu cầu người dùng.
 
 Bản local ngày 08/10/2026, chưa cập nhật release GitHub v0.1.0.

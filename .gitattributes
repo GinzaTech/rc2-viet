@@ -10,3 +10,6 @@
 *.dll binary
 *.idsig binary
 *.zip binary
+# Hash-pinned payloads/manifests must keep exact upstream/build bytes on every OS.
+artifacts/translation-engine/** -text -whitespace
+assets/translation/** -text -whitespace

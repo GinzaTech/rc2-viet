@@ -30,3 +30,4 @@ device-backups/
 *.log
 dist/*.zip
 assets/*.idsig
+artifacts/translation-engine/60c8f43c0d20ab2dde4a9c7a/

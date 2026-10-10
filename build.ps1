@@ -4,7 +4,9 @@ Set-Location -LiteralPath $PSScriptRoot
 if ($LASTEXITCODE -ne 0) { throw 'Kiểm thử chưa đạt' }
 & .\.venv\Scripts\python.exe app.py --gui-smoke
 if ($LASTEXITCODE -ne 0) { throw 'Kiểm tra GUI chưa đạt' }
-& .\.venv\Scripts\python.exe -m PyInstaller --noconfirm --clean --onefile --windowed --name RC2-TiengViet --version-file packaging/windows-version.txt --add-data 'assets;assets' app.py
+$desktopAssets = & .\.venv\Scripts\python.exe scripts/stage_desktop_assets.py
+if ($LASTEXITCODE -ne 0) { throw 'Chuẩn bị tài nguyên desktop thất bại' }
+& .\.venv\Scripts\python.exe -m PyInstaller --noconfirm --clean --onefile --windowed --name RC2-TiengViet --version-file packaging/windows-version.txt --add-data "$desktopAssets`;assets" app.py
 if ($LASTEXITCODE -ne 0) { throw 'Đóng gói chưa thành công' }
 & .\.venv\Scripts\python.exe scripts/package_windows.py
 if ($LASTEXITCODE -ne 0) { throw 'Tạo ZIP/checksum phát hành chưa thành công' }

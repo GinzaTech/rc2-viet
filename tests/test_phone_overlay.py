@@ -1,6 +1,6 @@
 from pathlib import Path
 from types import SimpleNamespace
-import hashlib
+from unittest.mock import Mock
 import shlex
 import struct
 import pytest
@@ -51,69 +51,73 @@ class FakePhone:
 
 
 @pytest.fixture
-def setup(tmp_path,monkeypatch):
-    assets=tmp_path/'assets';assets.mkdir();(assets/'phone-vietnamese-resources.apk').write_bytes(b'test')
-    monkeypatch.setattr(module,'OVERLAY_HASH',hashlib.sha256(b'test').hexdigest())
-    events=[];tool=module.PhoneOverlay(assets,tmp_path/'work',lambda *e:events.append(e))
+def setup(tmp_path):
+    assets=tmp_path/'assets';assets.mkdir()
+    events=[];adaptive=Mock()
+    adaptive.apply.return_value={'status':'enabled','message':'translated'}
+    adaptive.disable.return_value={'status':'disabled','message':'disabled'}
+    tool=module.PhoneOverlay(assets,tmp_path/'work',lambda *e:events.append(e),adaptive=adaptive)
     return tool,FakePhone(),events
 
 
-def test_install_enable_verified_overlay_and_cleanup(setup):
-    tool,adb,events=setup;result=tool.apply(adb)
-    assert 'Đã bật' in result['message'] and adb.enabled
-    assert any('pm install --user 0 ' in c for c in adb.calls if isinstance(c,str))
-    assert any('rm -rf /data/local/tmp/phonevi-' in c for c in adb.calls if isinstance(c,str))
-    assert not any('dji.go.v5' in c and ('uninstall' in c or 'pm install' in c) for c in adb.calls if isinstance(c,str))
-
-
-def test_enabled_noop_is_readonly_even_in_camera(setup):
-    tool,adb,_=setup;adb.installed=adb.enabled=True;adb.foreground='dji.go.v5/.Camera'
-    assert 'đã bật' in tool.apply(adb)['message']
+@pytest.mark.parametrize('installed,enabled', [(False,False),(True,False),(True,True)])
+def test_known_phone_always_delegates_without_prepared_pack(setup,installed,enabled):
+    tool,adb,_=setup;adb.installed=installed;adb.enabled=enabled
+    assert not (tool.assets/'phone-vietnamese-resources.apk').exists()
+    assert tool.apply(adb) is tool.adaptive.apply.return_value
+    args=tool.adaptive.apply.call_args.args
+    assert args[0] is adb and args[1].adb is adb and args[2]==35
+    args[3]()
+    adb.foreground='dji.go.v5/.Camera'
+    with pytest.raises(ValueError):args[3]()
     assert not any(isinstance(c,tuple) for c in adb.calls)
 
 
-@pytest.mark.parametrize('change', ['sdk','root','target_hash','overlay_hash','camera','missing_foreground','local_hash'])
-def test_incompatible_device_or_foreground_blocks_all_writes(setup,change):
+@pytest.mark.parametrize('change', ['sdk','root','target_hash','empty_hash','camera','missing_foreground'])
+def test_incompatible_device_or_foreground_blocks_adaptive(setup,change):
     tool,adb,_=setup
     if change=='sdk':adb.sdk='30'
     elif change=='root':adb.root=False
     elif change=='target_hash':adb.target_hash='unknown'
-    elif change=='overlay_hash':adb.installed=True;adb.overlay_hash='unknown'
+    elif change=='empty_hash':adb.target_hash=''
     elif change=='camera':adb.foreground='topResumedActivity: dji.go.v5/.Camera'
-    elif change=='missing_foreground':adb.foreground=''
-    else:(tool.assets/'phone-vietnamese-resources.apk').write_bytes(b'changed')
+    else:adb.foreground=''
     with pytest.raises(ValueError):tool.apply(adb)
+    tool.adaptive.apply.assert_not_called()
     assert not any(isinstance(c,tuple) for c in adb.calls)
 
 
-def test_upgrade_only_known_previous_pack(setup):
-    tool,adb,_=setup;adb.installed=True;adb.overlay_hash=module.PREVIOUS_OVERLAY_HASH
-    original_shell=adb.shell
-    def shell(command,**kwargs):
-        result=original_shell(command,**kwargs)
-        if 'pm install -r' in command:adb.overlay_hash=module.OVERLAY_HASH
-        return result
-    adb.shell=shell
-    tool.apply(adb)
-    assert any('pm install -r --user 0' in c for c in adb.calls if isinstance(c,str))
+@pytest.mark.parametrize('info', [
+    {'status':'fly_missing','message':'Chưa cài'},
+    {'status':'inspected','root':True,'sdk':'35','version':'','version_code':1},
+    {'status':'inspected','root':True,'sdk':'35','version':'2.0','version_code':0},
+])
+def test_phone_requires_installed_fly_with_valid_version(setup,monkeypatch,info):
+    tool,adb,_=setup
+    monkeypatch.setattr(module,'inspect_phone',lambda a:info)
+    with pytest.raises(ValueError):tool.apply(adb)
+    tool.adaptive.apply.assert_not_called()
 
 
-@pytest.mark.parametrize('installed',[True,False])
-def test_disable_and_absent_pack(setup,installed):
-    tool,adb,_=setup;adb.installed=installed;adb.enabled=installed
-    tool.apply(adb,enable=False)
-    assert not adb.enabled
-    assert not any(isinstance(c,tuple) for c in adb.calls)
+@pytest.mark.parametrize('field,value', [('ro.product.model','DJI RC 2'),('ro.product.device','rc331')])
+@pytest.mark.parametrize('enable', [True,False])
+def test_rc_identity_never_enters_phone_translation(setup,field,value,enable):
+    tool,adb,_=setup
+    original=adb.shell
+    adb.shell=lambda command,**kw:value if command=='getprop '+field else original(command,**kw)
+    with pytest.raises(ValueError,match='RC 2'):tool.apply(adb,enable=enable)
+    assert not tool.adaptive.mock_calls
 
 
-@pytest.mark.parametrize('backup',[True,False])
-def test_failed_enable_restores_previous_cache_or_removes_new_cache(setup,backup):
-    tool,adb,_=setup;adb.installed=True;adb.fail_enable=True;adb.cache_exists=backup
-    with pytest.raises(RuntimeError,match='ROM chưa áp dụng'):tool.apply(adb)
-    assert not adb.enabled
-    calls='\n'.join(c for c in adb.calls if isinstance(c,str))
-    assert ('/backup.idmap' in calls) is backup
-    if not backup:assert 'rm -f /data/resource-cache/' in calls
+@pytest.mark.parametrize('change', ['sdk','root','camera','missing_foreground'])
+def test_phone_disable_keeps_root_sdk_and_foreground_guards(setup,change):
+    tool,adb,_=setup
+    if change=='sdk':adb.sdk='30'
+    elif change=='root':adb.root=False
+    elif change=='camera':adb.foreground='dji.go.v5/.Camera'
+    else:adb.foreground=''
+    with pytest.raises(ValueError):tool.apply(adb,enable=False)
+    tool.adaptive.disable.assert_not_called()
 
 
 def test_root_shell_requires_success_marker():
@@ -121,13 +125,9 @@ def test_root_shell_requires_success_marker():
         module.RootShell(SimpleNamespace(shell=lambda *a,**k:'permission denied')).shell('id')
 
 
-def test_missing_package_and_split_packages_fail_clearly():
-    fake=SimpleNamespace(shell=lambda *a,**k:'')
-    assert module.package_path(fake,'test',required=False) is None
+@pytest.mark.parametrize('output', ['', 'bad', 'package:/data/app/../../bad.apk',
+                                   'package:/data/app/base.apk\npackage:/data/app/split.apk'])
+def test_missing_unsafe_or_split_packages_fail_clearly(output):
+    fake=SimpleNamespace(shell=lambda *a,**k:output)
     with pytest.raises(ValueError):module.package_path(fake,'test')
-
-
-def test_source_matches_exact_installed_phone_profile(setup,monkeypatch):
-    tool,adb,_=setup
-    monkeypatch.setattr(module,'inspect_phone',lambda a:{'status':'fly_missing','message':'Chưa cài'})
-    with pytest.raises(ValueError,match='Chưa cài'):tool.verify(adb)
+    if not output:assert module.package_path(fake,'test',required=False) is None

@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "files": {
+    "catalog.json": {
+      "kind": "catalog",
+      "sha256": "f8efb85dc2b8920db255297e0fe225c2a5c0be70916701d5b49ebdf145a02ddd"
+    },
+    "memory/phone.json": {
+      "kind": "catalog",
+      "sha256": "43151df6e6c13a2c27b858a65ebe8ed9c412026c2db409746b99c03571163fdf"
+    },
+    "overrides.json": {
+      "kind": "text",
+      "sha256": "5e350fe17ee93ae2e79a727fc583bb4d9b272c17752e53d870f8a13c691eb45c"
+    }
+  }
+}

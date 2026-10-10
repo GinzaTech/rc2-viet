@@ -1,5 +1,18 @@
 # Build và kiểm tra từ mã nguồn
 
+## Bổ sung 0.8.0: engine dịch đầy đủ
+
+`build.ps1` gọi `scripts/stage_desktop_assets.py`: stage không chứa hai APK RRO cũ `vietnamese-resources.apk` và `phone-vietnamese-resources.apk`. Giao diện luôn dựng tài nguyên cho APK đích.
+
+Worker dịch có môi trường build riêng; cài dependency theo `translation-engine/requirements.txt` cùng PyInstaller6.16.0 rồi build `translation-engine/worker.py` bằng `--onefile --console --collect-binaries ctranslate2 --collect-data ctranslate2 --exclude-module torch --exclude-module transformers --exclude-module tensorflow`. App chạy worker với `CREATE_NO_WINDOW`, giữ input/output ở thư mục riêng trên PC.
+
+`scripts/bundle_translation_engine.py` nhận `--model`, `--tokenizers`, `--chinese-model`, `--chinese-tokenizers`, `--worker`, `--licenses`; nó tạo thư mục payload theo nội dung trong `artifacts/translation-engine` và `assets/translation/engine.json`. Cập nhật `ENGINE_MANIFEST_SHA256` có chủ đích. Payload có hai model int8 và tokenizer; không đưa weights gốc PyTorch, APK DJI Fly, dữ liệu cá nhân hoặc khóa ký vào đó. Manifest, từng kích thước và từng hash được kiểm tra trước chạy.
+
+Bản portable tự kèm thư mục engine cạnh EXE; EXE đơn lẻ tải cùng payload từ đường GitHub đã pin khi cần. Không gửi chuỗi tài nguyên ra mạng. Source/bundle độc lập Java/Python/SDK của host khi chạy EXE.
+
+Dùng `--translation-build <APK> --translation-sdk 30|35 --report <JSON>` để kiểm chứng cục bộ. Thêm `--translation-no-memory` để xác minh không cần bất kỳ memory/gói dịch đã chuẩn bị nào. Thành công này là kiểm chứng build, không thay thế thử nghiệm thiết bị; lượt0.8 không dùng thiết bị theo yêu cầu người dùng.
+
+
 ## EXE Windows
 
 Yêu cầu Python 3.11 x64 trên Windows và JDK 17 (`javac`/`java` trong PATH) để chạy đầy đủ kiểm thử chính sách chuyển Home. Người chạy EXE không cần JDK. Từ thư mục repository:

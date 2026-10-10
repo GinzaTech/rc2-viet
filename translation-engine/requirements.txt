@@ -1,0 +1,7 @@
+# Python 3.11, Windows x64. Inference only; no torch/transformers/sacremoses.
+ctranslate2==4.8.2
+sentencepiece==0.2.1
+numpy==2.4.6
+PyYAML==6.0.3
+# Build environment pin; CT2 4.8.2 no longer needs pkg_resources at runtime.
+setuptools==84.0.0

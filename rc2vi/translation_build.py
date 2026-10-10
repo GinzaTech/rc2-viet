@@ -13,7 +13,7 @@ from .hud_keys import HudKeyStore
 from .hud_tools import (HudTools, _check_ancestors, _physical_stat, _safe_relative, _tool_environment,
                         check_cancel, load_json, run_process, sha256_file)
 
-CATALOG_SHA256 = 'f8efb85dc2b8920db255297e0fe225c2a5c0be70916701d5b49ebdf145a02ddd'
+PIPELINE_REVISION = 'complete-v2'
 MAX_APK_BYTES = 1536 * 1024 * 1024
 MAX_RESOURCE_BYTES = 512 * 1024 * 1024
 PREFIX = 'local.dji.fly.vi.auto.'
@@ -62,7 +62,8 @@ def resource_snapshot(source: Path, destination: Path, cancel=None) -> None:
 
 
 class TranslationBuilder:
-    def __init__(self, assets: Path, work: Path, emit=lambda *args: None, cancel=None, sdk=30):
+    def __init__(self, assets: Path, work: Path, emit=lambda *args: None, cancel=None, sdk=30,
+                 engine=None, use_memories=True):
         if type(sdk) is not int or sdk not in (30, 35):
             raise ValueError('Chưa hỗ trợ định dạng overlay của SDK này.')
         self.assets = Path(assets)
@@ -72,6 +73,10 @@ class TranslationBuilder:
         self.sdk = sdk
         self.target_name = 'DJIFlyPhoneTranslation' if sdk == 35 else 'DJIFlyLocalTranslation'
         self.tools = HudTools(self.assets, self.work / 'tools', cancel)
+        self.engine = engine
+        self.use_memories = use_memories
+        self.memory_digest = ''
+        self.engine_digest = ''
 
     def _run(self, *args):
         return run_process(args, cancel=self.cancel, env=_tool_environment())
@@ -94,7 +99,11 @@ class TranslationBuilder:
         _physical_stat(apk)
         if (receipt.get('source_digest') != source_hash or receipt.get('package') != package
                 or receipt.get('profile_sdk') != self.sdk
-                or receipt.get('catalog_digest') != CATALOG_SHA256
+                or receipt.get('catalog_digest') != self.memory_digest
+                or receipt.get('engine_digest') != self.engine_digest
+                or receipt.get('pipeline') != PIPELINE_REVISION
+                or receipt.get('report', {}).get('complete') is not True
+                or receipt.get('report', {}).get('unresolved') != 0
                 or receipt.get('digest') != sha256_file(apk, self.cancel)
                 or self.tools.verify(apk) != certificate):
             raise ValueError('Cache bản dịch bị thay đổi; không cài gói này.')
@@ -111,19 +120,22 @@ class TranslationBuilder:
                 raise ValueError('Gói dịch phải chỉ chứa manifest và bảng tài nguyên.')
 
     def build(self, source_apk: Path) -> dict:
-        from .translation_catalog import select_resources
+        from .translation_complete import compose_complete, IncompleteTranslation
+        from .translation_engine import LocalTranslationEngine, ENGINE_MANIFEST_SHA256
+        from .translation_memory import load_memories, with_reviewed_fragments
         source_apk = Path(source_apk).absolute()
         _check_ancestors(source_apk.parent)
         _physical_stat(source_apk)
         source_hash = sha256_file(source_apk, self.cancel)
-        catalog_path = self.assets / 'translation/catalog.json'
-        if sha256_file(catalog_path, self.cancel) != CATALOG_SHA256:
-            raise ValueError('Từ điển bản dịch không khớp gói EXE.')
-        catalog = load_json(catalog_path)
+        catalogs, overrides, self.memory_digest = load_memories(self.assets, self.cancel, self.use_memories)
+        self.engine_digest = ENGINE_MANIFEST_SHA256
+        if self.engine is None:
+            self.engine = LocalTranslationEngine(self.assets, self.work / 'local-engine', self.emit, self.cancel)
         _check_ancestors(self.work)
         self.work.mkdir(parents=True, exist_ok=True)
         key = HudKeyStore(self.tools, root=self.work / 'private-signing').ensure()
-        profile = hashlib.sha256((CATALOG_SHA256 + ':' + str(self.sdk)).encode()).hexdigest()[:8]
+        profile = hashlib.sha256((':'.join((PIPELINE_REVISION, self.memory_digest,
+                                         self.engine_digest, str(self.sdk)))).encode()).hexdigest()[:8]
         package = PREFIX + 'r' + source_hash[:16] + 'c' + profile + 's' + key.certificate_sha256[:8]
         folder = self.work / 'builds' / package
         _check_ancestors(folder)
@@ -144,9 +156,19 @@ class TranslationBuilder:
             decoded = stage / 'decoded'
             self._run(java, '-jar', jar, 'd', '-s', '--no-assets', '-j', '1',
                       '-p', stage / 'frameworks', '-o', decoded, snapshot)
-            elements, report = select_resources(catalog, decoded / 'res')
-            if not elements:
-                raise ValueError('Phiên bản này chưa có câu khớp trong từ điển tiếng Việt.')
+            try:
+                elements, report = compose_complete(decoded / 'res', catalogs,
+                                                     with_reviewed_fragments(self.engine.translate, overrides), overrides,
+                                                     allow_chinese=True)
+            except IncompleteTranslation as exc:
+                reports = self.work / 'reports'
+                _check_ancestors(reports)
+                reports.mkdir(parents=True, exist_ok=True)
+                failed = reports / (source_hash + '.json')
+                failed.write_text(json.dumps(exc.report, ensure_ascii=False, indent=2), encoding='utf-8')
+                raise ValueError('Chưa dựng được bản dịch đầy đủ; không cài gói thiếu. Báo cáo: ' + str(failed)) from None
+            if report.get('complete') is not True or report.get('unresolved') != 0:
+                raise ValueError('Bản dịch chưa hoàn chỉnh; không bắt đầu dựng/cài gói.')
             samples = [{'name': e.get('name'), 'value': e.text} for e in elements
                        if e.tag == 'string' and not len(e) and e.text and e.text == e.text.strip()
                        and not any(c in e.text for c in '\\%\n\r\t\"\'@?')][:3]
@@ -178,7 +200,8 @@ class TranslationBuilder:
                 raise ValueError('Chữ ký bản dịch không khớp khóa trên PC.')
             self._resource_only(signed)
             receipt = {'schema': 1, 'digest': sha256_file(signed, self.cancel), 'source_digest': source_hash,
-                       'catalog_digest': CATALOG_SHA256, 'package': package, 'version': identity[3],
+                       'catalog_digest': self.memory_digest, 'engine_digest': self.engine_digest,
+                       'pipeline': PIPELINE_REVISION, 'package': package, 'version': identity[3],
                        'version_code': int(identity[2]), 'report': report, 'samples': samples,
                        'profile_sdk': self.sdk, 'target_name': self.target_name}
             check_cancel(self.cancel)

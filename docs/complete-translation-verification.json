@@ -1,0 +1,175 @@
+{
+  "date": "2026-10-10",
+  "version": "0.8.0",
+  "full_source_suite_passed": 1794,
+  "python_rc2vi_coverage_percent": 89.17,
+  "final_targeted_composer_catalog_tests_passed": 417,
+  "final_telemetry_and_memory_checks_passed": 314,
+  "exe_sha256": "6b2bb58167e19b8a343d6a2cd4ea2871029054f25053d88d973720ab53de2862",
+  "exe_bytes": 94200216,
+  "prepared_translation_apks_embedded": false,
+  "static_rro_fast_path_removed": true,
+  "rc_fly_1_21_8": {
+    "source_build_signed": true,
+    "sdk": 30,
+    "report": {
+      "matched": 11313,
+      "skipped": 610,
+      "total": 11923,
+      "target_total": 11923,
+      "target_untranslated": 0,
+      "catalog_total": 22202,
+      "complete": true,
+      "eligible_total": 11313,
+      "reviewed": 10794,
+      "machine": 519,
+      "preserved": 610,
+      "unresolved": 0,
+      "reasons": {},
+      "preserved_reasons": {
+        "numeric_or_symbols": 96,
+        "model_id": 101,
+        "hostname": 6,
+        "protected_only": 115,
+        "version_template": 1,
+        "json_value": 12,
+        "java_class": 6,
+        "product_name": 144,
+        "rate_label": 6,
+        "device_format_label": 18,
+        "unit": 12,
+        "resource_reference": 15,
+        "instrument_label": 16,
+        "unset_quantity": 10,
+        "credential": 6,
+        "firebase_app_id": 1,
+        "identifier": 35,
+        "path_data": 5,
+        "release_stamp": 2,
+        "country_code": 1,
+        "technical_collection": 2
+      },
+      "unresolved_resources": [],
+      "machine_meaning_verified": false,
+      "readback_samples": [
+        {
+          "name": "ABCIMUInitFailReason_GyroDead",
+          "value": "Lỗi con quay hồi chuyển. Khởi động lại máy bay. Liên hệ hỗ trợ DJI nếu lỗi vẫn tiếp diễn."
+        },
+        {
+          "name": "ABC_app_launch_data_transition_initial_title_storage_optimize",
+          "value": "Đang chuyển dữ liệu..."
+        },
+        {
+          "name": "ABC_app_launch_storage_freeup_initial_title_storage_optimize",
+          "value": "Đang giải phóng bộ nhớ..."
+        }
+      ]
+    }
+  },
+  "phone_fly_1_21_12": {
+    "source_build_signed": true,
+    "sdk": 35,
+    "report": {
+      "matched": 11315,
+      "skipped": 610,
+      "total": 11925,
+      "target_total": 11925,
+      "target_untranslated": 0,
+      "catalog_total": 22202,
+      "complete": true,
+      "eligible_total": 11315,
+      "reviewed": 10794,
+      "machine": 521,
+      "preserved": 610,
+      "unresolved": 0,
+      "reasons": {},
+      "preserved_reasons": {
+        "numeric_or_symbols": 96,
+        "model_id": 101,
+        "hostname": 6,
+        "protected_only": 115,
+        "version_template": 1,
+        "json_value": 12,
+        "java_class": 6,
+        "product_name": 144,
+        "rate_label": 6,
+        "device_format_label": 18,
+        "unit": 12,
+        "resource_reference": 15,
+        "instrument_label": 16,
+        "unset_quantity": 10,
+        "credential": 6,
+        "firebase_app_id": 1,
+        "identifier": 35,
+        "path_data": 5,
+        "release_stamp": 2,
+        "country_code": 1,
+        "technical_collection": 2
+      },
+      "unresolved_resources": [],
+      "machine_meaning_verified": false,
+      "readback_samples": [
+        {
+          "name": "ABCIMUInitFailReason_GyroDead",
+          "value": "Lỗi con quay hồi chuyển. Khởi động lại máy bay. Liên hệ hỗ trợ DJI nếu lỗi vẫn tiếp diễn."
+        },
+        {
+          "name": "ABC_app_launch_data_transition_initial_title_storage_optimize",
+          "value": "Đang chuyển dữ liệu..."
+        },
+        {
+          "name": "ABC_app_launch_storage_freeup_initial_title_storage_optimize",
+          "value": "Đang giải phóng bộ nhớ..."
+        }
+      ]
+    }
+  },
+  "frozen_no_memory": {
+    "synthetic_apk": true,
+    "fixture_version": "99.0.1",
+    "status": "translation_built",
+    "report": {
+      "matched": 4,
+      "skipped": 0,
+      "total": 4,
+      "target_total": 4,
+      "target_untranslated": 0,
+      "catalog_total": 0,
+      "complete": true,
+      "eligible_total": 4,
+      "reviewed": 0,
+      "machine": 4,
+      "preserved": 0,
+      "unresolved": 0,
+      "reasons": {},
+      "preserved_reasons": {},
+      "unresolved_resources": [],
+      "machine_meaning_verified": false,
+      "readback_samples": [
+        {
+          "name": "new_ui_camera_notice",
+          "value": "Giữ máy bay trên mặt phẳng."
+        },
+        {
+          "name": "new_ui_folder_notice",
+          "value": "Một thư mục mới đã được tạo."
+        },
+        {
+          "name": "new_ui_settings_notice",
+          "value": "Thiết lập này được lưu tự động."
+        }
+      ]
+    },
+    "host_path_system32_only": true,
+    "host_java_home_classpath_pythonpath_empty": true,
+    "engine_from_adjacent_verified_payload": true
+  },
+  "engine_manifest_sha256": "1fabdd4e2a97bc8dfe3cc73e4bfe4bf548951e84e1178bc2b11896c7aaae8de2",
+  "engine_id": "236088ebe23ba5a7a523c636",
+  "engine_public_bytes": 188030184,
+  "public_payload_contains_source_apks_or_private_signing": false,
+  "dependency_audit": "No known vulnerabilities in pinned engine build environment",
+  "device_runtime": "NOT VERIFIED: user requested no device checks or installation",
+  "complete_means": "All eligible resource entries structurally translated; technical entries explicitly preserved; zero unresolved. Machine meaning is not fully verified."
+}

@@ -1,5 +1,18 @@
 # Chi tiết gói tiếng Việt DJI Fly
 
+## Từ 0.8.0: bộ dựng theo APK đích
+
+Luồng áp dụng luôn đọc toàn bộ nguồn tài nguyên của APK hiện tại. Không cần một APK Việt hóa hoặc catalog của phiên bản cố định. Các gói/memory đã rà được so sánh về nội dung và contract; mâu thuẫn không tự chọn bừa. Không tìm được bản dịch phù hợp thì engine CPU bổ sung từ nguồn Anh hoặc Trung. Bộ nhớ có thể vắng mặt hoàn toàn.
+
+Báo cáo phân biệt `reviewed`, `machine`, `preserved` và `unresolved`. Chỉ khi `complete=true`, `unresolved=0` và `reviewed+machine=eligible_total` mới dựng/cài. `preserved` là tài nguyên kỹ thuật hoặc tham chiếu được giữ nguyên, không được che mục giao diện chưa dịch bằng nhãn này. `machine_meaning_verified=false` nói rõ kiểm tra cấu trúc không chứng minh ngữ nghĩa máy dịch hoàn hảo.
+
+Engine/model nằm riêng trong `artifacts/translation-engine/<id>` và được kiểm chứng theo `assets/translation/engine.json`. Portable đặt payload ở `translation-engine/<id>` cạnh EXE. EXE đơn lẻ tự tải payload đã pin nếu chưa có; suy luận luôn chạy trên PC. Hai model nguồn OPUS-MT là [en-vi](https://huggingface.co/Helsinki-NLP/opus-mt-en-vi) và [zh-vi](https://huggingface.co/Helsinki-NLP/opus-mt-zh-vi), có provenance/license kèm payload. Không cần dịch vụ online hoặc khóa API.
+
+`assets/translation/memories.json` liệt kê các memory tùy chọn. Thiếu memory thì dùng engine; memory bị thay đổi trái hash thì báo lỗi. Cache output gắn với source APK, các memory thực sự có mặt, engine, pipeline và profile Android. Gói partial0.7 không được tái dùng/cài như bản hoàn chỉnh0.8.
+
+Các phần dưới mô tả lịch sử0.7 và gói cố định; đường cài RRO cố định không còn được chọn từ giao diện0.8.
+
+
 ## Từ 0.7.0: không khóa số phiên bản DJI Fly
 
 Nút Bật / cập nhật tiếng Việt nhận các phiên bản DJI Fly bất kỳ có cấu trúc APK nguyên khối đọc được trên nền tảng đang hỗ trợ. App lấy APK từ đúng thiết bị, kiểm tra nguồn không đổi, chọn bản dịch theo tài nguyên, dựng và ký RRO riêng rồi bật/đọc lại. APK DJI Fly không bị thay hoặc ký lại trong luồng Việt hóa.
