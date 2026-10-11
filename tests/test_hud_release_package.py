@@ -26,7 +26,7 @@ def release(tmp_path):
     (root / 'docs/HUD_APK.md').write_text('Synthetic public HUD instructions.', encoding='utf-8')
     (root / 'docs/FREEFCC_LICENSE.txt').write_text('Synthetic AGPL notice.', encoding='utf-8')
     for name in ('CHANGELOG.md', 'docs/VIETNAMESE.md', 'docs/ANDROID_PHONE.md',
-                 'docs/REDFLY_ANALYSIS.md', 'docs/adaptive-menu-verification.json'):
+                 'docs/REDFLY_ANALYSIS.md', 'docs/BAO_CAO_0.9.0.md', 'docs/adaptive-menu-verification.json'):
         (root / name).write_text('Synthetic adaptive translation instructions.', encoding='utf-8')
     from rc2vi.translation_engine import REQUIRED
     engine_id = 'a' * 24
@@ -78,7 +78,8 @@ def test_package_uses_current_exe_and_replaces_stale_zip_report_and_checksums(re
         assert set(archive.namelist()) == {'RC2-TiengViet.exe', 'README.md',
                                           'THIRD_PARTY_NOTICES.md', 'docs/HUD_APK.md', 'docs/FREEFCC_LICENSE.txt', 'release-verification.json',
                                           'CHANGELOG.md', 'docs/VIETNAMESE.md', 'docs/ANDROID_PHONE.md',
-                                          'docs/REDFLY_ANALYSIS.md', 'docs/adaptive-menu-verification.json', *backend.engine_payload(release)}
+                                          'docs/REDFLY_ANALYSIS.md', 'docs/BAO_CAO_0.9.0.md',
+                                          'docs/adaptive-menu-verification.json', *backend.engine_payload(release)}
         assert archive.read('docs/FREEFCC_LICENSE.txt') == (release / 'docs/FREEFCC_LICENSE.txt').read_bytes()
         assert archive.read('docs/HUD_APK.md') == (release / 'docs/HUD_APK.md').read_bytes()
         assert archive.read('RC2-TiengViet.exe') == (dist / 'RC2-TiengViet.exe').read_bytes()
@@ -135,7 +136,7 @@ def test_packaging_excludes_private_backups_stock_and_nested_files(release, monk
                             'RC2-TiengViet-Source-v0.2.0.zip', 'freefcc.apk',
                             'release-verification.json'}
     with zipfile.ZipFile(dist / 'RC2-TiengViet-Portable.zip') as archive:
-        assert len(archive.namelist()) == 11 + len(backend.engine_payload(release))
+        assert len(archive.namelist()) == 12 + len(backend.engine_payload(release))
     assert (nested / 'private.zip').is_file()
 
 

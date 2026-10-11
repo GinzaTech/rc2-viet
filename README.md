@@ -22,6 +22,8 @@ Dữ liệu bổ sung từ `rc2-viet-codex-initial-release` được lọc theo 
 
 ![Desktop RC2 Việt](docs/desktop-rc.png)
 
+[Báo cáo hoàn thành 0.9.0](docs/BAO_CAO_0.9.0.md) tổng hợp thay đổi, kết quả kiểm thử, tệp bàn giao, phân tích RedFly và các phần chưa kiểm chứng trên thiết bị.
+
 ## Tải và dùng
 
 Tệp cục bộ0.9.0 ở `dist/RC2-TiengViet.exe` và `dist/RC2-TiengViet-Portable.zip`; metadata ở [dist/release-verification.json](dist/release-verification.json). Các liên kết GitHub dưới đây vẫn trỏ tới bản đã phát hành trước đó.

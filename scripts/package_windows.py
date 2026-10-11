@@ -28,6 +28,7 @@ DOCS = {'README.md': 'README.md', 'THIRD_PARTY_NOTICES.md': 'THIRD_PARTY_NOTICES
         'docs/ANDROID_PHONE.md': 'docs/ANDROID_PHONE.md',
         'docs/HUD_APK.md': 'docs/HUD_APK.md', 'docs/FREEFCC_LICENSE.txt': 'docs/FREEFCC_LICENSE.txt',
         'docs/REDFLY_ANALYSIS.md': 'docs/REDFLY_ANALYSIS.md',
+        'docs/BAO_CAO_0.9.0.md': 'docs/BAO_CAO_0.9.0.md',
         'docs/adaptive-menu-verification.json': 'docs/adaptive-menu-verification.json'}
 PRIVATE = re.compile(r'private|backup|stock|input|signer|signing|credential|secret|password|cookie|token|camera|account', re.I)
 
