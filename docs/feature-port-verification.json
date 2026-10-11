@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "date": "2026-10-11",
+  "stock_version": "1.21.8",
+  "stock_sha256": "cfbf67368fa812c6e7d51430a07518ab47d056605bf373fcc69277e540caa32e",
+  "reference_sha256": "3e7a657ae4193789b59fedc6fb0274642756b3735e6469b52c010ecce0e363fe",
+  "apk_sha256": "5c08c4908d8a198b0b079cbbe0b715fca5fdc9cdd6a5b22ae881a00949729ab0",
+  "apk_bytes": 500462624,
+  "sdk30_signer_sha256": "eedb66b037d3ef53edff1bcce9f1f81173a7b8192c97646ef12f8bbb113af6d2",
+  "feature_classes": 430,
+  "helper_classes": 220,
+  "dependency_classes": 650,
+  "unresolved_dependencies": 0,
+  "resource_ids_validated": 5,
+  "resource_ids_remapped": 0,
+  "host_dex_patched": 11,
+  "host_classes_patched": 31,
+  "host_methods_patched": 44,
+  "reviewed_menu_dictionary_entries": 396,
+  "manual_wording_corrections": 247,
+  "translated_ui_literal_sites": 239,
+  "full_suite_snapshot_passed": 1854,
+  "final_targeted_tests_passed": 12,
+  "source_recovery_byte_exact": true,
+  "unchanged_zip_entries_verified": true,
+  "device_installed": false,
+  "device_runtime_verified": false,
+  "aircraft_commands_sent": false,
+  "redfly_complete_port": false,
+  "unported": [
+    "stock login/activation kept; synthetic UID path not transferred"
+  ],
+  "excluded": [
+    "Remote ID/DroneID hooks"
+  ],
+  "exe_release_unchanged": "0.9.0",
+  "delivery_files": {
+    "DJI-Fly-RC2-1.21.8-FeaturePort-Experimental.apk": "5c08c4908d8a198b0b079cbbe0b715fca5fdc9cdd6a5b22ae881a00949729ab0",
+    "DJI-Fly-RC2-1.21.8-Original-Recovered.apk": "cfbf67368fa812c6e7d51430a07518ab47d056605bf373fcc69277e540caa32e",
+    "DJI-Fly-Vietnamese-RC2-1.21.8.apk": "ab713fc70ed73617aaae01f8d759ea6ef6ec04fd76b145da77ebd5023729cbe0",
+    "BAO-CAO.md": "ebe164beda68eaaa88a60598c0d8aa360420f6902f4624de332593ee0c21769f",
+    "patch-report.json": "c55af3693af395017005d77ccb3727659b582f3cb2122dbc9689fe447873f8ac"
+  },
+  "power_ground_guard": true,
+  "requirements_audit": "No known vulnerabilities found"
+}

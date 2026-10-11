@@ -1,5 +1,7 @@
 # RC2 Việt — công cụ Windows và launcher cho DJI RC 2
 
+**Bản thử ghép tiện ích RedFly trên Fly gốc:** đã patch/ký APK RC1.21.8 trên PC, có menu nâng cao, GPS/ATTI/VPS, radio/vùng, bản đồ, LAN, log và các hook liên quan. Chưa cài/chạy trên RC2; giữ logic đăng nhập stock và không ghép RemoteID/DroneID. Xem [báo cáo, tệp cục bộ và cách dựng lại](docs/REDFLY_FEATURE_PATCH.md). Bản thử này chưa thay EXE0.9.0/payload dùng chung.
+
 **Bản 0.9.0 dựng tiếng Việt từ chính APK đích.** Cả RC 2 và điện thoại đều dùng một luồng: tự lấy APK → kiểm tra toàn bộ tài nguyên → so sánh các nguồn bản dịch đã rà → dịch bổ sung bằng CPU trên PC → kiểm tra cấu trúc/placeholder → dựng, ký và cài RRO riêng. Không yêu cầu gói Việt hóa dựng sẵn hoặc một catalog cụ thể; khi không có bộ nhớ dịch, các mục cần dịch đi qua engine.
 
 Bộ nhớ là tham khảo tùy chọn và chỉ được tái dùng khi nguồn/contract phù hợp. Engine hỗ trợ nguồn Anh và Trung sang Việt. Tài nguyên kỹ thuật, mã, URL và tham chiếu được giữ nguyên. App chỉ đưa gói vào thiết bị khi không còn mục đủ điều kiện bị bỏ dở; lỗi model/contract tạo báo cáo và dừng trước cài. “Hoàn chỉnh” ở đây là đủ tài nguyên và hợp lệ cấu trúc, không phải cam kết mọi câu dịch máy đã được con người duyệt.

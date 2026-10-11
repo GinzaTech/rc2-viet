@@ -1,5 +1,14 @@
 # Changelog
 
+## Chưa phát hành — feature-port trên stock RC1.21.8 (11/10/2026)
+
+- Thêm recipe PC để đọc resource hai APK, chọn namespace tiện ích, đối chiếu dependency/kế thừa, ghép hook theo method/anchor, dựng helper, ký và phục hồi chính xác nguồn.
+- Dựng APK thử nghiệm từ stock1.21.8; thêm430 class tiện ích, sửa44 method của31 class trong11 DEX, thêm cầu lifecycle/menu/radio/bản đồ/LAN/log/RTH và chuyển riêng mức chặn120 m của giao diện sang range SDK.
+- Giữ AppGuard, SDK/native stock, menu LED có guard/readback và một bộ chạm hai lần. Không đưa nút LED độc lập lên HUD; loại nhánh GPS gửi UDP lặp sau SDK. Các lựa chọn radio được đồng bộ sau giao dịch helper thành công.
+- Rà396 mục chữ của tiện ích, sửa247 cách diễn đạt và thay239 vị trí literal UI; giữ literal protocol/khóa/tên file.
+- Kiểm tra650 class helper/tiện ích,0 dependency chưa giải quyết; xác minh chữ ký SDK30 và source recovery. Kiểm thử nguồn snapshot1854 ca đạt, có kiểm tra mục tiêu cho sửa cuối.
+- Không chuyển đường ghi UID tổng hợp để bỏ hạn chế đăng nhập hoặc hook RemoteID/DroneID. Không kiểm tra/cài/gửi lệnh thiết bị theo yêu cầu. Feature-port chưa đưa vào EXE0.9.0 hoặc Release dùng chung. [Báo cáo](docs/REDFLY_FEATURE_PATCH.md).
+
 ## 0.9.0 — menu theo cấu trúc APK, bổ sung bản dịch và phân tích RedFly (11/10/2026)
 
 - Menu tự đọc Application/chuỗi kế thừa từ manifest và DEX, nhận diện thao tác đổi context, giữ các bước khởi động còn lại và cấp slot DEX mới. Không khóa số phiên bản/hash nguồn Fly; hash được dùng để bind đúng đầu vào hiện hành.
