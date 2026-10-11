@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.9.0 — menu theo cấu trúc APK, bổ sung bản dịch và phân tích RedFly (11/10/2026)
+
+- Menu tự đọc Application/chuỗi kế thừa từ manifest và DEX, nhận diện thao tác đổi context, giữ các bước khởi động còn lại và cấp slot DEX mới. Không khóa số phiên bản/hash nguồn Fly; hash được dùng để bind đúng đầu vào hiện hành.
+- Mod mới mang capsule phục hồi byte-exact của chính APK nguồn. EXE khác có thể tự lấy và phục hồi nguồn từ tay, rồi replay recipe/chữ ký/payload trước khi cập nhật. Bộ nhận diện template 1.21.8 cũ được giữ cho nâng cấp lịch sử.
+- Installer đối chiếu metadata nguồn/thiết bị thay cho chặn 1.21.8; giữ sao lưu, xác nhận khi khác signer, hủy/rollback và các giới hạn nền tảng hiện có.
+- Nhận diện vai trò màn hình từ các view Home/preview/HUD, hỗ trợ đổi tên Activity. Tránh đăng ký callback quá sớm trên Application AppGuard chưa đổi context.
+- Sửa `Chế độ sin (tiểu thức chậm)` thành **Chế độ C (Tốc độ chậm)**. Bảng sửa diễn đạt ưu tiên riêng giữ ưu tiên ngữ cảnh của thuật ngữ chung.
+- Bổ sung 7 cặp nguồn/bản dịch hợp lệ từ `rc2-viet-codex-initial-release`, giữ 10.736 cặp đã có, loại 350 cặp lệch contract và 830 mục thiếu cấu trúc/nguồn. Cập nhật hash bộ nhớ và cache pipeline `complete-v3`.
+- Tải/kiểm tra SHA-256 và phân tích tĩnh RedFly RC2 1.21.10 dev56/build136 v5/v6; báo cáo ở `docs/REDFLY_ANALYSIS.md`. APK và Smali phân tích giữ trong thư mục làm việc riêng.
+- Kiểm chứng cục bộ menu trên RC 1.21.8, phone 1.21.12 và RedFly v5 1.21.10: chọn DEX23/DEX2/DEX33, giữ các entry khác, ký/replay và phục hồi đúng nguồn. Đây là bằng chứng trên PC; chưa cài/chạy các bản mới hoặc kiểm chứng tính năng vật lý trên thiết bị.
+
 ## 0.8.0 — dựng bản dịch hoàn chỉnh từ APK đích (2026-10-10)
 
 - Mọi phiên bản RC/điện thoại đều dùng bộ dựng thích ứng; bỏ nhánh cài RRO cố định1.21.8/1.21.12 và bỏ phụ thuộc các APK dịch cũ.

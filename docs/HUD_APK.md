@@ -1,14 +1,14 @@
 # HUD, menu RC và FCC trong APK mod
 
-EXE0.7.0 mở khóa số phiên bản cho **Việt hóa tài nguyên**. Profile patch mã menu/HUD mô tả dưới đây vẫn dành riêng cho FlyRC1.21.8.
+Từ EXE **0.9.0**, menu và ngôn ngữ đều phân tích APK đầu vào. Số phiên bản Fly không phải danh sách cho phép. Các phần LED/radio/xuất hình dưới đây giữ các giới hạn runtime và bằng chứng lịch sử; build thành công không chứng minh tính năng vật lý trên firmware mới.
 
-Bản cục bộ0.6.3 dành cho DJI Fly RC2 1.21.8/code3115809 trên RC331/Android11/API30. EXE nhúng Python, ADB, Java, APKtool, apksigner và zipalign; không cần cài riêng các công cụ đó. Windows vẫn cần driver USB phù hợp và tay phải cho phép USB debugging. Chưa có profile HUD điện thoại.
+Nút cài menu vẫn dành cho RC331/Android11/API30. EXE nhúng Python, ADB, Java, APKtool, apksigner và zipalign; Windows cần driver USB phù hợp và tay phải cho phép USB debugging. Tab điện thoại hiện dành cho Việt hóa, chưa có luồng cài menu điện thoại.
 
 ## Tạo và cài
 
-Nút chính **Cài / cập nhật menu** tự lấy APK DJI Fly đang cài trên RC 2 qua ADB. Không mở hộp chọn file. Hỗ trợ APK gốc1.21.8 có SHA256 `cfbf67368fa812c6e7d51430a07518ab47d056605bf373fcc69277e540caa32e`, hoặc bản HUD/menu đúng recipe và payload đã pin. Phiên bản khác, bản mod không nhận diện được, cấu trúc hoặc hash khác bị từ chối trước cài.
+Nút chính **Cài / cập nhật menu** tự lấy APK `dji.go.v5` đang cài trên RC 2 qua ADB. App đối chiếu hash/metadata/serial, tìm Application và các lớp cha trong DEX, kiểm tra điểm khởi động, ID Home/preview/HUD và vị trí DEX còn trống. Cấu trúc mơ hồ, helper lạ hoặc tài nguyên chưa nhận diện được bị dừng trước cài với lỗi tương thích.
 
-Với bản mod đã kiểm chứng, EXE dùng phần dữ liệu nén giữ nguyên trong APK trên tay và template1592400byte chứa header/đuôi ZIP cùng hai đầu vào đã sửa để tái tạo APK gốc đúng hash. EXE không nhúng toàn bộ APK468MB. Nguồn phục hồi phải khớp từng payload nén và hash toàn file; sau đó còn kiểm tra recipe HUD và chữ ký Android11 của APK kéo về. Không cần APK gốc hay cache từ PC cũ. PC mới có khóa ký khác vẫn phải xác nhận sao lưu/gỡ-cài.
+Mod mới mang `assets/rc2-menu/profile.json` và `assets/rc2-menu/recovery.zip`. Capsule lưu header/đuôi ZIP và các payload gốc đã sửa; phần còn lại được lấy từ các bytes nén không đổi của APK. Phục hồi phải khớp SHA-256 của đúng đầu vào. Capsule tự nó không cấp quyền tin cậy: app tiếp tục dựng lại toàn bộ recipe, đối chiếu helper/entry/signature. Template 1.592.400 byte cũ chỉ dùng nhận diện các bản menu 1.21.8 lịch sử. PC mới có khóa ký khác vẫn phải xác nhận sao lưu/gỡ-cài.
 
 Trong EXE chỉ còn nút **Cài / cập nhật menu**; đã bỏ hàng Nâng cao, Tạo APK HUD, Cài APK HUD, Mở thư mục HUD và Chọn APK gốc.
 
@@ -65,11 +65,13 @@ Trên Air3S đã nối: getter override0xffff0048=2,0xffff0063=0, country sky/gr
 ## Patch, ký và khóa
 
 1. Kiểm tra hash APK/toolchain và từng tệp giải nén.
-2. Trích manifest/classes.dex, thêm hook được pin vào QLVRK.onCreate, giữ loader/native hiện có.
-3. Thêm provider riêng local.rc2.hud.HudProvider, exported=false, và classes23.dex. Chỉ tiến trình Fly chính đăng ký callback Activity; chuyển nguyên event/kết quả/exception cho Window.Callback gốc.
-4. Dựng APK, giữ tài nguyên/native và DEX2–22, kiểm tra cả bytes nén entry không đổi.
+2. Đọc Application/chuỗi kế thừa; với loader có context-swap, chèn sau các bước khởi động gốc vào normal return đã xác định, giữ lớp khác trong DEX. App chuẩn dùng provider bootstrap.
+3. Thêm provider riêng `local.rc2.hud.HudProvider`, `exported=false`, và DEX tiếp theo vị trí cao nhất hiện có. Chỉ tiến trình Fly chính đăng ký callback; wrapper AppGuard chưa đổi context chờ hook cuối khởi động. Chuyển nguyên event/kết quả/exception cho Window.Callback gốc.
+4. Dựng APK và capsule nguồn, giữ bytes tài nguyên/native/DEX khác và kiểm tra cả dữ liệu nén entry không đổi.
 5. Zipalign, ký v3 bằng khóa riêng Windows, kiểm tra signer API30. Phần v2 gốc giữ làm đầu vào native loader, không được mô tả là chữ ký hợp lệ của APK mod.
-6. Receipt ghi hash nguồn/đầu ra/toolchain/payload/chứng thư công khai. Trước cài, dựng lại recipe và xác minh manifest/DEX/signer. Payload lịch sử được pin chỉ nhận diện bản đang cài khi nâng cấp; ứng viên mới phải dùng payload hiện tại.
+6. Receipt schema2 ghi hash nguồn/đầu ra/toolchain/payload/capsule, identity và plan theo cấu trúc. Trước cài, dựng lại recipe và xác minh manifest/DEX/signer. Payload lịch sử chỉ nhận diện bản đang cài khi nâng cấp; ứng viên mới phải dùng payload hiện tại.
+
+Kiểm chứng 0.9.0 trên PC: Fly RC1.21.8 dùng Application `QLVRK`/DEX23; Fly phone1.21.12 dùng `RGTYT`, giữ bước `callBS` và 1.626 lớp khác/DEX2; RedFly v5 1.21.10 dùng Application chuẩn kế thừa `UAVApplication`/DEX33. Cả ba ký/replay được và phục hồi đúng hash nguồn. [Báo cáo](adaptive-menu-verification.json). Không dùng kết quả này để xác nhận cài/LED/FCC/HDMI trên tay.
 
 Khóa ở `%LOCALAPPDATA%\RC2Vietnamese\hud-signing`, ngoài EXE/repo; DPAPI bảo vệ mật khẩu, quyền chỉ chủ tài khoản và SYSTEM. Không chia sẻ khóa/backup/log thiết bị. APK của PC khác có thể khác hash.
 

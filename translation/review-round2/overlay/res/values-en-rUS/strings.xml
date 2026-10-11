@@ -1621,7 +1621,7 @@ Ghi chú: Một số mô hình máy bay có thể có giới hạn trong việc 
     <string name="fpv_basic_flight_chips_temperature_dangerous_poweroff_dialogue_ok_btn">Đồng ý</string>
     <string name="fpv_basic_flight_chips_temperature_warning_rth_dialogue_ok_btn">Đồng ý</string>
     <string name="fpv_basic_flight_cinesmooth_mode">Chế độ C</string>
-    <string name="fpv_basic_flight_cinesmooth_mode_toast">Chế độ sin (tiểu thức chậm)</string>
+    <string name="fpv_basic_flight_cinesmooth_mode_toast">Chế độ C (Tốc độ chậm)</string>
     <string name="fpv_basic_flight_cruise_control_end_toast">Tắt khả năng điều khiển từ xa</string>
     <string name="fpv_basic_flight_cruise_control_reset_toast">Đã cập nhật tốc độ bay giữ ổn định</string>
     <string name="fpv_basic_flight_cruise_control_start_fail_flight_mode_not_support_toast">Không có điều khiển cáp trong chế độ bay hiện thời</string>
@@ -9442,7 +9442,7 @@ Bạn có thể vào hồ sơ &gt; Thiết lập &gt; Bắt đầu lại Hướn
     <string name="fpv_setting_control_advance_flight_gear_a_description_description">Định vị GNSS bị tắt và máy bay không thể giữ vị trí chính xác. Sử dụng thận trọng</string>
     <string name="fpv_setting_control_advance_flight_gear_a_description_title">Chế độ ATTI (A):</string>
     <string name="fpv_setting_control_advance_flight_gear_c_description_description">Tốc độ máy bay được giới hạn so với chế độ Thường để ổn định hơn khi chụp hoặc quay</string>
-    <string name="fpv_setting_control_advance_flight_gear_c_description_title">Chế độ quay phim (C):</string>
+    <string name="fpv_setting_control_advance_flight_gear_c_description_title">Chế độ C (Tốc độ chậm):</string>
     <string name="fpv_setting_control_advance_flight_gear_n_description_description">Hệ thống định vị GNSS hoạt động bình thường</string>
     <string name="fpv_setting_control_advance_flight_gear_n_description_title">Chế độ Thường (N):</string>
     <string name="fpv_setting_control_advance_flight_gear_s_description_description">Máy bay phản hồi nhanh hơn với chuyển động của cần điều khiển. Định vị GNSS hoạt động bình thường nhưng tránh chướng ngại vật bị tắt. Sử dụng thận trọng</string>
@@ -9485,7 +9485,7 @@ Bạn có thể vào hồ sơ &gt; Thiết lập &gt; Bắt đầu lại Hướn
     <string name="fpv_setting_control_aircraft_mode_normal_description_list">Định vị vệ tinh và cảm biến hình ảnh phía dưới hoạt động bình thường</string>
     <string name="fpv_setting_control_aircraft_mode_sport_description_list">Khi bật, tốc độ máy bay tăng đáng kể. Bay thận trọng.</string>
     <string name="fpv_setting_control_aircraft_mode_tripod_description_list">Khi bật, máy bay giảm tốc và tăng quãng đường phanh để chụp hoặc quay phim hơn.</string>
-    <string name="fpv_setting_control_aircraft_mode_tripod_list">Chế độ quay phim</string>
+    <string name="fpv_setting_control_aircraft_mode_tripod_list">Chế độ C (Tốc độ chậm)</string>
     <string name="fpv_setting_control_auto_composition_content">Khi bật, máy bay tự điều chỉnh vị trí chủ thể trong khung hình theo hướng chuyển động khi dùng ActiveTrack, Spotlight hoặc POI</string>
     <string name="fpv_setting_control_auto_composition_topic">Tự động căn bố cục chủ thể</string>
     <string name="fpv_setting_control_camera_mode_single_camera_title">Một ống kính</string>

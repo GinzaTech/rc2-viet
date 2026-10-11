@@ -96,7 +96,7 @@
   "Waypoint": "Điểm bay",
   "Waypoints": "Các điểm bay",
   "Waypoint Flight": "Bay theo điểm đặt trước",
-  "Cine Mode": "Chế độ quay mượt",
+  "Cine Mode": "Chế độ C (Tốc độ chậm)",
   "Normal Mode": "Chế độ thường",
   "Sport Mode": "Chế độ thể thao",
   "Tripod Mode": "Chế độ bay chậm",
@@ -120,5 +120,8 @@
   "Calibration": "Hiệu chuẩn",
   "Safety": "An toàn",
   "Control": "Điều khiển",
-  "Settings": "Cài đặt"
+  "Settings": "Cài đặt",
+  "Cine mode": "Chế độ C (Tốc độ chậm)",
+  "Cine mode (slow speed)": "Chế độ C (Tốc độ chậm)",
+  "Cine mode (C):": "Chế độ C (Tốc độ chậm):"
 }

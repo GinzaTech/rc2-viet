@@ -63,17 +63,21 @@ def compressed_offset(archive,entry):
     return offset
 
 
-def recipe_value(template):
+def recipe_value(template, *, expected_digest=None, changed=CHANGED,
+                 max_literal=MAX_LITERAL, schema=1):
+    if expected_digest is None: expected_digest = SUPPORTED_APK
     if template.namelist()!=['recipe.json','literals.bin']:
         raise ValueError('Invalid source recovery template entries')
     if template.getinfo('recipe.json').file_size>8*1024*1024:
         raise ValueError('Oversized source recovery template recipe')
     value=_json_object(template.read('recipe.json'))
     required={'schema','stock_sha256','stock_size','literal_size','entries','prefix_size','prefix_literal'}
-    if set(value)!=required or type(value['schema']) is not int or value['schema']!=1:
+    if schema == 2: required |= {'changed'}
+    if set(value)!=required or type(value['schema']) is not int or value['schema']!=schema:
         raise ValueError('Invalid stock recovery recipe schema')
-    if value['stock_sha256']!=SUPPORTED_APK:raise ValueError('Unpinned stock recovery source')
-    for key,limit in [('stock_size',1024*1024*1024),('literal_size',MAX_LITERAL),('prefix_size',MAX_LITERAL)]:
+    if value['stock_sha256']!=expected_digest:raise ValueError('Unpinned stock recovery source')
+    if schema == 2 and value['changed'] != sorted(changed): raise ValueError('Invalid changed inventory')
+    for key,limit in [('stock_size',1536*1024*1024 if schema == 2 else 1024*1024*1024),('literal_size',max_literal),('prefix_size',max_literal)]:
         if type(value[key]) is not int or not 0<=value[key]<=limit:raise ValueError('Invalid recipe size')
     if not value['stock_size'] or value['literal_size']!=template.getinfo('literals.bin').file_size:
         raise ValueError('Invalid template literal size')
@@ -97,14 +101,14 @@ def recipe_value(template):
                 or not re.fullmatch('[0-9a-f]{64}',row['compressed_sha256'])):
             raise ValueError('Invalid recipe layout or metadata')
         literal+=row['header_size']
-        if name in CHANGED:
+        if name in changed:
             if row['payload_literal']!=literal:raise ValueError('Invalid changed payload literal')
             literal+=row['compressed_size']
         elif row['payload_literal']!=-1:raise ValueError('Unexpected payload literal')
         if row['suffix_literal']!=literal:raise ValueError('Invalid recipe suffix')
         literal+=row['suffix_size']
         output+=row['header_size']+row['compressed_size']+row['suffix_size']
-    if output!=value['stock_size'] or literal!=value['literal_size'] or not CHANGED<=seen:
+    if output!=value['stock_size'] or literal!=value['literal_size'] or not changed<=seen:
         raise ValueError('Invalid completed recipe layout')
     return value
 

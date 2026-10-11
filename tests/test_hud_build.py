@@ -96,7 +96,7 @@ def project(tmp_path, monkeypatch):
     monkeypatch.setattr(backend, 'HudTools', FakeTools)
     monkeypatch.setattr(backend, 'HudKeyStore', FakeKeys)
     events = []
-    builder = backend.HudBuilder(tmp_path / 'assets', tmp_path / 'work with spaces',
+    builder = backend.LegacyHudBuilder(tmp_path / 'assets', tmp_path / 'work with spaces',
                                  lambda *event: events.append(event))
     return builder, source, events
 

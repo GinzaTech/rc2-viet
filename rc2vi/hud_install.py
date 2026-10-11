@@ -25,7 +25,7 @@ def _verified_artifact(builder, reference, cancel=None, historical=False):
         value = verifier(reference)
         required = {'apk', 'digest', 'source_digest', 'certificate_sha256'}
         if (not isinstance(value, dict) or not required.issubset(value)
-                or value['source_digest'] != SUPPORTED_APK
+                or not isinstance(value['source_digest'],str) or not HASH.fullmatch(value['source_digest'])
                 or not isinstance(value['digest'], str) or not HASH.fullmatch(value['digest'])
                 or not isinstance(value['certificate_sha256'], str)
                 or not HASH.fullmatch(value['certificate_sha256'])):
@@ -33,7 +33,15 @@ def _verified_artifact(builder, reference, cancel=None, historical=False):
         path = guard_path(value['apk'])
         if sha256_file(path, cancel) != value['digest']:
             raise ValueError('SHA-256 của APK HUD cần cài không khớp.')
-        return {**{key: value[key] for key in required}, 'apk': str(path), 'receipt': str(reference)}
+        extra={}
+        if 'source_identity' in value:
+            identity=value['source_identity']
+            if (not isinstance(identity,dict) or set(identity)!={'package','application','version','code'}
+                    or identity['package']!=PACKAGE or not isinstance(identity['version'],str)
+                    or not identity['version'] or type(identity['code']) is not int or not 0<identity['code']<2**31):
+                raise ValueError('Thông tin APK nguồn của menu không hợp lệ.')
+            extra['source_identity']=dict(identity)
+        return {**{key: value[key] for key in required}, **extra, 'apk': str(path), 'receipt': str(reference)}
     except (OSError, ValueError, RuntimeError, KeyError, TypeError):
         check_cancel(cancel)
         raise ValueError('Không kiểm chứng được biên nhận hoặc tính toàn vẹn của APK HUD.') from None
@@ -245,9 +253,12 @@ uncertain or incomplete recovery returns hud_recovery_required and a private rep
         return candidate
 
     def _known(self, digest, candidate):
-        if digest in {SUPPORTED_APK, HUD_APK, candidate['digest']}:
+        if digest in {candidate['source_digest'], candidate['digest']}:
             return
-        self.trusted_artifact(digest)
+        if candidate['source_digest']==SUPPORTED_APK and digest==HUD_APK:return
+        verified=self.trusted_artifact(digest)
+        if verified['source_digest']!=candidate['source_digest']:
+            raise ValueError('Menu không được dựng từ APK hiện đang cài; hãy tự lấy lại APK từ tay.')
 
     def _foreground(self, adb):
         output = adb.shell('dumpsys activity activities | grep mResumedActivity')
@@ -295,10 +306,11 @@ uncertain or incomplete recovery returns hud_recovery_required and a private rep
         version = re.findall(r'\bversionName=([^\s]+)', info)
         code = re.findall(r'\bversionCode=(\d+)', info)
         uid = re.findall(r'\buserId=(\d+)', info)
-        if version != ['1.21.8'] or code != ['3115809'] or len(uid) != 1:
-            raise ValueError('Chỉ hỗ trợ DJI Fly 1.21.8, mã phiên bản 3115809.')
+        if (len(version)!=1 or not version[0] or len(version[0])>128 or len(code)!=1
+                or not 0<int(code[0])<2**31 or len(uid)!=1):
+            raise ValueError('Không đọc được metadata hợp lệ của DJI Fly đang cài.')
         return {'serial': adb.serial, 'apk_path': path, 'digest': remote_digest(adb, path),
-                'uid': valid_uid(int(uid[0]))}
+                'uid': valid_uid(int(uid[0])), 'version':version[0], 'code':int(code[0])}
 
     def _helper(self, required=True):
         root = guard_path(self.assets / 'hud')
@@ -382,6 +394,9 @@ uncertain or incomplete recovery returns hud_recovery_required and a private rep
             self._device(bound)
             snapshot = self._installed(bound)
             self._known(snapshot['digest'], candidate)
+            expected=candidate.get('source_identity')
+            if expected and (snapshot['version']!=expected['version'] or snapshot['code']!=expected['code']):
+                raise ValueError('Metadata DJI Fly đang cài khác APK nguồn đã kiểm chứng; hãy lấy lại APK từ tay.')
             if snapshot['digest'] == candidate['digest']:
                 return {'status': 'hud_already_installed', 'serial': serial, 'digest': candidate['digest']}
             enabled = self._overlay_enabled(bound)

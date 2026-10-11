@@ -100,8 +100,7 @@ final class DeviceMenu implements ViewTreeObserver.OnGlobalLayoutListener {
     public void onGlobalLayout() {
         if(!active) return;
         View anchor=null;
-        for(String name:new String[]{"main_page_ui_state_startfly_btn","main_page_ui_device_disconnect_state_button",
-                "direct_enter_fpv_view","layout_direct_enter_fpv","connection_guide_enter_fpv_button"}) {
+        for(String name:ScreenRoles.HOME) {
             int id=activity.getResources().getIdentifier(name,"id","dji.go.v5");
             View found=id==0?null:root.findViewById(id);
             if(found!=null && found.isShown() && found.getGlobalVisibleRect(bounds) && bounds.width()>dp(48)) { anchor=found; break; }

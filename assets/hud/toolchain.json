@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "archive_sha256": "9073e8644213b70fb1eaac237889129523f49715df0c39ab23df9a752e9dd95f",
+  "archive_sha256": "420b1c1fb5a882d5aabf059161648f9f53ed5ebc6a77d09f148c4c0ae9e1944a",
   "files": {
     "bin/zipalign.exe": "e067e7333ffbb305eefa510e42ccda8589fefd66a040e95e43a216f1e558c2d2",
     "java/bin/api-ms-win-core-console-l1-1-0.dll": "6f7890c0e81b4b9aa878e989d3b605a23460a300699fc5728fceefa7a57ea594",
@@ -147,7 +147,7 @@
     "java/release": "f524f30ca50e5bfdd3e60ea32a4a7a411e5c8ac637e0ac162d57a473fd95ee0b",
     "lib/apksigner.jar": "71e18adf733f5e112d1f062dbe6b0c2eb439a4d7c773d083c42a703c66f56df1",
     "lib/apktool.jar": "66cf4524a4a45a7f56567d08b2c9b6ec237bcdd78cee69fd4a59c8a0243aeafa",
-    "lib/hud-tool.jar": "caa128dba4095257d74385587e1301a5f7035a95603308f1922e5ada20a4fe91",
+    "lib/hud-tool.jar": "795e4094b18717e5e4189e921295ae638383da0c052f67f9a3bc0327c06dec3e",
     "licenses/ANDROID_BUILD_TOOLS_NOTICE.txt": "cad05d19ff8b3665963952c358ba6be3a488e1f7038095187a84e12bd0948016",
     "licenses/apktool_2.12.1-LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
     "licenses/apktool_2.12.1-LICENSE.txt": "1026f64d432cae95d3ab3a850b8e273bef961682c8259e914ca406e5f9c35b09",

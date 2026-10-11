@@ -20,7 +20,7 @@ def menu_classes(tmp_path_factory):
     source = ROOT / "android-hud/src/local/rc2/hud"
     files = sorted(FIXTURE.rglob("*.java")) + [
         source / f"{name}.java"
-        for name in ("DeviceMenu", "MenuPlacement", "GroundGate", "LedJob")
+        for name in ("DeviceMenu", "MenuPlacement", "GroundGate", "LedJob", "ScreenRoles")
     ]
     gc.collect()
     result = subprocess.run(

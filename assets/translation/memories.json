@@ -3,15 +3,23 @@
   "files": {
     "catalog.json": {
       "kind": "catalog",
-      "sha256": "f8efb85dc2b8920db255297e0fe225c2a5c0be70916701d5b49ebdf145a02ddd"
+      "sha256": "142c9eaaaa62152bb53d7187c790b613775941f4c307ada3e83d83d69469e205"
     },
     "memory/phone.json": {
       "kind": "catalog",
-      "sha256": "43151df6e6c13a2c27b858a65ebe8ed9c412026c2db409746b99c03571163fdf"
+      "sha256": "1ea2599f0980d9111d1f304608e87929f8f57a0670ceb8f21ce6902526f09765"
     },
     "overrides.json": {
       "kind": "text",
-      "sha256": "5e350fe17ee93ae2e79a727fc583bb4d9b272c17752e53d870f8a13c691eb45c"
+      "sha256": "2554a18584ae6e226c0e1900c9697de1bc2ba90ad9038fe0b5ff49d53b591bec"
+    },
+    "memory/rc12110-supplement.json": {
+      "kind": "catalog",
+      "sha256": "f9043a46b3c7f190e4ed7fe4e367369c502ef25289c355818066babdff7d92b9"
+    },
+    "wording.json": {
+      "kind": "text",
+      "sha256": "3320b424ac06639cdbd0c79eb6631616096047f08012f40a547603d022596df0"
     }
   }
 }

@@ -14,8 +14,9 @@ PORTABLE = 'RC2-TiengViet-Portable.zip'
 REPORT = 'release-verification.json'
 SUMS = 'SHA256SUMS.txt'
 STOCK_APK_SHA256 = 'cfbf67368fa812c6e7d51430a07518ab47d056605bf373fcc69277e540caa32e'
-FLAGS = {'version': '0.8.0-local', 'hud_pipeline_bundled': True,
+FLAGS = {'version': '0.9.0-local', 'hud_pipeline_bundled': True,
          'hud_menu_patch_one_click': True,
+         'menu_version_independent': True, 'per_apk_recovery_capsule': True,
          'translation_version_independent': True, 'translation_complete_required': True,
          'local_translation_engine_bundled_in_portable': True, 'translation_device_tested': False,
          'hud_source_from_device': True, 'stock_recovery_template_bundled': True,
@@ -25,7 +26,9 @@ FLAGS = {'version': '0.8.0-local', 'hud_pipeline_bundled': True,
 DOCS = {'README.md': 'README.md', 'THIRD_PARTY_NOTICES.md': 'THIRD_PARTY_NOTICES.md',
         'CHANGELOG.md': 'CHANGELOG.md', 'docs/VIETNAMESE.md': 'docs/VIETNAMESE.md',
         'docs/ANDROID_PHONE.md': 'docs/ANDROID_PHONE.md',
-        'docs/HUD_APK.md': 'docs/HUD_APK.md', 'docs/FREEFCC_LICENSE.txt': 'docs/FREEFCC_LICENSE.txt'}
+        'docs/HUD_APK.md': 'docs/HUD_APK.md', 'docs/FREEFCC_LICENSE.txt': 'docs/FREEFCC_LICENSE.txt',
+        'docs/REDFLY_ANALYSIS.md': 'docs/REDFLY_ANALYSIS.md',
+        'docs/adaptive-menu-verification.json': 'docs/adaptive-menu-verification.json'}
 PRIVATE = re.compile(r'private|backup|stock|input|signer|signing|credential|secret|password|cookie|token|camera|account', re.I)
 
 

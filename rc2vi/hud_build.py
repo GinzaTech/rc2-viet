@@ -32,7 +32,7 @@ def _write_json(path: Path, value: dict) -> None:
         json.dump(value, output, sort_keys=True)
 
 
-class HudBuilder:
+class LegacyHudBuilder:
     """Build exact stock only. Successful results contain paths, public hashes only.
 
     ``verify(receipt)`` reproduces the bootstrap patch from the retained pinned
@@ -300,3 +300,27 @@ class HudBuilder:
                 or not re.fullmatch(r'builds/[0-9a-f]{32}/receipt\.json', value['receipt'])):
             raise ValueError('Invalid HUD latest receipt pointer.')
         return self.verify(self.work / value['receipt'])
+
+
+class HudBuilder(LegacyHudBuilder):
+    """Public builder: structural new builds, exact legacy recipe recognition."""
+
+    def build(self, source: Path) -> dict:
+        from .hud_adaptive_build import AdaptiveBuild
+        return AdaptiveBuild(self).build(Path(source))
+
+    def verify(self, receipt: Path, allow_historical=False) -> dict:
+        path = self._receipt(Path(receipt))
+        if load_json(path).get('schema') == 2:
+            from .hud_adaptive_build import AdaptiveBuild
+            return AdaptiveBuild(self).verify(path, allow_historical)
+        return super().verify(path, allow_historical)
+
+    def verify_device_apk(self, path: Path, stock: Path) -> dict:
+        from .hud_capsule import PROFILE_ENTRY
+        with ZipFile(path) as archive:
+            adaptive = PROFILE_ENTRY in archive.namelist()
+        if adaptive:
+            from .hud_adaptive_build import AdaptiveBuild
+            return AdaptiveBuild(self).verify_device(Path(path), Path(stock))
+        return super().verify_device_apk(path, stock)

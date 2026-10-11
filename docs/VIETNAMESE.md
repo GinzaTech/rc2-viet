@@ -1,5 +1,11 @@
 # Chi tiết gói tiếng Việt DJI Fly
 
+## 0.9.0: dữ liệu bổ sung và sửa cách diễn đạt
+
+`rc2-viet-codex-initial-release` cung cấp thêm bộ nhớ nguồn/bản dịch. Script `scripts/import_translation_memory.py` chỉ nhận cặp chuỗi thuần có nguồn, kiểm tra contract và giữ cặp hiện tại khi trùng; dữ liệu thiếu cấu trúc của mảng/plural/markup không được đoán lại. Kết quả nhập có 7 cặp bổ sung, provenance và hash riêng trong `assets/translation/memory/`.
+
+Nhãn `Cine mode (slow speed)` được sửa thành **Chế độ C (Tốc độ chậm)** trong XML, bộ nhớ RC/điện thoại và thuật ngữ. `assets/translation/wording.json` là bảng sửa diễn đạt có ưu tiên trước bộ nhớ cũ; thuật ngữ thông thường vẫn giữ ưu tiên của bản dịch theo ngữ cảnh. D-Cinelike được giữ là tên hồ sơ màu. Manifest bộ nhớ có pin mới và pipeline cache là `complete-v3`, nên gói cũ không che mất thay đổi.
+
 ## Từ 0.8.0: bộ dựng theo APK đích
 
 Luồng áp dụng luôn đọc toàn bộ nguồn tài nguyên của APK hiện tại. Không cần một APK Việt hóa hoặc catalog của phiên bản cố định. Các gói/memory đã rà được so sánh về nội dung và contract; mâu thuẫn không tự chọn bừa. Không tìm được bản dịch phù hợp thì engine CPU bổ sung từ nguồn Anh hoặc Trung. Bộ nhớ có thể vắng mặt hoàn toàn.

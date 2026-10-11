@@ -27,6 +27,7 @@ def setup_source(tmp_path,monkeypatch):
     stock_hash=hashlib.sha256(stock).hexdigest()
     monkeypatch.setattr(source,'SUPPORTED_APK',stock_hash)
     monkeypatch.setattr(source,'make_private',lambda *a,**k:None)
+    monkeypatch.setattr(source,'source_kind',lambda path:'legacy')
     transport=Transport(stock)
     snapshot={'serial':'RC','apk_path':'/data/app/dji.go.v5/base.apk',
               'digest':stock_hash,'uid':10029}

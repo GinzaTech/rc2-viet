@@ -1,0 +1,299 @@
+{
+  "schema": 1,
+  "release": "0.9.0",
+  "date": "2026-10-11",
+  "source_tests_passed": 1822,
+  "python_coverage_percent": 88.27,
+  "post_review_android_tests_passed": 60,
+  "device_runtime_tested": false,
+  "translation_machine_meaning_verified": false,
+  "apk_builds": [
+    {
+      "label": "rc8",
+      "version": "1.21.8",
+      "source_sha256": "cfbf67368fa812c6e7d51430a07518ab47d056605bf373fcc69277e540caa32e",
+      "apk_sha256": "654260c724e575fe47192c1e780ae0344d84d64fb5b1461cd8b4aa1d2d64b7b3",
+      "signer_sha256": "eedb66b037d3ef53edff1bcce9f1f81173a7b8192c97646ef12f8bbb113af6d2",
+      "payload_sha256": "83362ab740c7522265d4fee876b2a75cc7f6fd0b7efe096ba92da21a5fbf5ba0",
+      "changes": {
+        "added": [
+          "assets/rc2-menu/profile.json",
+          "assets/rc2-menu/recovery.zip",
+          "classes23.dex"
+        ],
+        "changed": [
+          "AndroidManifest.xml",
+          "classes.dex"
+        ]
+      },
+      "plan": {
+        "aircraft_api_runtime_verification_required": true,
+        "application_descriptor": "Lcom/AppGuard/AppGuard/QLVRK;",
+        "bootstrap": {
+          "class_count": 5,
+          "descriptor": "Lcom/AppGuard/AppGuard/QLVRK;",
+          "entry": "classes.dex",
+          "mode": "context_swap"
+        },
+        "device_runtime_verified": false,
+        "helper_entry": "classes23.dex",
+        "identity": {
+          "application": "com.AppGuard.AppGuard.QLVRK",
+          "code": 3115809,
+          "package": "dji.go.v5",
+          "version": "1.21.8"
+        },
+        "retain_loader_v2": true,
+        "revision": "structural-menu-v1",
+        "source_digest": "cfbf67368fa812c6e7d51430a07518ab47d056605bf373fcc69277e540caa32e",
+        "ui": {
+          "home": [
+            "main_page_ui_state_startfly_btn",
+            "main_page_ui_device_disconnect_state_button",
+            "direct_enter_fpv_view",
+            "layout_direct_enter_fpv",
+            "connection_guide_enter_fpv_button"
+          ],
+          "hud": [
+            "top_bar_shell_layout",
+            "osd_shell_top_layout",
+            "osd_shell_layout",
+            "left_bar_shell_layout",
+            "right_bar_shell_layout",
+            "map_shell_layout",
+            "radar_shell_layout",
+            "histogram_shell_layout",
+            "zoom_focus_layer_layout",
+            "right_bottom_shell_layout",
+            "attitude_bar_shell_layout",
+            "osd_shell_top_child_layout",
+            "portrait_right_bar_shell_layout",
+            "metering_shell_layout",
+            "gimbal_shell_layout"
+          ],
+          "preview": [
+            "view_surface"
+          ]
+        }
+      },
+      "roundtrip_sha256": "cfbf67368fa812c6e7d51430a07518ab47d056605bf373fcc69277e540caa32e",
+      "device_recipe_replayed": true,
+      "runtime_device_tested": false
+    },
+    {
+      "label": "phone12",
+      "version": "1.21.12",
+      "source_sha256": "1da8d5b2ee5cdcb6002131b8f6535605e7445080d1ca6f8411067a0d1524ce0b",
+      "apk_sha256": "4465c98483e2d4a8b64481cd8cfc2a54f8ee522608b17d0129e31ec03d18f8aa",
+      "signer_sha256": "eedb66b037d3ef53edff1bcce9f1f81173a7b8192c97646ef12f8bbb113af6d2",
+      "payload_sha256": "83362ab740c7522265d4fee876b2a75cc7f6fd0b7efe096ba92da21a5fbf5ba0",
+      "changes": {
+        "added": [
+          "assets/rc2-menu/profile.json",
+          "assets/rc2-menu/recovery.zip",
+          "classes2.dex"
+        ],
+        "changed": [
+          "AndroidManifest.xml",
+          "classes.dex"
+        ]
+      },
+      "plan": {
+        "aircraft_api_runtime_verification_required": true,
+        "application_descriptor": "Lcom/AppGuard/AppGuard/RGTYT;",
+        "bootstrap": {
+          "class_count": 1627,
+          "descriptor": "Lcom/AppGuard/AppGuard/RGTYT;",
+          "entry": "classes.dex",
+          "mode": "context_swap"
+        },
+        "device_runtime_verified": false,
+        "helper_entry": "classes2.dex",
+        "identity": {
+          "application": "com.AppGuard.AppGuard.RGTYT",
+          "code": 3131451,
+          "package": "dji.go.v5",
+          "version": "1.21.12"
+        },
+        "retain_loader_v2": true,
+        "revision": "structural-menu-v1",
+        "source_digest": "1da8d5b2ee5cdcb6002131b8f6535605e7445080d1ca6f8411067a0d1524ce0b",
+        "ui": {
+          "home": [
+            "main_page_ui_state_startfly_btn",
+            "main_page_ui_device_disconnect_state_button",
+            "direct_enter_fpv_view",
+            "layout_direct_enter_fpv",
+            "connection_guide_enter_fpv_button"
+          ],
+          "hud": [
+            "top_bar_shell_layout",
+            "osd_shell_top_layout",
+            "osd_shell_layout",
+            "left_bar_shell_layout",
+            "right_bar_shell_layout",
+            "map_shell_layout",
+            "radar_shell_layout",
+            "histogram_shell_layout",
+            "zoom_focus_layer_layout",
+            "right_bottom_shell_layout",
+            "attitude_bar_shell_layout",
+            "osd_shell_top_child_layout",
+            "portrait_right_bar_shell_layout",
+            "metering_shell_layout",
+            "gimbal_shell_layout"
+          ],
+          "preview": [
+            "view_surface"
+          ]
+        }
+      },
+      "roundtrip_sha256": "1da8d5b2ee5cdcb6002131b8f6535605e7445080d1ca6f8411067a0d1524ce0b",
+      "device_recipe_replayed": true,
+      "runtime_device_tested": false
+    },
+    {
+      "label": "redfly10",
+      "version": "1.21.10",
+      "source_sha256": "3e7a657ae4193789b59fedc6fb0274642756b3735e6469b52c010ecce0e363fe",
+      "apk_sha256": "408c70b3100c82644dcc3e8c63ecfce6db9771d59522d6afdac2133dcc3f753e",
+      "signer_sha256": "eedb66b037d3ef53edff1bcce9f1f81173a7b8192c97646ef12f8bbb113af6d2",
+      "payload_sha256": "83362ab740c7522265d4fee876b2a75cc7f6fd0b7efe096ba92da21a5fbf5ba0",
+      "changes": {
+        "added": [
+          "assets/rc2-menu/profile.json",
+          "assets/rc2-menu/recovery.zip",
+          "classes33.dex"
+        ],
+        "changed": [
+          "AndroidManifest.xml"
+        ]
+      },
+      "plan": {
+        "aircraft_api_runtime_verification_required": true,
+        "application_descriptor": "Lcom/dji/component/application/DJIApplication;",
+        "bootstrap": {
+          "class_count": 90,
+          "descriptor": "Lcom/dji/component/application/DJIApplication;",
+          "entry": "classes23.dex",
+          "mode": "provider"
+        },
+        "device_runtime_verified": false,
+        "helper_entry": "classes33.dex",
+        "identity": {
+          "application": "com.dji.component.application.DJIApplication",
+          "code": 3115981,
+          "package": "dji.go.v5",
+          "version": "1.21.10"
+        },
+        "retain_loader_v2": false,
+        "revision": "structural-menu-v1",
+        "source_digest": "3e7a657ae4193789b59fedc6fb0274642756b3735e6469b52c010ecce0e363fe",
+        "ui": {
+          "home": [
+            "main_page_ui_state_startfly_btn",
+            "main_page_ui_device_disconnect_state_button",
+            "direct_enter_fpv_view",
+            "layout_direct_enter_fpv",
+            "connection_guide_enter_fpv_button"
+          ],
+          "hud": [
+            "top_bar_shell_layout",
+            "osd_shell_top_layout",
+            "osd_shell_layout",
+            "left_bar_shell_layout",
+            "right_bar_shell_layout",
+            "map_shell_layout",
+            "radar_shell_layout",
+            "histogram_shell_layout",
+            "zoom_focus_layer_layout",
+            "right_bottom_shell_layout",
+            "attitude_bar_shell_layout",
+            "osd_shell_top_child_layout",
+            "portrait_right_bar_shell_layout",
+            "metering_shell_layout",
+            "gimbal_shell_layout"
+          ],
+          "preview": [
+            "view_surface"
+          ]
+        }
+      },
+      "roundtrip_sha256": "3e7a657ae4193789b59fedc6fb0274642756b3735e6469b52c010ecce0e363fe",
+      "device_recipe_replayed": true,
+      "runtime_device_tested": false
+    }
+  ],
+  "translation_builds": [
+    {
+      "label": "rc8",
+      "version": "1.21.8",
+      "profile_sdk": 30,
+      "source_sha256": "cfbf67368fa812c6e7d51430a07518ab47d056605bf373fcc69277e540caa32e",
+      "overlay_sha256": "ab713fc70ed73617aaae01f8d759ea6ef6ec04fd76b145da77ebd5023729cbe0",
+      "pipeline": "complete-v3",
+      "complete": true,
+      "reviewed": 10801,
+      "machine": 512,
+      "eligible_total": 11313,
+      "unresolved": 0,
+      "compiled_wording_readback": {
+        "fpv_basic_flight_cinesmooth_mode_toast": "Chế độ C (Tốc độ chậm)",
+        "fpv_setting_control_advance_flight_gear_c_description_title": "Chế độ C (Tốc độ chậm):",
+        "fpv_setting_control_aircraft_mode_tripod_list": "Chế độ C (Tốc độ chậm)"
+      }
+    },
+    {
+      "label": "phone12",
+      "version": "1.21.12",
+      "profile_sdk": 35,
+      "source_sha256": "1da8d5b2ee5cdcb6002131b8f6535605e7445080d1ca6f8411067a0d1524ce0b",
+      "overlay_sha256": "d47a1265494e68dca416470284acc40ec8789a1b4bb0f71090c5c1a7e74c8295",
+      "pipeline": "complete-v3",
+      "complete": true,
+      "reviewed": 10801,
+      "machine": 514,
+      "eligible_total": 11315,
+      "unresolved": 0,
+      "compiled_wording_readback": {
+        "fpv_basic_flight_cinesmooth_mode_toast": "Chế độ C (Tốc độ chậm)",
+        "fpv_setting_control_advance_flight_gear_c_description_title": "Chế độ C (Tốc độ chậm):",
+        "fpv_setting_control_aircraft_mode_tripod_list": "Chế độ C (Tốc độ chậm)"
+      }
+    }
+  ],
+  "audit": {
+    "dependency-audit": {
+      "dependencies": 12,
+      "known_vulnerabilities": 0
+    },
+    "engine-dependency-audit": {
+      "dependencies": 4,
+      "known_vulnerabilities": 0
+    }
+  },
+  "frozen_exe": {
+    "sha256": "5f394b2e5dbaaa54b0efb6306f921490e7b8566847e041f509629cb162eb819f",
+    "bytes": 94321373,
+    "gui_smoke_passed": true,
+    "java_sdk_on_path": false,
+    "menu_build": {
+      "status": "hud_built",
+      "source_identity": {
+        "application": "com.AppGuard.AppGuard.QLVRK",
+        "code": 3115809,
+        "package": "dji.go.v5",
+        "version": "1.21.8"
+      },
+      "payload_sha256": "83362ab740c7522265d4fee876b2a75cc7f6fd0b7efe096ba92da21a5fbf5ba0",
+      "schema": 2
+    },
+    "translation_without_memory": {
+      "version": "99.0.1",
+      "complete": true,
+      "machine": 4,
+      "reviewed": 0,
+      "unresolved": 0
+    }
+  }
+}

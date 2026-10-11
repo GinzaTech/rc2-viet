@@ -31,6 +31,7 @@ class Builder:
         self.result = {'status': 'hud_built', 'apk': str(path),
                        'digest': hashlib.sha256(path.read_bytes()).hexdigest(),
                        'source_digest': SUPPORTED_APK, 'certificate_sha256': 'c' * 64,
+                       'source_identity': {'package':'dji.go.v5','application':'example.Boot','version':'1.21.8','code':3115809},
                        'receipt': str(path.with_suffix('.json'))}
         self.fail = False
         self.verifications = []

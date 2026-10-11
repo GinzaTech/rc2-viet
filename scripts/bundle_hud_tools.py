@@ -38,7 +38,8 @@ def main():
         shutil.copy2(path,stage/'licenses'/path.name)
     classes=ROOT/'build/hud-java-classes';classes.mkdir(exist_ok=True)
     cp=os.pathsep.join(map(str,[args.apktool,args.sdk_tools/'lib/apksigner.jar']))
-    run(args.java_home/'bin/javac.exe','-encoding','UTF-8','-cp',cp,'-d',classes,ROOT/'android-hud/HudTool.java')
+    run(args.java_home/'bin/javac.exe','-encoding','UTF-8','-cp',cp,'-d',classes,
+        ROOT/'android-hud/HudTool.java',ROOT/'android-hud/AdaptiveHudTool.java')
     run(args.java_home/'bin/jar.exe','--create','--file',stage/'lib/hud-tool.jar','-C',classes,'.')
     assets=ROOT/'assets/hud';assets.mkdir(parents=True,exist_ok=True)
     shutil.copy2(ROOT/'android-hud/dex/classes.dex',assets/'classes23.dex')

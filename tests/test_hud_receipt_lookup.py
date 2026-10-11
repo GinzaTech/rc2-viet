@@ -196,7 +196,7 @@ def test_verifier_returned_digest_must_match_requested_digest(builder):
 
 
 @pytest.mark.parametrize('field,value', [
-    ('source_digest', 'f' * 64), ('certificate_sha256', 'short'), ('digest', 'short'),
+    ('source_digest', 'short'), ('source_digest', 'g' * 64), ('certificate_sha256', 'short'), ('digest', 'short'),
 ])
 def test_matching_receipt_does_not_bypass_verified_metadata_contract(builder, field, value):
     target = builder.retain(1)

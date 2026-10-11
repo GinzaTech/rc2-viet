@@ -7,16 +7,27 @@ import struct
 
 
 def repack_apk(stock: Path, output: Path, manifest: bytes | None = None, helper: bytes | None = None,
-               bootstrap: bytes | None = None) -> None:
+               bootstrap: bytes | None = None, *, replacements=None, additions=None) -> None:
     """Copy compressed payloads unchanged; ZipFile generates the new central directory."""
     if stock.resolve() == output.resolve():
         raise ValueError('Output must not overwrite stock')
     with ZipFile(stock) as source, ZipFile(output, 'w') as target:
         _entries(source)
-        if 'classes23.dex' in source.namelist():
+        legacy = replacements is None and additions is None
+        if legacy and 'classes23.dex' in source.namelist():
             raise ValueError('Unexpected existing helper DEX')
+        replacements = dict(replacements or {})
+        for name, value in [('AndroidManifest.xml', manifest), ('classes.dex', bootstrap)]:
+            if value is not None: replacements[name] = value
+        additions = dict(additions or {})
+        if helper is not None: additions['classes23.dex'] = helper
+        from rc2vi.hud_stock import safe_name
+        for name in (*replacements, *additions): safe_name(name)
+        if (set(replacements)-set(source.namelist()) or set(additions)&set(source.namelist())
+                or set(replacements)&set(additions)):
+            raise ValueError('Invalid replacement/addition inventory')
         for entry in source.infolist():
-            replacement = manifest if entry.filename == 'AndroidManifest.xml' else bootstrap if entry.filename == 'classes.dex' else None
+            replacement = replacements.get(entry.filename)
             if replacement is not None:
                 target.writestr(copy.copy(entry), replacement)
                 continue
@@ -41,10 +52,10 @@ def repack_apk(stock: Path, output: Path, manifest: bytes | None = None, helper:
             target.filelist.append(result)
             target.NameToInfo[result.filename] = result
             target.start_dir = target.fp.tell()
-        if helper is not None:
-            info = ZipInfo('classes23.dex')
+        for name, value in additions.items():
+            info = ZipInfo(name)
             info.compress_type = ZIP_DEFLATED
-            target.writestr(info, helper)
+            target.writestr(info, value)
         target.comment = source.comment
 
 
@@ -76,8 +87,11 @@ def _compressed_digest(archive: ZipFile, entry: ZipInfo) -> bytes:
 def validate_apk_change(stock: Path, candidate: Path,
                         expected_bootstrap: bytes | None = None,
                         expected_helper: bytes | None = None,
-                        expected_manifest: bytes | None = None) -> dict[str, list[str]]:
-    expected = {}
+                        expected_manifest: bytes | None = None, *,
+                        replacements=None, additions=None) -> dict[str, list[str]]:
+    expected = dict(replacements or {})
+    added = dict(additions or {})
+    if expected_helper is not None: added['classes23.dex'] = expected_helper
     if expected_bootstrap is not None:
         expected['classes.dex'] = expected_bootstrap
     if expected_manifest is not None:
@@ -86,11 +100,10 @@ def validate_apk_change(stock: Path, candidate: Path,
         old, new = _entries(original), _entries(output)
         if old - new:
             raise ValueError('Removed stock ZIP entries')
-        additions = {'classes23.dex'} if expected_helper is not None else set()
-        if new - old != additions:
+        if new - old != set(added):
             raise ValueError('Unexpected added ZIP entries')
-        if expected_helper is not None and output.read('classes23.dex') != expected_helper:
-            raise ValueError('Wrong helper DEX bytes')
+        for name, value in added.items():
+            if output.read(name) != value: raise ValueError('Wrong helper/added entry bytes')
         changed = []
         for name in sorted(old):
             with original.open(name) as left, output.open(name) as right:
@@ -108,4 +121,4 @@ def validate_apk_change(stock: Path, candidate: Path,
             if name not in expected or output.read(name) != expected[name]:
                 raise ValueError('Unexpected changed ZIP entry: ' + name)
             changed.append(name)
-    return {'changed': changed, 'added': sorted(additions)}
+    return {'changed': changed, 'added': sorted(added)}

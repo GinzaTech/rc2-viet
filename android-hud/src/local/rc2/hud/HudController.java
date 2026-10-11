@@ -41,6 +41,8 @@ public final class HudController implements Application.ActivityLifecycleCallbac
 
     public static synchronized String install(Application app) {
         if (!"dji.go.v5".equals(app.getPackageName())) return "wrong_package";
+        if (app.getClass().getName().startsWith("com.AppGuard.") && app.getApplicationContext()==app)
+            return "waiting_for_context_swap";
         if (instance != null) return "already_installed";
         final HudController created = new HudController(app);
         instance = created;
@@ -75,7 +77,12 @@ public final class HudController implements Application.ActivityLifecycleCallbac
     }
 
     @Override public void onActivityResumed(Activity activity) {
-        if(activity.getClass().getName().equals("com.dji.mainpageui.device.DJIDeviceActivity")) {
+        ScreenRoles.Lookup views=name->{
+            int id=activity.getResources().getIdentifier(name,"id","dji.go.v5");
+            return id!=0 && activity.findViewById(id)!=null;
+        };
+        int role=ScreenRoles.select(activity.getClass().getName(),views);
+        if(role==1) {
             if(menus.containsKey(activity)) return;
             View content=activity.findViewById(android.R.id.content);
             if(content instanceof FrameLayout) {
@@ -85,7 +92,7 @@ public final class HudController implements Application.ActivityLifecycleCallbac
             }
             return;
         }
-        if (!activity.getClass().getName().endsWith(".FpvComponentActivity")) return;
+        if (role!=2) return;
         if (states.containsKey(activity)) return;
         try {
             View content = activity.findViewById(android.R.id.content);

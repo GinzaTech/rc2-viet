@@ -40,6 +40,7 @@ _RESERVED_NAMES = frozenset({
 
 
 LEGACY_HUD_PAYLOADS = frozenset({
+    '454c195d6f2d96cee1c1675af6a3f18cfcb47e5d76abbb375f0a694ef154015e',
     'a18ca3ba902e4856fd63c3dcb0bc5a64cd760bc369d65316896a61a2ddd56312',
     '0f410e39523cddee1c418855c635fae4f9d703cc6b8b4039a393dc899e148887',
     '962195af620c27f9d9739e962d440d60d436ca0ea1d2a608060319090b25f16d',
@@ -487,6 +488,32 @@ class HudTools:
 
     def patch(self, inputDEX: Path, outputDEX: Path, workdir: Path) -> None:
         self._java('patch', inputDEX, outputDEX, workdir)
+
+    def inspect_bootstrap(self, dex: Path, application: str) -> dict:
+        value = _json_object(self._java('adaptive-inspect', dex, application).encode('utf-8'))
+        if (set(value) not in ({'found','class_count'}, {'found','class_count','mode','superclass'})
+                or type(value.get('found')) is not bool or type(value.get('class_count')) is not int
+                or not 0 <= value['class_count'] <= 100000
+                or (value['found'] and (value.get('mode') not in {'provider','context_swap'}
+                    or not isinstance(value.get('superclass'),str)
+                    or not re.fullmatch(r'L[A-Za-z0-9_$/]+;',value['superclass'])))):
+            raise ValueError('Invalid menu bootstrap analysis response')
+        return value
+
+    def patch_adaptive(self, source: Path, output: Path, workdir: Path, application: str) -> None:
+        self._java('adaptive-patch', source, output, workdir, application)
+
+    def resource_names(self, apk: Path, stage: Path) -> set[str]:
+        root = self.prepare()
+        aapt = stage / 'menu-aapt2.exe'
+        with zipfile.ZipFile(root / 'lib/apktool.jar') as archive:
+            aapt.write_bytes(archive.read('prebuilt/windows/aapt2_64.exe'))
+        try:
+            output = run_process([str(aapt), 'dump', 'resources', '--no-values', str(apk)],
+                                 cancel=self.cancel, env=_tool_environment())
+            return set(re.findall(r'\b(?:[A-Za-z0-9_.]+:)?id/([A-Za-z_][A-Za-z0-9_]*)\b', output))
+        finally:
+            aapt.unlink(missing_ok=True)
 
     def _zipalign(self, *args: str | os.PathLike) -> None:
         root = self.prepare()

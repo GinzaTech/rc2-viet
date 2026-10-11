@@ -588,7 +588,7 @@ def _supported_source(text: str, allow_chinese: bool) -> bool:
 def compose_complete(target_res_dir: Path, catalogs: list[dict],
                      translate: Callable[[list[str]], list[str]],
                      overrides: dict[str, str] | None = None, *,
-                     allow_chinese: bool = False) -> tuple[list[ET.Element], dict]:
+                     allow_chinese: bool = False, corrections: dict[str, str] | None = None) -> tuple[list[ET.Element], dict]:
     """Compose every eligible target resource or raise IncompleteTranslation(report).
 
     Overrides map exact decoded English item text to approved Vietnamese text.
@@ -608,6 +608,9 @@ def compose_complete(target_res_dir: Path, catalogs: list[dict],
     report["total"] = report["target_total"] = len(targets)
     exact, shared, report["catalog_total"] = _memory(catalogs)
     overrides = overrides or {}
+    if corrections is not None and (not isinstance(corrections,dict) or any(
+            not isinstance(k,str) or not isinstance(v,str) for k,v in corrections.items())):
+        raise ValueError('Invalid wording corrections')
     if not isinstance(overrides, dict) or any(not isinstance(k, str) or not isinstance(v, str) for k, v in overrides.items()):
         raise ValueError("Overrides must map text to text")
     selected, pending, sentences = {}, {}, []
@@ -629,6 +632,18 @@ def compose_complete(target_res_dir: Path, catalogs: list[dict],
                 canonical = tc._canonical(source)
             except ValueError:
                 canonical = None  # Mixed reference collections are composed item by item.
+            # Explicit wording corrections precede older exact-source memories.
+            # Invalid corrections still fall back through normal contract checks.
+            if source.tag == 'string':
+                try:
+                    approved = _approved(_sentence(source, source.get('formatted') != 'false'), corrections or {})
+                    if approved is not None:
+                        _validate(source, approved, allow_unchanged=True)
+                        selected[key] = approved
+                        report['reviewed'] += 1
+                        continue
+                except (ValueError, UnicodeError):
+                    pass
             candidate = _reuse(source, exact.get((*key, canonical), []))
             if candidate is None:
                 candidate = _reuse(source, shared.get((key[0], canonical), []))

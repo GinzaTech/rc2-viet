@@ -1,7 +1,9 @@
 {
-  "version": "0.8.0-local",
+  "version": "0.9.0-local",
   "hud_pipeline_bundled": true,
   "hud_menu_patch_one_click": true,
+  "menu_version_independent": true,
+  "per_apk_recovery_capsule": true,
   "translation_version_independent": true,
   "translation_complete_required": true,
   "local_translation_engine_bundled_in_portable": true,
@@ -14,6 +16,6 @@
   "github_published": false,
   "menu_functionality_verified": false,
   "device_acceptance_complete": false,
-  "exe_sha256": "6b2bb58167e19b8a343d6a2cd4ea2871029054f25053d88d973720ab53de2862",
-  "exe_bytes": 94200216
+  "exe_sha256": "5f394b2e5dbaaa54b0efb6306f921490e7b8566847e041f509629cb162eb819f",
+  "exe_bytes": 94321373
 }

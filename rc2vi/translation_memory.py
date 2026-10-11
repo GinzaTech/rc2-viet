@@ -6,7 +6,7 @@ import re
 
 from .hud_tools import _safe_relative, load_json, sha256_file
 
-MEMORY_MANIFEST_SHA256 = '71a9aea7de7a0192dbe98789cc8076a7b24f47b8a52a43fec7a1de65b4428c8f'
+MEMORY_MANIFEST_SHA256 = 'e91b75c8c470fb33fe792e1514e90cdd4aad5342f10408538431c8bfd7f9bb0b'
 
 
 def load_memories(assets: Path, cancel=None, enabled=True):
@@ -65,3 +65,23 @@ def with_reviewed_fragments(translate, overrides):
                 output[index] = value
         return output
     return run
+
+
+def load_corrections(assets: Path, cancel=None, enabled=True):
+    """Explicit human wording fixes have priority over contextual memory pairs."""
+    if not enabled: return {}
+    root = Path(assets) / 'translation'
+    path = root / 'memories.json'
+    if not path.exists(): return {}
+    if sha256_file(path, cancel) != MEMORY_MANIFEST_SHA256:
+        raise ValueError('Danh mục bản dịch bị thay đổi.')
+    item = load_json(path).get('files', {}).get('wording.json')
+    target = root / 'wording.json'
+    if item is None or not target.exists(): return {}
+    if (item.get('kind') != 'text' or target.stat().st_size > 512*1024
+            or sha256_file(target, cancel) != item.get('sha256')):
+        raise ValueError('Bảng sửa cách diễn đạt bị thay đổi.')
+    value = load_json(target)
+    if len(value) > 5000 or any(not isinstance(v,str) or not k.strip() or not v.strip() for k,v in value.items()):
+        raise ValueError('Bảng sửa cách diễn đạt không hợp lệ.')
+    return value

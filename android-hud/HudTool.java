@@ -108,6 +108,16 @@ public final class HudTool {
 
     private static String execute(String mode, String[] args) throws Exception {
         switch (mode) {
+            case "adaptive-inspect":
+                requireArguments(args, 3);
+                return AdaptiveHudTool.inspect(path(args[1]), args[2]);
+            case "adaptive-patch":
+                requireArguments(args, 5);
+                AdaptiveHudTool.patch(path(args[1]), path(args[2]), path(args[3]), args[4]);
+                return null;
+            case "dump-prefix":
+                requireArguments(args, 4);
+                return AdaptiveHudTool.dumpPrefix(path(args[1]), path(args[2]), args[3]);
             case "patch":
                 requireArguments(args, 4);
                 patch(path(args[1]), path(args[2]), path(args[3]));
@@ -136,6 +146,9 @@ public final class HudTool {
 
     private static String errorMessage(String mode) {
         switch (mode) {
+            case "adaptive-inspect": return "Menu bootstrap structure is unsupported or ambiguous.";
+            case "adaptive-patch": return "Menu structural bootstrap patch failed.";
+            case "dump-prefix": return "Static DEX inspection failed.";
             case "patch": return "HUD patch failed.";
             case "sign": return "HUD sign failed.";
             case "verify": return "HUD verify failed.";

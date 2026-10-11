@@ -4,6 +4,7 @@ The selected Android 11 v3 signature must be verified externally after this oper
 This does not claim the retained v2 signature is valid for changed APK content.
 """
 import struct
+from pathlib import Path
 
 V2 = 0x7109871a
 
@@ -58,3 +59,54 @@ def replace_v2_block(original: bytes, candidate: bytes) -> bytes:
     delta = len(block) - (central - start)
     struct.pack_into('<I', output, end + delta + 16, start + len(block))
     return bytes(output)
+
+
+def _path_parts(path: Path):
+    """Read only the signing block and central directory, bounded to 64 MiB."""
+    size = path.stat().st_size
+    with path.open('rb') as stream:
+        stream.seek(max(0,size-65557)); tail=stream.read()
+        marker=tail.rfind(b'PK\x05\x06')
+        if marker<0 or marker+22>len(tail): raise ValueError('Malformed ZIP end record')
+        end=max(0,size-65557)+marker
+        if end+22+struct.unpack_from('<H',tail,marker+20)[0]!=size:
+            raise ValueError('Malformed ZIP comment')
+        central=struct.unpack_from('<I',tail,marker+16)[0]
+        if not 24<=central<=end: raise ValueError('Malformed signing offset')
+        stream.seek(central-24); footer=stream.read(24)
+        if footer[8:]!=b'APK Sig Block 42': raise ValueError('Signing block missing')
+        length=struct.unpack_from('<Q',footer)[0]; start=central-length-8
+        if start<0 or size-start>64*1024*1024: raise ValueError('Signing tail exceeds bound')
+        stream.seek(start); data=bytearray(stream.read(size-start))
+    struct.pack_into('<I',data,end-start+16,central-start)
+    _,_,_,items=_parts(bytes(data))
+    return start,central,end,items
+
+
+def block_entries_path(path: Path) -> dict[int, bytes]:
+    return dict(_path_parts(Path(path))[3])
+
+
+def preserve_v2_file(original: Path, signed: Path, output: Path, cancel=None):
+    """Keep the protected loader input without loading whole APKs in memory."""
+    from rc2vi.hud_tools import check_cancel
+    original,signed,output=map(Path,(original,signed,output))
+    if output.exists(): raise FileExistsError('Signing output already exists')
+    source=block_entries_path(original)
+    if V2 not in source: raise ValueError('Original loader v2 missing')
+    start,central,end,items=_path_parts(signed)
+    if 0xf05368c0 not in dict(items): raise ValueError('Selected v3 signature missing')
+    replaced=[(key,source[V2] if key==V2 else value) for key,value in items]
+    if V2 not in dict(replaced): replaced.insert(0,(V2,source[V2]))
+    pairs=b''.join(struct.pack('<QI',len(value)+4,key)+value for key,value in replaced)
+    length=len(pairs)+24
+    block=struct.pack('<Q',length)+pairs+struct.pack('<Q',length)+b'APK Sig Block 42'
+    with signed.open('rb') as inp,output.open('xb') as out:
+        remaining=start
+        while remaining:
+            check_cancel(cancel);chunk=inp.read(min(1024*1024,remaining))
+            if not chunk: raise ValueError('Truncated signed APK')
+            out.write(chunk);remaining-=len(chunk)
+        out.write(block);inp.seek(central);tail=bytearray(inp.read())
+        struct.pack_into('<I',tail,end-central+16,start+len(block));out.write(tail)
+    return output

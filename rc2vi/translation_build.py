@@ -13,7 +13,7 @@ from .hud_keys import HudKeyStore
 from .hud_tools import (HudTools, _check_ancestors, _physical_stat, _safe_relative, _tool_environment,
                         check_cancel, load_json, run_process, sha256_file)
 
-PIPELINE_REVISION = 'complete-v2'
+PIPELINE_REVISION = 'complete-v3'
 MAX_APK_BYTES = 1536 * 1024 * 1024
 MAX_RESOURCE_BYTES = 512 * 1024 * 1024
 PREFIX = 'local.dji.fly.vi.auto.'
@@ -122,12 +122,13 @@ class TranslationBuilder:
     def build(self, source_apk: Path) -> dict:
         from .translation_complete import compose_complete, IncompleteTranslation
         from .translation_engine import LocalTranslationEngine, ENGINE_MANIFEST_SHA256
-        from .translation_memory import load_memories, with_reviewed_fragments
+        from .translation_memory import load_memories, load_corrections, with_reviewed_fragments
         source_apk = Path(source_apk).absolute()
         _check_ancestors(source_apk.parent)
         _physical_stat(source_apk)
         source_hash = sha256_file(source_apk, self.cancel)
         catalogs, overrides, self.memory_digest = load_memories(self.assets, self.cancel, self.use_memories)
+        corrections = load_corrections(self.assets, self.cancel, self.use_memories)
         self.engine_digest = ENGINE_MANIFEST_SHA256
         if self.engine is None:
             self.engine = LocalTranslationEngine(self.assets, self.work / 'local-engine', self.emit, self.cancel)
@@ -159,7 +160,7 @@ class TranslationBuilder:
             try:
                 elements, report = compose_complete(decoded / 'res', catalogs,
                                                      with_reviewed_fragments(self.engine.translate, overrides), overrides,
-                                                     allow_chinese=True)
+                                                     allow_chinese=True, corrections=corrections)
             except IncompleteTranslation as exc:
                 reports = self.work / 'reports'
                 _check_ancestors(reports)
