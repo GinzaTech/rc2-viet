@@ -1,13 +1,19 @@
 {
-  "version": "0.9.0-local",
+  "version": "0.10.1-local",
   "hud_pipeline_bundled": true,
+  "menu_variants": [
+    "basic"
+  ],
+  "menu_default_variant": "basic",
+  "experimental_features_bundled": false,
+  "reference_mod_used": false,
   "hud_menu_patch_one_click": true,
   "menu_version_independent": true,
   "per_apk_recovery_capsule": true,
   "translation_version_independent": true,
   "translation_complete_required": true,
   "local_translation_engine_bundled_in_portable": true,
-  "translation_device_tested": false,
+  "translation_device_tested": true,
   "hud_source_from_device": true,
   "stock_recovery_template_bundled": true,
   "java_required_on_host": false,
@@ -16,6 +22,6 @@
   "github_published": false,
   "menu_functionality_verified": false,
   "device_acceptance_complete": false,
-  "exe_sha256": "5f394b2e5dbaaa54b0efb6306f921490e7b8566847e041f509629cb162eb819f",
-  "exe_bytes": 94321373
+  "exe_sha256": "b7715590c5a26cb42ed85044209e71cd04f4a4e05edf03c02ca220404fcfe790",
+  "exe_bytes": 95972363
 }

@@ -55,6 +55,24 @@ def instance_id(devinst):
         return ''
     return buffer.value
 
+def usb_identity(path, current_id, parent_id):
+    """Return the USB serial, never treating transport identity as model authorization."""
+    lower=path.lower()
+    if 'vid_2ca3&pid_1021&mi_02' in lower and parent_id.upper().startswith('USB\\VID_2CA3&PID_1021\\'):
+        return parent_id.split('\\')[-1] or None
+    if 'vid_18d1&pid_4ee7' in lower and current_id.upper().startswith('USB\\VID_18D1&PID_4EE7\\'):
+        return current_id.split('\\')[-1] or None
+    return None
+
+def adb_pipes(pipes):
+    if len(pipes)!=2 or any(kind!=2 or size not in (64,512,1024) for kind,number,size in pipes):
+        raise ValueError('ADB requires two valid bulk endpoints')
+    inputs=[number for kind,number,size in pipes if number&0x80]
+    outputs=[number for kind,number,size in pipes if not number&0x80]
+    if len(inputs)!=1 or len(outputs)!=1 or len(set(inputs+outputs))!=2:
+        raise ValueError('ADB bulk endpoint directions are ambiguous')
+    return outputs[0],inputs[0]
+
 def discover() -> list[Device]:
     handle=setup.SetupDiGetClassDevsW(C.byref(ADB_GUID),None,None,0x12)
     if handle==INVALID:
@@ -78,15 +96,11 @@ def discover() -> list[Device]:
             info=DeviceInfo(); info.size=C.sizeof(info)
             checked(setup.SetupDiGetDeviceInterfaceDetailW(handle,C.byref(iface),detail,size,C.byref(size),C.byref(info)),'Interface detail')
             path=C.wstring_at(C.addressof(detail)+4)
-            if 'vid_2ca3&pid_1021&mi_02' not in path.lower():
+            if not any(token in path.lower() for token in ('vid_2ca3&pid_1021&mi_02','vid_18d1&pid_4ee7')):
                 continue
             parent=W.DWORD()
-            if cfg.CM_Get_Parent(C.byref(parent),info.devinst,0)!=0:
-                continue
-            parent_id=instance_id(parent.value)
-            if not parent_id.upper().startswith('USB\\VID_2CA3&PID_1021\\'):
-                continue
-            serial=parent_id.split('\\')[-1]
+            parent_id=instance_id(parent.value) if cfg.CM_Get_Parent(C.byref(parent),info.devinst,0)==0 else ''
+            serial=usb_identity(path,instance_id(info.devinst),parent_id)
             if serial:
                 found.append(Device(serial,path))
     finally:
@@ -104,19 +118,18 @@ class UsbLink:
             checked(usb.WinUsb_Initialize(self.file,C.byref(self.handle)),'WinUSB init')
             desc=Descriptor()
             checked(usb.WinUsb_QueryInterfaceSettings(self.handle,0,C.byref(desc)),'USB descriptor')
-            if (desc.number,desc.klass,desc.subclass,desc.protocol)!=(2,255,66,1):
+            if (desc.klass,desc.subclass,desc.protocol)!=(255,66,1) or desc.number not in (0,2):
                 raise ValueError('Giao diện USB không đúng ADB của RC 2')
             pipes=[]
             for index in range(desc.endpoints):
                 pipe=Pipe()
                 checked(usb.WinUsb_QueryPipe(self.handle,0,index,C.byref(pipe)),'USB endpoint')
-                if pipe.kind!=2 or pipe.max_packet!=512:
-                    raise ValueError('USB endpoint khác cấu hình đã kiểm chứng')
-                pipes.append(pipe.id)
-            if set(pipes)!={3,0x84}:
+                pipes.append((pipe.kind,pipe.id,pipe.max_packet))
+            self.write_pipe,self.read_pipe=adb_pipes(pipes)
+            if 'vid_2ca3&pid_1021' in device.path.lower() and {self.write_pipe,self.read_pipe}!={3,0x84}:
                 raise ValueError('Không đúng endpoint RC 2')
             timeout=W.ULONG(1000)
-            for pipe in pipes:
+            for pipe in (self.write_pipe,self.read_pipe):
                 checked(usb.WinUsb_SetPipePolicy(self.handle,pipe,3,4,C.byref(timeout)),'USB timeout')
         except BaseException:
             self.close(); raise
@@ -126,7 +139,7 @@ class UsbLink:
             return
         buffer=C.create_string_buffer(data)
         actual=W.ULONG()
-        checked(usb.WinUsb_WritePipe(self.handle,3,buffer,len(data),C.byref(actual),None),'USB write')
+        checked(usb.WinUsb_WritePipe(self.handle,self.write_pipe,buffer,len(data),C.byref(actual),None),'USB write')
         if actual.value!=len(data):
             raise IOError('USB short write')
 
@@ -134,7 +147,7 @@ class UsbLink:
         if type(size) is not int or not 1<=size<=65536:
             raise ValueError('USB read size outside the bounded frame range')
         buffer=C.create_string_buffer(size); actual=W.ULONG()
-        if not usb.WinUsb_ReadPipe(self.handle,0x84,buffer,size,C.byref(actual),None):
+        if not usb.WinUsb_ReadPipe(self.handle,self.read_pipe,buffer,size,C.byref(actual),None):
             error=C.get_last_error()
             if error==121:
                 raise TimeoutError('USB wait')

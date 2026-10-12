@@ -220,7 +220,11 @@ class AdaptiveTranslation:
             raise RuntimeError('Chưa bật được overlay bản dịch.')
         for sample in artifact['samples']:
             self._guard(root, before)
-            text = _run(root, 'cmd overlay lookup --user 0 ' + TARGET + ' ' + TARGET + ':string/' + sample['name'])
+            # RC2 Android 11 lookup accepts no --user option; passing it makes
+            # the package/resource operands parse incorrectly.
+            # Android 15 supports explicit user selection; retain it for phones.
+            user_option = '--user 0 ' if before['identity'][2] == 35 else ''
+            text = _run(root, 'cmd overlay lookup ' + user_option + TARGET + ' ' + TARGET + ':string/' + sample['name'])
             if text != sample['value']:
                 raise RuntimeError('Đọc lại bản dịch không khớp: ' + sample['name'])
         self._guard(root, before)

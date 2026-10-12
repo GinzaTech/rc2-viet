@@ -92,7 +92,7 @@ class FakeDevice:
             return 'dji.go.v5\n' + '\n'.join(
                 ('[x] ' if enabled else '[ ] ') + package
                 for package, enabled in self.overlays.items())
-        if command.startswith('cmd overlay lookup --user 0 '):
+        if command.startswith('cmd overlay lookup '):
             name = shlex.split(command)[-1].split('/')[-1]
             if self.bad_lookup or not self.overlays.get(PACKAGE) or self.overlays.get(LEGACY):
                 return 'untranslated'
@@ -196,6 +196,27 @@ def test_success_counts_both_idmap_formats_and_root_nesting(setup, sdk):
     assert all(not path.exists() for path in s.sources)
     assert not any(path.startswith('/data/local/tmp/') for path in s.adb.files)
     assert s.adb.files[TARGET] == SOURCE
+
+
+@pytest.mark.parametrize('sdk', [30, 35])
+def test_readback_uses_lookup_syntax_available_on_the_selected_android(setup, sdk):
+    s = setup
+    s.adb.sdk = sdk
+    execute = s.adb._execute
+
+    def native_lookup_syntax(command):
+        if sdk == 30 and command.startswith('cmd overlay lookup --user '):
+            return "Error: bad resource name, doesn't match package:type/name"
+        return execute(command)
+
+    s.adb._execute = native_lookup_syntax
+    root = RootShell(s.adb) if sdk == 35 else s.adb
+    result = s.tool.apply(s.adb, root, sdk, s.safe)
+    assert result['status'] == 'enabled'
+    lookups = [command for command in s.adb.calls if isinstance(command, str) and 'cmd overlay lookup ' in command]
+    assert len(lookups) == 2
+    expected = 'cmd overlay lookup --user 0 ' if sdk == 35 else 'cmd overlay lookup dji.go.v5 '
+    assert all(expected in command for command in lookups)
 
 
 @pytest.mark.parametrize('stage', ['pull', 'build', 'before_write', 'readback'])

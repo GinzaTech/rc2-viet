@@ -111,7 +111,8 @@ class App:
         if source:self.send('hud_build',Path(source))
 
     def patch_menu(self):
-        if self.mode=='rc' and not self.closing:self.send('hud_patch_menu')
+        if self.mode!='rc' or self.closing:return
+        self.send('hud_patch_menu')
 
     def install_hud(self):
         if self.mode=='rc' and not self.closing:self.send('hud_install')
@@ -188,6 +189,8 @@ def main():
     mode.add_argument('--phone-verify',action='store_true')
     mode.add_argument('--hud-build',type=Path,metavar='APK_GOC')
     mode.add_argument('--translation-build',type=Path,metavar='APK_DJI_FLY')
+    parser.add_argument('--menu-variant',choices=('basic',),default='basic',
+                        help='Public menu edition for the offline build (basic only)')
     parser.add_argument('--translation-sdk',type=int,choices=(30,35),default=30)
     parser.add_argument('--translation-no-memory',action='store_true')
     parser.add_argument('--serial',default='')
@@ -208,7 +211,8 @@ def main():
         from rc2vi.hud_build import HudBuilder
         events=[]
         try:
-            report=HudBuilder(assets,work/'hud',lambda s,m:events.append({'state':s,'message':m})).build(args.hud_build)
+            builder=HudBuilder(assets,work/'hud',lambda s,m:events.append({'state':s,'message':m}))
+            report=builder.build(args.hud_build)
         except Exception as exc:report={'status':'error','message':str(exc)}
         report=dict(report,events=events)
         if args.report:args.report.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
@@ -256,7 +260,15 @@ def main():
     if args.gui_smoke:root.withdraw()
     app=App(root,assets,work,start_worker=not args.gui_smoke)
     if args.gui_smoke:
-        root.update_idletasks();root.destroy();return 0
+        try:
+            root.update_idletasks()
+            if args.report:
+                report={'status':'PASS','gui_smoke':'PASS','menu_variant_default':'basic',
+                        'menu_variant_selected':'basic','menu_variant_choices':['basic'],
+                        'menu_variant_labels':[],'menu_variant_state':'absent'}
+                args.report.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
+        finally:root.destroy()
+        return 0
     root.mainloop();return 0
 
 

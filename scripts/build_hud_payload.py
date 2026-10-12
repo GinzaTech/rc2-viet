@@ -19,10 +19,19 @@ def run(arguments):
         raise RuntimeError(result.stderr.decode(errors='replace')[:3000])
 
 
+def stage_sources(root, stage, variant):
+    if variant != 'basic':
+        raise ValueError('Only the existing menu is built in this repository.')
+    source = stage / 'source'
+    shutil.copytree(root / 'android-hud/src', source)
+    return source
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--java-home', required=True, type=Path)
     parser.add_argument('--sdk', required=True, type=Path)
+    parser.add_argument('--variant', choices=('basic',), default='basic')
     args = parser.parse_args()
     java = guard(args.java_home / 'bin/java.exe')
     compiler = guard(args.java_home / 'bin/javac.exe')
@@ -44,6 +53,8 @@ def main():
             raise ValueError('HUD staging must stay inside build directory.')
         classes = stage / 'classes'; classes.mkdir()
         dex = stage / 'dex'; dex.mkdir()
+        source = stage_sources(ROOT, stage, args.variant)
+        sources = sorted(source.rglob('*.java'))
         run([compiler, '-source', '8', '-target', '8', '-encoding', 'UTF-8',
              '-cp', android, '-d', classes, *sources])
         run([java, '-cp', r8, 'com.android.tools.r8.D8', '--min-api', '30',
@@ -59,11 +70,12 @@ def main():
         owner = guard(hud / 'restore-owner')
         payload = {'schema': 1, 'sha256': hashlib.sha256(content).hexdigest(),
                    'restore_owner_sha256': hashlib.sha256(owner.read_bytes()).hexdigest()}
-        for target in (hud / 'classes23.dex', retained / 'classes.dex'):
+        targets = (hud / 'classes23.dex', retained / 'classes.dex')
+        for target in targets:
             guard(target); shutil.copyfile(output, target)
         metadata = guard(hud / 'payload.json')
         metadata.write_text(json.dumps(payload, indent=2) + '\n', encoding='utf-8')
-        print(json.dumps({'dex_bytes': len(content), 'source_files': len(sources), **payload}))
+        print(json.dumps({'variant': args.variant, 'dex_bytes': len(content), 'source_files': len(sources), **payload}))
 
 
 if __name__ == '__main__':

@@ -1,4 +1,17 @@
-# Build và kiểm tra từ mã nguồn
+# Build và kiểm tra RC2 Việt public Basic 0.10.1
+
+Source/EXE public dành cho Việt hóa và menu LED/HUD/xuất hình/radio. Giao diện có hai thao tác riêng cho menu và tiếng Việt; CLI/payload chỉ nhận `basic`. Bản thử Advanced ở sibling `rc2-viet-advanced-local` là cục bộ, **không được xuất bản**. Không lấy mã, payload, APK riêng, khóa runtime/ký hoặc dữ liệu thiết bị của bản riêng làm đầu vào public.
+
+Mốc release là **0.10.1**, metadata `0.10.1-local`. Build cuối đã đạt 2.003 test nguồn, coverage Python 90,10% và 15 test đóng gói. EXE đã được thử với PATH chỉ có System32, không JAVA_HOME/CLASSPATH; menu và bản dịch trên APK gốc 1.21.8/1.21.10 đều dựng được.
+
+## Đầu vào và ranh giới tương thích
+
+- Menu phân tích cấu trúc APK đang dùng; receipt/capsule bind đúng hash nguồn, payload, toolchain, signer và thiết bị. Hash dùng để ràng buộc dữ liệu, không phải danh sách số phiên bản được phép.
+- Cầu SDK Basic tìm identifier có nghĩa thay vì pin tên field. ABI, callback, kiểu/quyền GET/SET và guard telemetry/kết nối/mặt đất/động cơ dừng vẫn phải hợp lệ. Không nới guard để xử lý field rename.
+- Việt hóa dựng RRO chỉ chứa tài nguyên từ APK đích, bộ nhớ dịch tương thích và bảng diễn đạt đã rà; không ghép RRO vào APK menu hoặc đưa code tiện ích tham chiếu vào bản dịch.
+- Dữ liệu người dùng ở `C:\Users\kona\Desktop\rc2-viet-codex-initial-release` ghi nguồn 1.21.10/code 3115981/hash `f6c11267d465c303e2aecb737fe4f6b41b54da083368cac497404f4c9a464f98`. Thư mục có RRO, báo cáo SDK và template hash `c296e4f326c7a3c80e2bba5474d986a1d5287457eca8e5e021fefcd0aa8ff9e7`; không có APK Fly nguồn. Báo cáo này không tự xác nhận nguồn đã được lấy hoặc build lại bằng Basic 0.10.1.
+- Đã lấy APK gốc **1.21.10 / code 3115981** qua USB sau khi người dùng cập nhật; 468.109.376 byte, SHA-256 `f6c11267d465c303e2aecb737fe4f6b41b54da083368cac497404f4c9a464f98`, khớp báo cáo trong thư mục người dùng cung cấp. Menu Basic và RRO được dựng từ nguồn thật này, không dùng RedFly để dịch, patch hoặc cài. Verifier legacy dùng đúng sourceDigest; fixture không thay bằng chứng APK thật.
+- Thử cấu trúc RedFly 1.21.10 trong 0.9.0 chỉ là lịch sử/tham chiếu, được loại khỏi bằng chứng tương thích Fly chính thức. Xem [trạng thái và nguồn dữ liệu](adaptive-menu-verification.json).
 
 ## Bổ sung 0.8.0: engine dịch đầy đủ
 
@@ -34,7 +47,7 @@ Từ0.7.0, `assets/translation/catalog.json` chứa từ điển nguồn/bản d
 
 Kiểm chứng bộ dựng dịch cục bộ, không kết nối thiết bị: `RC2-TiengViet.exe --translation-build <APK_DJI_FLY> --translation-sdk 30 --report <JSON>`. Dùng `--translation-sdk 35` cho profile điện thoại Android15. Đây là CLI phục vụ kiểm chứng; giao diện người dùng chỉ cần Bật / cập nhật tiếng Việt và app tự lấy APK. Gói thích ứng luôn chỉ chứa tài nguyên; thành công cục bộ không chứng minh overlay đã chạy trên thiết bị.
 
-Build EXE dùng APK có sẵn, không cần Android SDK hoặc khóa ký; JDK chỉ phục vụ kiểm thử Java của cầu Home. Khi thay bất kỳ APK, phải kiểm tra provenance/chữ ký/hash, cập nhật pin có chủ đích trong core.py và manifest.json, chạy kiểm thử và xác minh lại trên tay. Không dùng thay pin như một cách bỏ lỗi tương thích.
+Đóng gói EXE dùng asset/toolchain public đã chuẩn bị; không cần khóa ký Fly riêng để đóng gói. Chạy toàn bộ kiểm thử source cần JDK và Android SDK theo yêu cầu ở trên. Khi thay asset nhúng, phải kiểm tra provenance/chữ ký/hash và cập nhật manifest có chủ đích. APK Fly đích vẫn được phân tích riêng; không sửa pin hoặc guard để ép tương thích.
 
 Từ0.3.0, EXE còn nhúng `assets/hud/toolchain.zip` và manifest hash cùng DEX HUD/helper khôi phục. Dùng bộ đã đóng gói thì không cần SDK để build EXE. Muốn dựng lại công cụ HUD, dùng JDK17 và build-tools36.1.0, APKtool2.12.1:
 
@@ -52,19 +65,22 @@ Khi chỉ sửa handler Android, dùng script dưới để cập nhật DEX và
 
 `tests/test_hud_android.py` chạy các bài kiểm tra JVM trong `android-hud/test/` và compile toàn bộ helper bằng Android11/D8 để bảo đảm DEX nhúng khớp source. Không có lệnh gửi tới tay/máy bay trong các tests; TCP thử nghiệm chỉ là server loopback trên PC.
 
-Luồng HUD đọc APK người dùng, ký bằng khóa ngoài bundle theo tài khoản Windows, rồi kiểm tra chữ ký và recipe. Build EXE không nhúng APK Fly gốc, khóa riêng hoặc bản sao lưu. [Hướng dẫn HUD](HUD_APK.md) giải thích quy trình và profile được pin. `build.ps1` đóng gói Portable ZIP/report/checksum từ EXE vừa build và kiểm tra chúng khớp nhau; thao tác đó chỉ tạo tệp cục bộ.
+Luồng HUD đọc APK người dùng, ký bằng khóa ngoài bundle theo tài khoản Windows, rồi kiểm tra chữ ký và recipe. Build EXE không nhúng APK Fly gốc, khóa riêng hoặc bản sao lưu. [Hướng dẫn HUD](HUD_APK.md) giải thích quy trình theo cấu trúc APK và các guard nền tảng. `build.ps1` đóng gói Portable ZIP/report/checksum từ EXE vừa build và kiểm tra chúng khớp nhau; thao tác đó chỉ tạo tệp cục bộ.
 
 ## Kiểm thử riêng
 
 ```powershell
-.\.venv\Scripts\python.exe -m pytest tests -q --cov=rc2vi.core --cov=rc2vi.activation --cov=rc2vi.controller --cov=rc2vi.launcher --cov=rc2vi.developer --cov=rc2vi.lawnchair --cov=rc2vi.freefcc --cov=rc2vi.apk_install --cov-fail-under=80
+.\.venv\Scripts\python.exe -m pytest tests -q --ignore=tests/test_hud_release_package.py --cov=rc2vi --cov=app --cov-fail-under=80
 .\.venv\Scripts\python.exe -m unittest discover -s translation/review-round2 -p test_review.py
 .\dist\RC2-TiengViet.exe --gui-smoke
+.\.venv\Scripts\python.exe -m pytest tests/test_hud_release_package.py -q
 ```
+
+Kiểm tra đóng gói chạy sau khi đã có EXE/Portable/metadata/checksum cuối khớp nhau. Các số test/coverage 0.9.0 trong [snapshot lịch sử](adaptive-menu-verification.json) không phải kết quả 0.10.1.
 
 Các bài tests trong tests/ dùng fake ADB hoặc nút Tk thật với câu trả lời dialog được intercept; không gửi lệnh tới RC 2. `--gui-smoke` không mở worker. Kiểm chứng phần cứng cần một bước riêng, không chạy `--verify-once` trong lúc bay hoặc chưa muốn cài/bật bản dịch.
 
-Để thử pipeline thật, dùng `--hud-build <APK_gốc> --report <JSON>` theo [HUD_APK.md](HUD_APK.md). Exit0/receipt không chứng minh boot: phải cài đúng đầu ra, đọc hash/foreground và quan sát sau reboot riêng. Các lượt0.3/0.4 dùng fake ADB; lượt0.6 có RC và cập nhật cùng chữ ký giữ dữ liệu. Bằng chứng từng chức năng ở báo cáo cài/kiểm tra, không suy từ coverage host.
+Để thử pipeline trên PC, dùng `--hud-build <APK_nguồn> --menu-variant basic --report <JSON>` theo [HUD_APK.md](HUD_APK.md). Exit 0/receipt không chứng minh cài hoặc boot. Bằng chứng thiết bị cần đúng hash đầu ra, signer/UID/foreground và quan sát chức năng sau cài/reboot. Các lượt 0.3/0.4 dùng fake ADB; lượt 0.6 và bản thử riêng có bằng chứng khác, không xác nhận Basic 0.10.1 hiện tại. Chưa xác minh HDR/HDMI vật lý, công suất FCC hoặc duy trì radio từ coverage host.
 
 pytest.ini chọn `--capture=sys`: trong môi trường Windows đã thử, capture native file descriptor mặc định của pytest gây lỗi khởi tạo lại Tcl/Tk, còn capture Python-level chạy đủ các kiểm thử nút/dialog. Không bỏ qua test Tk hoặc thay bằng assert mô phỏng để che lỗi.
 
@@ -90,13 +106,13 @@ APK signed mới thường có hash khác, và không thể cập nhật một p
 
 Để sửa một câu cho phiên bản hiện tại, xem XML cuối trong translation/review-round2/overlay và các bảng review/user_wording. Không đổi tên tài nguyên, placeholder, cấu trúc arrays/plurals hoặc dữ liệu kỹ thuật tùy tiện.
 
-Chạy lại toàn bộ `review.py` yêu cầu XML gốc đúng DJI Fly ở `translation/fly-1.21.8-source/res`, cùng dữ liệu nền và bảng review đã lưu. Không có APK DJI Fly gốc hoặc trọng số mô hình dịch trong repo. Đợt tạo bản nháp cũ dùng mô hình cục bộ; bản reviewed5 đã có XML cuối nên không cần mô hình để build lại tài nguyên.
+Luồng `review.py` cũ yêu cầu XML nguồn ở `translation/fly-1.21.8-source/res` cùng dữ liệu/bảng review đã lưu; đó là cách rà lại bộ nhớ lịch sử, không phải điều kiện pin phiên bản của pipeline hiện hành. Luồng hiện hành luôn bắt đầu từ APK đích, giữ sửa **Chế độ C (Tốc độ chậm)** và bảng cách diễn đạt khi contract phù hợp, dịch phần thiếu bằng engine cục bộ. APK DJI Fly nguồn và khóa ký riêng không được phân phối trong repo; worker/model public dùng manifest/inventory riêng.
 
 Lưu ý: không chạy review.py chỉ để xem thống kê, vì nó ghi lại XML/report. Summary đã lưu đủ cho việc đọc. Chạy các kiểm thử quy tắc là thao tác kiểm tra không ghi lên tay.
 
 ## Các tệp bàn giao
 
-EXE/APK được giữ trực tiếp trong Git. ZIP portable/source ở GitHub Releases, không nhân đôi các ZIP lớn vào Git. `dist/SHA256SUMS.txt` liệt kê hash của APK, EXE và các ZIP release. Kiểm tra ví dụ:
+Source/EXE Basic là phạm vi phân phối GitHub theo yêu cầu người dùng. Build chỉ tạo tệp cục bộ, không push, tạo tag/Release hoặc xuất bản thư mục bản riêng. Gói cuối phải có EXE, Portable, metadata và checksum cùng nguồn; không gọi một artifact là 0.10.1 đã phát hành chỉ vì tài liệu đã đổi version. Kiểm tra hash ví dụ:
 
 ```powershell
 Get-FileHash .\dist\RC2-TiengViet.exe -Algorithm SHA256
@@ -105,4 +121,16 @@ Get-FileHash .\assets\freefcc.apk -Algorithm SHA256
 
 Đối chiếu với SHA256SUMS và assets/manifest.json. Build lại EXE có thể thay hash do metadata/build/runtime; kiểm chứng bản build và assets có cùng nguồn không đồng nghĩa yêu cầu hash EXE mọi lần build phải byte-identical.
 
-Trước bàn giao đã chạy pip-audit trên môi trường build riêng, nâng pip/pytest/setuptools khỏi các bản bị báo lỗ hổng, rồi audit lại không còn lỗ hổng đã biết trong các package được audit. Báo cáo docs/dependency-audit.json chỉ là kiểm tra dependency Python, không phải audit firmware/APK hay chứng nhận an toàn bay.
+Staging asset public phải dùng allowlist đã review và từ chối đầu vào ngoài danh mục; không copy toàn bộ cây asset hoặc dữ liệu của bản riêng theo mặc định. Sửa ràng buộc `sourceDigest` legacy và allowlist staging đang được xử lý ở source; cần kiểm thử lại các đường này trước đóng gói cuối.
+
+Sau khi cập nhật source và các tài liệu public, dựng lại gói cuối để tránh Portable chứa hướng dẫn cũ. Kiểm chứng không ghi lại output bằng:
+
+```powershell
+.\.venv\Scripts\python.exe scripts/package_windows.py --verify
+```
+
+Verifier đối chiếu version `0.10.1-local`, danh mục Basic, hash EXE/engine/tài liệu, Portable và checksum. Chỉ đưa các mục public đã review vào Git; thư mục sibling riêng, khóa, cache, backup, APK Fly nguồn và log thiết bị phải ở ngoài phạm vi phân phối. Việc cập nhật tài liệu không stage các tệp đó.
+
+[Dependency audit đã lưu](dependency-audit.json) là snapshot của dependency Python đã kiểm tra ở lượt trước; không phải audit 0.10.1 mới, firmware/APK hoặc chứng nhận an toàn bay. Báo cáo build/test/đóng gói cuối và bằng chứng APK nguồn thực phải được bổ sung riêng.
+
+Android 11 trên RC 2 dùng `cmd overlay lookup PACKAGE PACKAGE:TYPE/NAME`, không có `--user`; Android 15 giữ `--user 0`. 0.10.1 sửa chọn cú pháp theo SDK để gói dịch đúng không bị rollback do lệnh đọc lại sai. Sau cài menu, giữ tay ở **Settings/RC Launcher** trong lúc Việt hóa; mở lại DJI Fly sau khi có kết quả thành công.

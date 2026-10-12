@@ -1,0 +1,18 @@
+{
+  "scope": "Static stock RC Fly ABI and synthetic JVM tests; no aircraft or genuine 1.21.10 support claim",
+  "stock_version": "1.21.8",
+  "stock_sha256": "cfbf67368fa812c6e7d51430a07518ab47d056605bf373fcc69277e540caa32e",
+  "stock_input": "C:/Users/kona/Downloads/DJI_RC2_VIETNAMESE_20261005/DJI_FLY.apk",
+  "audit_input": "phone-work/api-capability-review/blocked/key-flags.json",
+  "aliases": {"he": "Connection", "J": "AreMotorsOn", "K": "IsFlying", "U2": "LEDsSettings"},
+  "descriptor_flag_order": ["canGet", "canSet", "canListen", "canPerformAction", "isEvent"],
+  "descriptor_flags": {"Connection": [true,false,true,false,false], "AreMotorsOn": [true,false,true,false,false], "IsFlying": [true,false,true,false,false], "LEDsSettings": [true,true,true,false,false]},
+  "metadata_methods": {"identifier": "e() -> String", "canGet": "i() -> boolean", "canListen": "j() -> boolean", "canPerformAction": "k() -> boolean", "canSet": "l() -> boolean", "isEvent": "m() -> boolean"},
+  "ground_factory": "i(UAVKeyInfoBase) -> UAVKey; indices=0,0,65534",
+  "led_factory": "l(UAVKeyInfoBase,int,int,int) -> UAVKey; indices=0,0,0",
+  "manager": {"cache": "static r(UAVKey) -> Object", "get": "static t(UAVKey,IGetCallback) -> void", "set": "static x(UAVKey,Object,ISetCallback) -> void"},
+  "callbacks": {"IGetCallback": ["a(UAVKey,int,String) -> void", "b(UAVKey,Object) -> void"], "ISetCallback": ["a(UAVKey,int,String) -> void", "b(UAVKey) -> void"]},
+  "led_constructor": "LEDsSettings(Boolean front,Boolean status,Boolean rear,Boolean navigation)",
+  "genuine_1_21_10_contract_verified": false,
+  "device_runtime_verified": false
+}

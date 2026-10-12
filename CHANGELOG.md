@@ -1,15 +1,22 @@
 # Changelog
 
-## Chưa phát hành — feature-port trên stock RC1.21.8 (11/10/2026)
+## 0.10.1 — public Basic (13/10/2026)
 
-- Thêm recipe PC để đọc resource hai APK, chọn namespace tiện ích, đối chiếu dependency/kế thừa, ghép hook theo method/anchor, dựng helper, ký và phục hồi chính xác nguồn.
-- Dựng APK thử nghiệm từ stock1.21.8; thêm430 class tiện ích, sửa44 method của31 class trong11 DEX, thêm cầu lifecycle/menu/radio/bản đồ/LAN/log/RTH và chuyển riêng mức chặn120 m của giao diện sang range SDK.
-- Giữ AppGuard, SDK/native stock, menu LED có guard/readback và một bộ chạm hai lần. Không đưa nút LED độc lập lên HUD; loại nhánh GPS gửi UDP lặp sau SDK. Các lựa chọn radio được đồng bộ sau giao dịch helper thành công.
-- Rà396 mục chữ của tiện ích, sửa247 cách diễn đạt và thay239 vị trí literal UI; giữ literal protocol/khóa/tên file.
-- Kiểm tra650 class helper/tiện ích,0 dependency chưa giải quyết; xác minh chữ ký SDK30 và source recovery. Kiểm thử nguồn snapshot1854 ca đạt, có kiểm tra mục tiêu cho sửa cuối.
-- Không chuyển đường ghi UID tổng hợp để bỏ hạn chế đăng nhập hoặc hook RemoteID/DroneID. Không kiểm tra/cài/gửi lệnh thiết bị theo yêu cầu. Feature-port chưa đưa vào EXE0.9.0 hoặc Release dùng chung. [Báo cáo](docs/REDFLY_FEATURE_PATCH.md).
+- Chốt phạm vi public: Việt hóa và menu LED/HUD/xuất hình/radio. Giao diện chỉ có hai thao tác riêng cho menu và bản dịch, không có bộ chọn Advanced; payload/CLI public chỉ nhận `basic`.
+- Bản thử nâng cấp được giữ ở sibling cục bộ `rc2-viet-advanced-local`, không được xuất bản. Mã, payload, APK riêng và khóa runtime/ký không được đưa vào source/EXE public.
+- Cầu SDK Basic tìm key theo identifier có nghĩa, hỗ trợ đổi tên field; vẫn kiểm tra kiểu/quyền/chữ ký callback, telemetry còn mới, kết nối, mặt đất/động cơ dừng và readback. Fixture đổi field không chứng minh APK RC 1.21.10 thực tương thích.
+- Discovery nhận cả DJI USB `2CA3:1021` và Android chỉ ADB `18D1:4EE7`. Transport mới không thay guard model/device/SDK/root/serial/foreground trước áp dụng.
+- Tiếp tục dựng RRO riêng từ APK đích và bộ nhớ dịch của thư mục người dùng cung cấp; giữ sửa **Chế độ C (Tốc độ chậm)**, bảng diễn đạt đã rà, placeholder/markup/array/plural và dịch bổ sung cục bộ. Không pin số phiên bản hay cam kết 100% UI.
+- Đã lấy APK gốc **1.21.10 / code 3115981** qua USB sau khi người dùng cập nhật; 468.109.376 byte, SHA-256 `f6c11267d465c303e2aecb737fe4f6b41b54da083368cac497404f4c9a464f98`, khớp báo cáo trong thư mục người dùng cung cấp. Menu Basic và RRO được dựng từ nguồn thật này, không dùng RedFly để dịch, patch hoặc cài.
+- Sửa phân loại bằng chứng: thử cấu trúc 1.21.10 trong 0.9.0 dùng RedFly, chỉ là tham chiếu lịch sử, không chứng minh Fly chính thức hoặc Basic hiện tại. Gỡ các hướng dẫn thử nghiệm và liên kết tài liệu đã xóa khỏi các tài liệu public được cập nhật.
+- Basic 1.21.10 đã cập nhật cùng signer, giữ UID/dữ liệu; menu chỉ còn LED/HUD/xuất hình/radio, không có Tiện ích SDK. Bản riêng vẫn giữ ngoài GitHub.
+- Sửa readback tiếng Việt trên RC 2 Android 11: `overlay lookup` không có `--user`; Android 15 giữ tùy chọn `--user 0`. Lệnh sai trước đây khiến gói đã dựng đúng bị rollback khi kiểm tra.
+- Radio nhận dạng máy bay qua identifier `SerialNumber`, giữ ranh giới baseline theo máy bay và đọc lại cấu hình sau yêu cầu.
+- Build cuối đạt 2.003 test nguồn/90,10% coverage và 15 test gói. EXE đã dựng/ký/replay menu và dựng RRO đủ 11.313 mục trên stock RC 1.21.8/1.21.10; Basic 1.21.10 đã cài giữ dữ liệu, mở menu và bật/đọc lại tiếng Việt. RF/video vật lý/thử bay/soak vẫn chưa xác minh.
 
-## 0.9.0 — menu theo cấu trúc APK, bổ sung bản dịch và phân tích RedFly (11/10/2026)
+## 0.9.0 — menu theo cấu trúc APK và bổ sung bản dịch (11/10/2026)
+
+Các kết quả dưới đây là snapshot lịch sử của 0.9.0, không phải xác minh 0.10.1.
 
 - Menu tự đọc Application/chuỗi kế thừa từ manifest và DEX, nhận diện thao tác đổi context, giữ các bước khởi động còn lại và cấp slot DEX mới. Không khóa số phiên bản/hash nguồn Fly; hash được dùng để bind đúng đầu vào hiện hành.
 - Mod mới mang capsule phục hồi byte-exact của chính APK nguồn. EXE khác có thể tự lấy và phục hồi nguồn từ tay, rồi replay recipe/chữ ký/payload trước khi cập nhật. Bộ nhận diện template 1.21.8 cũ được giữ cho nâng cấp lịch sử.
@@ -17,8 +24,8 @@
 - Nhận diện vai trò màn hình từ các view Home/preview/HUD, hỗ trợ đổi tên Activity. Tránh đăng ký callback quá sớm trên Application AppGuard chưa đổi context.
 - Sửa `Chế độ sin (tiểu thức chậm)` thành **Chế độ C (Tốc độ chậm)**. Bảng sửa diễn đạt ưu tiên riêng giữ ưu tiên ngữ cảnh của thuật ngữ chung.
 - Bổ sung 7 cặp nguồn/bản dịch hợp lệ từ `rc2-viet-codex-initial-release`, giữ 10.736 cặp đã có, loại 350 cặp lệch contract và 830 mục thiếu cấu trúc/nguồn. Cập nhật hash bộ nhớ và cache pipeline `complete-v3`.
-- Tải/kiểm tra SHA-256 và phân tích tĩnh RedFly RC2 1.21.10 dev56/build136 v5/v6; báo cáo ở `docs/REDFLY_ANALYSIS.md`. APK và Smali phân tích giữ trong thư mục làm việc riêng.
-- Kiểm chứng cục bộ menu trên RC 1.21.8, phone 1.21.12 và RedFly v5 1.21.10: chọn DEX23/DEX2/DEX33, giữ các entry khác, ký/replay và phục hồi đúng nguồn. Đây là bằng chứng trên PC; chưa cài/chạy các bản mới hoặc kiểm chứng tính năng vật lý trên thiết bị.
+- Kiểm chứng cấu trúc trên PC với Fly RC 1.21.8/DEX23 và phone 1.21.12/DEX2: giữ các entry khác, ký/replay và phục hồi đúng nguồn. Chưa xác minh runtime thiết bị cho snapshot này.
+- Đầu vào 1.21.10/DEX33 của lần thử cũ là RedFly v5 đã mod, được giữ như tham chiếu lịch sử và loại khỏi bằng chứng tương thích Fly RC 1.21.10 chính thức/Basic 0.10.1. Nó không phải nguồn bản dịch hiện hành. [Phân loại bằng chứng](docs/adaptive-menu-verification.json).
 
 ## 0.8.0 — dựng bản dịch hoàn chỉnh từ APK đích (2026-10-10)
 

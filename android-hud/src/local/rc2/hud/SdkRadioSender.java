@@ -17,7 +17,7 @@ final class SdkRadioSender implements NativeRadio.Sender {
         Factory(ClassLoader loader) {
             this(loader,()->{
                 try {
-                    Object value=new FlySdk(loader).cached("c"); // stock FlightController SerialNumber
+                    Object value=new FlySdk(loader).cached("SerialNumber");
                     if(!(value instanceof String) || !((String)value).matches("[A-Za-z0-9]{6,32}")) return null;
                     byte[] digest=java.security.MessageDigest.getInstance("SHA-256")
                         .digest(((String)value).getBytes(java.nio.charset.StandardCharsets.US_ASCII));

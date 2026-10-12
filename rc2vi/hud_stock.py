@@ -8,11 +8,12 @@ import struct
 import tempfile
 from zipfile import ZipFile, ZIP_STORED, ZIP_DEFLATED
 
-from .core import SUPPORTED_APK
+from .core import SUPPORTED_APK, RC_12110_APK
 from .hud_backup import guard_path
 from .hud_tools import HudCancelled, check_cancel, sha256_file, _json_object
 
 SOURCE_RECOVERY_SHA256 = '746b41562bc1a48aa59285b8eb2a46b55ac180567cd7627b880dd26c4728d4d6'
+SOURCE_RECOVERY_12110_SHA256 = 'c296e4f326c7a3c80e2bba5474d986a1d5287457eca8e5e021fefcd0aa8ff9e7'
 CHANGED = frozenset({'AndroidManifest.xml','classes.dex'})
 CHUNK=1024*1024
 MAX_LITERAL=32*1024*1024
@@ -122,16 +123,18 @@ def stream_copy(source,target,size,cancel=None,expected=None):
     if expected and digest.hexdigest()!=expected:raise ValueError('Changed compressed APK payload')
 
 
-def recover_stock(installed_apk,template,output,cancel=None):
+def recover_stock(installed_apk,template,output,cancel=None,expected_digest=None):
     check_cancel(cancel)
+    if expected_digest is None:expected_digest=SUPPORTED_APK
     installed_apk,template,output=map(guard_path,(installed_apk,template,output))
     if output.exists():raise FileExistsError('Stock recovery never overwrites existing files')
-    if sha256_file(template,cancel)!=SOURCE_RECOVERY_SHA256:
+    pins={SUPPORTED_APK:SOURCE_RECOVERY_SHA256,RC_12110_APK:SOURCE_RECOVERY_12110_SHA256}
+    if expected_digest not in pins or sha256_file(template,cancel)!=pins[expected_digest]:
         raise ValueError('Source recovery template hash mismatch')
     temporary=None
     try:
         with ZipFile(template) as capsule,ZipFile(installed_apk) as current:
-            recipe=recipe_value(capsule);source_entries=entries(current)
+            recipe=recipe_value(capsule,expected_digest=expected_digest);source_entries=entries(current)
             expected={row['name'] for row in recipe['entries']}
             if set(current.namelist()) not in (expected,expected|{'classes23.dex'}):
                 raise ValueError('Unexpected APK entry set')
@@ -162,7 +165,7 @@ def recover_stock(installed_apk,template,output,cancel=None):
                         stream_copy(literals,target,row['suffix_size'],cancel)
                     if literals.read(1):raise ValueError('Trailing recovery literals')
             check_cancel(cancel)
-            if temporary.stat().st_size!=recipe['stock_size'] or sha256_file(temporary,cancel)!=SUPPORTED_APK:
+            if temporary.stat().st_size!=recipe['stock_size'] or sha256_file(temporary,cancel)!=expected_digest:
                 raise ValueError('Recovered stock APK hash mismatch')
             guard_path(output);guard_path(temporary);check_cancel(cancel)
             os.link(temporary,output)

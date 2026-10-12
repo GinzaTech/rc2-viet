@@ -1,6 +1,6 @@
 package local.rc2.hud;
 
-/** Read-only access to telemetry from this pinned Fly SDK. Missing APIs/data fail closed. */
+/** Read-only telemetry through semantic Basic SDK keys. Missing APIs/data fail closed. */
 final class NativeAircraft {
     private final ClassLoader loader;
     private final FlySdk sdk;
@@ -14,9 +14,9 @@ final class NativeAircraft {
             boolean valid=Boolean.TRUE.equals(type.getMethod("isGetted").invoke(osd)) && bytes!=null && bytes.length>=36;
             boolean fresh=!Boolean.TRUE.equals(type.getMethod("isPushLosed").invoke(osd));
             boolean motors=Boolean.TRUE.equals(type.getMethod("isMotorUp").invoke(osd));
-            Boolean connected=readBoolean("he");
-            Boolean flying=readBoolean("K");
-            Boolean sdkMotors=readBoolean("J");
+            Boolean connected=readBoolean("Connection");
+            Boolean flying=readBoolean("IsFlying");
+            Boolean sdkMotors=readBoolean("AreMotorsOn");
             valid=valid && Boolean.TRUE.equals(connected) && sdkMotors!=null && flying!=null;
             return new GroundGate(valid,fresh,motors || !Boolean.FALSE.equals(sdkMotors),flying);
         } catch (ReflectiveOperationException | RuntimeException | LinkageError error) { return GroundGate.unknown(); }
@@ -26,7 +26,7 @@ final class NativeAircraft {
         return value instanceof Boolean ? (Boolean)value : null;
     }
     void readGround(LedJob.Reply<GroundGate> reply) {
-        bool("he",reply,connected->bool("K",reply,flying->bool("J",reply,motors->{
+        bool("Connection",reply,connected->bool("IsFlying",reply,flying->bool("AreMotorsOn",reply,motors->{
             GroundGate live=snapshot();
             reply.success(new GroundGate(live.valid && connected,live.fresh,live.motorsOn || motors,flying));
         })));
@@ -36,6 +36,7 @@ final class NativeAircraft {
         if(!reply.active()) return;
         java.util.concurrent.atomic.AtomicBoolean answered=new java.util.concurrent.atomic.AtomicBoolean();
         sdk.get(field,new LedJob.Reply<Object>() {
+            public boolean active() { return reply.active() && !answered.get(); }
             public void failure(String message) {
                 if(reply.active() && answered.compareAndSet(false,true)) reply.failure("Không đọc được trạng thái bay mới nhất. "+message);
             }

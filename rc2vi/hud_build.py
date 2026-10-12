@@ -1,4 +1,5 @@
 """Offline pinned-stock EXE HUD pipeline and independently revalidated receipts."""
+from contextvars import ContextVar
 import hashlib
 import json
 from pathlib import Path
@@ -9,12 +10,18 @@ import tempfile
 import uuid
 from zipfile import ZipFile
 
-from .core import SUPPORTED_APK
+from .core import SUPPORTED_APK, RC_12110_APK
 from .hud_keys import HudKeyStore
 from .hud_tools import HudTools, check_cancel, load_json, sha256_file
+from .hud_variants import HudVariant, validate_variant
 from scripts.hud_apk import repack_apk, validate_apk_change
 from scripts.hud_manifest import add_hud_provider
 from scripts.hud_signing_block import V2, block_entries, replace_v2_block
+
+# Preserve a recovered source's verified digest through Basic subclass dispatch
+# without changing build(source) or keeping mutable selection state on a builder.
+_RECOVERED_SOURCE: ContextVar[tuple[object, Path, str] | None] = ContextVar(
+    'hud_recovered_source', default=None)
 
 
 def _guard(path: Path) -> None:
@@ -55,7 +62,7 @@ class LegacyHudBuilder:
 
     def _stock(self, source: Path) -> tuple[bytes, bytes]:
         _guard(source)
-        if sha256_file(source, self.cancel) != SUPPORTED_APK:
+        if sha256_file(source, self.cancel) not in {SUPPORTED_APK,RC_12110_APK}:
             raise ValueError('HUD source must be the exact pinned stock Fly APK.')
         with ZipFile(source) as archive:
             names = archive.namelist()
@@ -97,12 +104,13 @@ class LegacyHudBuilder:
                     break
                 output.write(value)
                 digest.update(value)
-        if digest.hexdigest() != SUPPORTED_APK:
+        if digest.hexdigest() not in {SUPPORTED_APK,RC_12110_APK}:
             raise ValueError('HUD source changed or is not the pinned stock APK.')
 
     def build(self, source: Path) -> dict:
         self._stage('Đang kiểm tra APK Fly gốc…')
         source = Path(source)
+        source_digest = sha256_file(source,self.cancel)
         self._stock(source)
         self._stage('Đang kiểm tra bộ công cụ HUD ngoại tuyến…')
         binding = self._tool_binding()
@@ -117,6 +125,8 @@ class LegacyHudBuilder:
         try:
             stock = directory / 'source.apk'
             self._copy_stock(source, stock)
+            if sha256_file(stock,self.cancel)!=source_digest:
+                raise ValueError('HUD source changed while copying the selected APK')
             self._stage('Đang thêm HUD vào khởi động và manifest…')
             manifest, bootstrap, helper = self._recipe(stock, directory)
             unsigned, aligned = directory / 'unsigned.apk', directory / 'aligned.apk'
@@ -134,7 +144,7 @@ class LegacyHudBuilder:
             report = self._validate_candidate(stock, candidate, manifest, bootstrap, helper,
                                               key.certificate_sha256)
             value = {'schema': 1, 'status': 'hud_built', 'apk': 'hud.apk', 'source': 'source.apk',
-                     'digest': sha256_file(candidate, self.cancel), 'source_digest': SUPPORTED_APK,
+                     'digest': sha256_file(candidate, self.cancel), 'source_digest': source_digest,
                      'certificate_sha256': key.certificate_sha256, **binding,
                      'payload_sha256': hashlib.sha256(helper).hexdigest(),
                      'bootstrap_sha256': hashlib.sha256(bootstrap).hexdigest(),
@@ -208,6 +218,7 @@ class LegacyHudBuilder:
         """Recognize a pulled HUD recipe/signature without trusting a foreign PC receipt/key."""
         path,stock=Path(path),Path(stock)
         _guard(path);_guard(stock);check_cancel(self.cancel)
+        source_digest=sha256_file(stock,self.cancel)
         self._stock(stock);self._tool_binding()
         before=sha256_file(path,self.cancel)
         with ZipFile(stock) as original,ZipFile(path) as archive:
@@ -236,10 +247,10 @@ class LegacyHudBuilder:
         with tempfile.TemporaryDirectory(prefix='device-recipe-',dir=self.work) as temporary:
             manifest,bootstrap,verified_helper=self._recipe(stock,Path(temporary),helper)
             self._validate_candidate(stock,path,manifest,bootstrap,verified_helper,certificate)
-        if sha256_file(path,self.cancel)!=before or sha256_file(stock,self.cancel)!=SUPPORTED_APK:
+        if sha256_file(path,self.cancel)!=before or sha256_file(stock,self.cancel)!=source_digest:
             raise ValueError('Device APK source changed during verification.')
         return {'status':'hud_device_verified','apk':str(path),'digest':before,
-                'source_digest':SUPPORTED_APK,'certificate_sha256':certificate}
+                'source_digest':source_digest,'certificate_sha256':certificate}
 
     def verify(self, receipt: Path, allow_historical=False) -> dict:
         check_cancel(self.cancel)
@@ -250,7 +261,7 @@ class LegacyHudBuilder:
                     'payload_sha256', 'bootstrap_sha256', 'manifest_sha256', 'changes'}
         if (set(value) != required or type(value['schema']) is not int or value['schema'] != 1
                 or value['status'] != 'hud_built' or value['apk'] != 'hud.apk'
-                or value['source'] != 'source.apk' or value['source_digest'] != SUPPORTED_APK):
+                or value['source'] != 'source.apk' or value['source_digest'] not in {SUPPORTED_APK,RC_12110_APK}):
             raise ValueError('Invalid or unpinned HUD receipt.')
         candidate, stock = receipt.parent / 'hud.apk', receipt.parent / 'source.apk'
         _guard(candidate)
@@ -279,14 +290,14 @@ class LegacyHudBuilder:
             report = self._validate_candidate(stock, candidate, manifest, bootstrap, helper,
                                               key.certificate_sha256)
         if (report != value['changes'] or sha256_file(candidate, self.cancel) != value['digest']
-                or sha256_file(stock, self.cancel) != SUPPORTED_APK):
+                or sha256_file(stock, self.cancel) != value['source_digest']):
             raise ValueError('HUD candidate changed during receipt verification.')
         if (any(value[field] != expected for field, expected in self._tool_binding().items())
                 or value['payload_sha256'] != hashlib.sha256(
                     self.tools.historical_payload(value['payload_sha256']) if historical else self.tools.payload()).hexdigest()):
             raise ValueError('HUD tools or payload changed during receipt verification.')
         return {'status': 'hud_built', 'apk': str(candidate), 'digest': value['digest'],
-                'source_digest': SUPPORTED_APK, 'certificate_sha256': key.certificate_sha256,
+                'source_digest': value['source_digest'], 'certificate_sha256': key.certificate_sha256,
                 'receipt': str(receipt)}
 
     def latest(self) -> dict | None:
@@ -308,6 +319,48 @@ class HudBuilder(LegacyHudBuilder):
     def build(self, source: Path) -> dict:
         from .hud_adaptive_build import AdaptiveBuild
         return AdaptiveBuild(self).build(Path(source))
+
+    def build_variant(self, source: Path, variant: str) -> dict:
+        """Build a selected helper from stock or an independently replayed mod."""
+        from .hud_device_source import source_kind, recover_adaptive, recover_stock
+
+        selected = validate_variant(variant)
+        check_cancel(self.cancel)
+        source = Path(source)
+        _guard(source)
+        kind = source_kind(source)
+        if kind == 'stock':
+            return self._build_variant_source(source, selected)
+        before = sha256_file(source, self.cancel)
+        _guard(self.work)
+        self.work.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(prefix='variant-source-', dir=self.work) as tmp:
+            stock = Path(tmp) / 'source.apk'
+            if kind == 'adaptive':
+                recover_adaptive(source, stock, cancel=self.cancel)
+            else:
+                recover_stock(source, self.assets / 'hud/source-recovery.zip', stock,
+                              cancel=self.cancel)
+            verified = self.verify_device_apk(source, stock)
+            if verified['digest'] != before or sha256_file(source, self.cancel) != before:
+                raise ValueError('Menu input changed during variant recovery')
+            if sha256_file(stock, self.cancel) != verified['source_digest']:
+                raise ValueError('Recovered menu source changed after replay')
+            check_cancel(self.cancel)
+            return self._build_variant_source(stock, selected, verified['source_digest'])
+
+    def _build_variant_source(self, source: Path, variant: HudVariant,
+                              expected_source_digest: str | None = None) -> dict:
+        token = (_RECOVERED_SOURCE.set((self, source.absolute(), expected_source_digest))
+                 if expected_source_digest is not None else None)
+        try:
+            if variant is HudVariant.BASIC:
+                # Honor a subclass's established Basic build implementation.
+                return self.build(source)
+            raise ValueError('Only the existing menu is supported by the public builder')
+        finally:
+            if token is not None:
+                _RECOVERED_SOURCE.reset(token)
 
     def verify(self, receipt: Path, allow_historical=False) -> dict:
         path = self._receipt(Path(receipt))

@@ -19,6 +19,8 @@ import threading
 from typing import BinaryIO
 import zipfile
 
+from .hud_variants import HudVariant, validate_variant
+
 
 Cancel = threading.Event | Callable[[], bool] | None
 _CHUNK_SIZE = 1024 * 1024
@@ -40,6 +42,7 @@ _RESERVED_NAMES = frozenset({
 
 
 LEGACY_HUD_PAYLOADS = frozenset({
+    '83362ab740c7522265d4fee876b2a75cc7f6fd0b7efe096ba92da21a5fbf5ba0',
     '454c195d6f2d96cee1c1675af6a3f18cfcb47e5d76abbb375f0a694ef154015e',
     'a18ca3ba902e4856fd63c3dcb0bc5a64cd760bc369d65316896a61a2ddd56312',
     '0f410e39523cddee1c418855c635fae4f9d703cc6b8b4039a393dc899e148887',
@@ -58,6 +61,7 @@ LEGACY_HUD_PAYLOADS = frozenset({
     '9d1d70dedc9ae0ae34117722f5ffbdcf2798d3b519f57331c911be268db778b1',
     '7a3542689cada6d8a903109bdaa85b87b411096dc3b2d4991c01033009edc4c6',
 })
+
 
 
 class HudCancelled(RuntimeError):
@@ -430,19 +434,32 @@ class HudTools:
         return root
 
     def payload(self) -> bytes:
+        """Read the Basic helper, preserving the original no-argument contract."""
+        return self.variant_payload(HudVariant.BASIC)
+
+    def variant_metadata(self, variant: str) -> dict:
+        """Validate schema and digest fields at the variant's fixed metadata path."""
+        selected = validate_variant(variant)
         check_cancel(self.cancel)
         hud = self.assets / 'hud'
-        manifest = load_json(hud / 'payload.json')
+        manifest = load_json(hud / selected.metadata_filename)
         required = {'schema', 'sha256'}
         allowed = required | {'restore_owner_sha256'}
         if (not required <= manifest.keys() or not manifest.keys() <= allowed
                 or type(manifest['schema']) is not int or manifest['schema'] != 1):
             raise ValueError('Unsupported HUD payload manifest.')
         expected = _hex_digest(manifest['sha256'])
-        if 'restore_owner_sha256' in manifest:
-            _hex_digest(manifest['restore_owner_sha256'])
+        restore = ({'restore_owner_sha256': _hex_digest(manifest['restore_owner_sha256'])}
+                   if 'restore_owner_sha256' in manifest else {})
+        check_cancel(self.cancel)
+        return {**manifest, 'sha256': expected, **restore}
+
+    def variant_payload(self, variant: str) -> bytes:
+        """Read only a fixed variant asset and recheck its SHA256 on every call."""
+        selected = validate_variant(variant)
+        manifest = self.variant_metadata(selected)
         chunks = []
-        with (hud / 'classes23.dex').open('rb') as stream:
+        with (self.assets / 'hud' / selected.payload_filename).open('rb') as stream:
             while True:
                 check_cancel(self.cancel)
                 chunk = stream.read(_CHUNK_SIZE)
@@ -450,7 +467,7 @@ class HudTools:
                     break
                 chunks.append(chunk)
         result = b''.join(chunks)
-        if hashlib.sha256(result).hexdigest() != expected:
+        if hashlib.sha256(result).hexdigest() != manifest['sha256']:
             raise ValueError('HUD payload failed integrity verification.')
         check_cancel(self.cancel)
         return result
@@ -461,7 +478,12 @@ class HudTools:
         expected = _hex_digest(expected)
         if expected not in LEGACY_HUD_PAYLOADS:
             raise ValueError('Historical HUD payload is not explicitly supported.')
-        path = self.assets / 'hud/history' / (expected + '.dex')
+        return self._retained_payload(expected, HudVariant.BASIC)
+
+    def _retained_payload(self, expected: str, variant: HudVariant) -> bytes:
+        validate_variant(variant)
+        history = self.assets / 'hud/history'
+        path = history / (expected + '.dex')
         for part in (path, *path.parents):
             info = part.lstat()
             if stat.S_ISLNK(info.st_mode) or getattr(info, 'st_file_attributes', 0) & _REPARSE_POINT:

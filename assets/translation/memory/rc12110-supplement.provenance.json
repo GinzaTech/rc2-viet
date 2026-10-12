@@ -3,5 +3,10 @@
   "source_catalog_sha256": "3c19be6b92197a2ff1bdd3a11f784e5431f05f223947598de340c2fa7e092888",
   "translations": "translation/rc-1.21.10/res",
   "method": "exact source text and placeholder contract; current pairs take precedence",
-  "runtime_tested": false
+  "runtime_tested": false,
+  "source_directory": "C:\\Users\\kona\\Desktop\\rc2-viet-codex-initial-release",
+  "source_kind": "user_provided_stock_translation_data",
+  "reference_mod_used": false,
+  "declared_target_version": "1.21.10",
+  "declared_target_sha256": "f6c11267d465c303e2aecb737fe4f6b41b54da083368cac497404f4c9a464f98"
 }

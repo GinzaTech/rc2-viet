@@ -26,7 +26,8 @@ def release(tmp_path):
     (root / 'docs/HUD_APK.md').write_text('Synthetic public HUD instructions.', encoding='utf-8')
     (root / 'docs/FREEFCC_LICENSE.txt').write_text('Synthetic AGPL notice.', encoding='utf-8')
     for name in ('CHANGELOG.md', 'docs/VIETNAMESE.md', 'docs/ANDROID_PHONE.md',
-                 'docs/REDFLY_ANALYSIS.md', 'docs/BAO_CAO_0.9.0.md', 'docs/adaptive-menu-verification.json'):
+                 'docs/BAO_CAO_0.9.0.md', 'docs/adaptive-menu-verification.json',
+                 'docs/USAGE.md', 'docs/BUILD.md'):
         (root / name).write_text('Synthetic adaptive translation instructions.', encoding='utf-8')
     from rc2vi.translation_engine import REQUIRED
     engine_id = 'a' * 24
@@ -66,7 +67,11 @@ def test_package_uses_current_exe_and_replaces_stale_zip_report_and_checksums(re
     (dist / 'SHA256SUMS.txt').write_text('stale old.exe\n', encoding='utf-8')
     report = backend.package_windows(release)
     assert report == backend.verify_package(release)
-    assert report['version'] == '0.9.0-local'
+    assert report['version'] == '0.10.1-local'
+    assert report['menu_variants'] == ['basic']
+    assert report['menu_default_variant'] == 'basic'
+    assert report['experimental_features_bundled'] is False
+    assert report['reference_mod_used'] is False
     assert report['exe_sha256'] == digest(dist / 'RC2-TiengViet.exe')
     assert report['exe_bytes'] == (dist / 'RC2-TiengViet.exe').stat().st_size
     assert report['hud_pipeline_bundled'] is True
@@ -78,7 +83,8 @@ def test_package_uses_current_exe_and_replaces_stale_zip_report_and_checksums(re
         assert set(archive.namelist()) == {'RC2-TiengViet.exe', 'README.md',
                                           'THIRD_PARTY_NOTICES.md', 'docs/HUD_APK.md', 'docs/FREEFCC_LICENSE.txt', 'release-verification.json',
                                           'CHANGELOG.md', 'docs/VIETNAMESE.md', 'docs/ANDROID_PHONE.md',
-                                          'docs/REDFLY_ANALYSIS.md', 'docs/BAO_CAO_0.9.0.md',
+                                          'docs/BAO_CAO_0.9.0.md',
+                                          'docs/USAGE.md', 'docs/BUILD.md',
                                           'docs/adaptive-menu-verification.json', *backend.engine_payload(release)}
         assert archive.read('docs/FREEFCC_LICENSE.txt') == (release / 'docs/FREEFCC_LICENSE.txt').read_bytes()
         assert archive.read('docs/HUD_APK.md') == (release / 'docs/HUD_APK.md').read_bytes()
@@ -136,7 +142,8 @@ def test_packaging_excludes_private_backups_stock_and_nested_files(release, monk
                             'RC2-TiengViet-Source-v0.2.0.zip', 'freefcc.apk',
                             'release-verification.json'}
     with zipfile.ZipFile(dist / 'RC2-TiengViet-Portable.zip') as archive:
-        assert len(archive.namelist()) == 12 + len(backend.engine_payload(release))
+        assert len(archive.namelist()) == 13 + len(backend.engine_payload(release))
+        assert {'docs/USAGE.md', 'docs/BUILD.md'} <= set(archive.namelist())
     assert (nested / 'private.zip').is_file()
 
 
@@ -163,7 +170,7 @@ def test_failed_staged_verification_keeps_old_outputs(release, monkeypatch):
     with pytest.raises(ValueError, match='staged'):
         backend.package_windows(release)
     assert before == {name: digest(release / 'dist' / name) for name in names}
-    assert original(release)['version'] == '0.9.0-local'
+    assert original(release)['version'] == '0.10.1-local'
     assert not list((release / 'dist').glob('.package-*'))
 
 
@@ -203,4 +210,4 @@ def test_packaging_cli_runs_without_java_or_external_dependencies(release):
                             capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
     assert json.loads(result.stdout)['exe_sha256'] == digest(release / 'dist/RC2-TiengViet.exe')
-    assert backend.verify_package(release)['version'] == '0.9.0-local'
+    assert backend.verify_package(release)['version'] == '0.10.1-local'

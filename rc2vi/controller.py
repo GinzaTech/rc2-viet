@@ -18,6 +18,18 @@ def choose_device(devices,selected):
     return devices[0] if len(devices)==1 else None
 
 
+def _basic_menu_source(request: Path | dict | None) -> Path | None:
+    """Validate the public menu request before queuing or using any transport."""
+    if isinstance(request,dict):
+        variant=request.get('variant')
+        if set(request)!={'variant'} or not isinstance(variant,str) or variant!='basic':
+            raise ValueError('Bản công khai chỉ hỗ trợ menu basic.')
+        return None
+    if request is not None and not isinstance(request,Path):
+        raise ValueError('Yêu cầu menu cần đường dẫn APK gốc hoặc menu basic.')
+    return request
+
+
 class Worker:
     def __init__(self,assets: Path,activator,emit,discover=discover_usb,connection_factory=Connection,
                  hud_builder=None,hud_installer=None,stop_event=None):
@@ -28,6 +40,9 @@ class Worker:
         self.hud_builder=hud_builder;self.hud_installer=hud_installer
 
     def request(self,command,value=None):
+        if command=='hud_patch_menu':
+            if isinstance(value,dict):value=dict(value)
+            _basic_menu_source(value)
         self.commands.put((command,value))
 
     def close(self):
@@ -75,8 +90,9 @@ class Worker:
         elif result['status']=='hud_already_installed':self.emit('ready','RC 2 đã có đúng APK HUD vừa tạo.')
         else:raise ValueError('Trạng thái quy trình HUD không hợp lệ.')
 
-    def _patch_hud_menu(self,source: Path | None=None):
+    def _patch_hud_menu(self,request: Path | dict | None=None):
         """Build and prepare the new receipt only on the original connection."""
+        source=_basic_menu_source(request)
         check_cancel(self.stop_event)
         connection,adb,selected=self.connection,self.adb,self.selected
         if not adb or not connection or not connection.alive():
@@ -102,12 +118,15 @@ class Worker:
         check_cancel(self.stop_event)
         if not isinstance(result,dict) or result.get('status')!='hud_built' or not result.get('receipt'):
             raise ValueError('Chưa có receipt APK HUD vừa tạo; không bắt đầu cài đặt.')
+        if result.get('variant','basic')!='basic':
+            raise ValueError('Receipt APK HUD không khớp menu basic.')
+        receipt=result['receipt']
         self._hud_result(result)
         self.emit('applying','Đang kiểm tra RC 2 trước khi cài APK HUD vừa tạo…')
         check_cancel(self.stop_event)
         if not unchanged():
             self.emit('error','Kết nối hoặc RC 2 đã chọn thay đổi trong khi tạo APK HUD.');return
-        self._hud_result(self.hud_installer.prepare(adb,serial,result['receipt']))
+        self._hud_result(self.hud_installer.prepare(adb,serial,receipt))
         self.handled=True
 
     def _command(self,command,value):

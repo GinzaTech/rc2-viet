@@ -2,7 +2,7 @@
 from pathlib import Path
 import uuid
 
-from .core import SUPPORTED_APK
+from .core import SUPPORTED_APK, RC_12110_APK
 from .hud_backup import PinnedAdb, guard_path, make_private, sha256_file
 from zipfile import ZipFile
 from .hud_capsule import CAPSULE_ENTRY, PROFILE_ENTRY, MAX_LITERAL, recover_capsule
@@ -11,9 +11,9 @@ from .hud_plan import DEX
 from scripts.hud_manifest import inspect_application, inspect_strings
 
 
-def recover_stock(pulled,template,target,cancel=None):
+def recover_stock(pulled,template,target,cancel=None,expected_digest=None):
     from .hud_stock import recover_stock as restore
-    return restore(pulled,template,target,cancel=cancel)
+    return restore(pulled,template,target,cancel=cancel,expected_digest=expected_digest)
 
 
 def source_kind(pulled):
@@ -76,15 +76,20 @@ def _pull(installer,bound,before,directory):
     if dict(installer._installed(bound))!=before:
         raise ValueError('DJI Fly hoặc thiết bị đã thay đổi trong lúc lấy APK; chưa patch hoặc cài.')
     installer._check_cancel()
-    if before['digest']==SUPPORTED_APK:return pulled
+    if before['digest'] in {SUPPORTED_APK,RC_12110_APK}:return pulled
     kind=source_kind(pulled)
     if kind=='stock':return pulled
     installer.emit('applying','Đang khôi phục đầu vào Fly gốc từ APK trên tay…')
     stock=directory/'source.apk'
     if kind=='adaptive': recover_adaptive(pulled,stock,cancel=installer.cancel)
-    else: recover_stock(pulled,installer.assets/'hud/source-recovery.zip',stock,cancel=installer.cancel)
+    else:
+        current=before.get('version')=='1.21.10' and before.get('code')==3115981
+        expected=RC_12110_APK if current else SUPPORTED_APK
+        template='source-recovery-1.21.10.zip' if current else 'source-recovery.zip'
+        if current:recover_stock(pulled,installer.assets/'hud'/template,stock,cancel=installer.cancel,expected_digest=expected)
+        else:recover_stock(pulled,installer.assets/'hud'/template,stock,cancel=installer.cancel)
     installer._check_cancel();guard_path(stock);make_private(stock)
-    if kind=='legacy' and sha256_file(stock,installer.cancel)!=SUPPORTED_APK:
+    if kind=='legacy' and sha256_file(stock,installer.cancel) not in {SUPPORTED_APK,RC_12110_APK}:
         raise ValueError('Không khôi phục được APK gốc đã kiểm chứng; chưa patch hoặc cài.')
     verified=installer.builder.verify_device_apk(pulled,stock)
     installer._check_cancel()

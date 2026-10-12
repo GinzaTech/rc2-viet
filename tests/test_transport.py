@@ -71,6 +71,7 @@ def test_winusb_read_uses_the_requested_frame_size(monkeypatch, size):
     monkeypatch.setattr(backend.usb, 'WinUsb_ReadPipe', read)
     link = backend.UsbLink.__new__(backend.UsbLink)
     link.handle = backend.W.HANDLE(123)
+    link.read_pipe = 0x84
     assert link.read(size) == b'x' * size
     assert calls == [(0x84, size)]
 
