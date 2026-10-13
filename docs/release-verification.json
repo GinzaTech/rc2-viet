@@ -1,16 +1,46 @@
 {
-  "release": "v0.2.0",
-  "date": "2026-10-08",
-  "pc_tests": 144,
-  "core_coverage_percent": 95.63,
-  "exe_smoke": "PASS",
-  "launcher": "1.0-preview6/code6",
-  "home_bridge": "3.0/code3",
-  "default_home": "RC Launcher; Lawnchair fallback only",
-  "boot_observation": "PASS before manual launch; inspected firmware only",
-  "phone_latest_install": "NOT_YET_APPLIED vi3; vi2 previously observed",
-  "exe_sha256": "6160d26ffb5664f273fa9eec289ae3a666065a8dcf132c2bdf12f0befdcd5981",
-  "exe_bytes": 34956012,
-  "publication_state": "prepared",
-  "old_local_exes_deleted": true
+  "release": "v0.10.1",
+  "edition": "Basic",
+  "date": "2026-10-13",
+  "publication_state": "published",
+  "published_at": "2026-10-13T01:07:55Z",
+  "release_url": "https://github.com/GinzaTech/rc2-viet/releases/tag/v0.10.1",
+  "release_id": 411128367,
+  "release_target_commit": "3ee5af477356fa41281f8d5eb96708a96131df26",
+  "build_verified_commit": "eafed9279b4c9019c1eb8eab9e17546710c41fac",
+  "latest_release_verified": true,
+  "download_http_status": 200,
+  "github_asset_digests_verified": true,
+  "pc_tests": 2003,
+  "python_coverage_percent": 90.10,
+  "packaging_tests": 15,
+  "stock_build_versions": ["1.21.8", "1.21.10"],
+  "basic_rc12110_translation_led_hud_observed": true,
+  "rf_power_external_video_flight_soak_verified": false,
+  "advanced_payload_published": false,
+  "stock_fly_apk_published": false,
+  "private_signing_key_published": false,
+  "assets": [
+    {
+      "name": "RC2-TiengViet.exe",
+      "bytes": 95972363,
+      "sha256": "b7715590c5a26cb42ed85044209e71cd04f4a4e05edf03c02ca220404fcfe790"
+    },
+    {
+      "name": "RC2-TiengViet-Portable.zip",
+      "bytes": 261130915,
+      "sha256": "412309b94ca6f05db4aa3e86fd244fff53271d3def04e24f08658fd7a145ac85"
+    },
+    {
+      "name": "release-verification.json",
+      "bytes": 926,
+      "sha256": "96b1d228f731bc675caf7269be895c47f83dafd554990a3d97d32a63c9eb69ff"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "bytes": 269,
+      "sha256": "de1cf0b140068bbf16375998cbe7a3eaaa17138834386d97b0eb5361336435c9"
+    }
+  ],
+  "historical_release": "v0.2.0 (2026-10-08); superseded"
 }
