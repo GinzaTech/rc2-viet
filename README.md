@@ -38,7 +38,14 @@ Discovery USB hỗ trợ chế độ DJI cũ **VID 2CA3 / PID 1021** và Android
 
 ## Tải và dùng
 
-Source và EXE **Basic** là phạm vi phân phối GitHub đã được người dùng yêu cầu. Mốc tài liệu/source là **0.10.1**; metadata đóng gói dùng `0.10.1-local`. Chỉ nhận một EXE là bản mới sau khi [metadata build](dist/release-verification.json), [checksum](dist/SHA256SUMS.txt) và artifact cuối khớp nhau. Các liên kết [repository](https://github.com/GinzaTech/rc2-viet) và [GitHub Releases](https://github.com/GinzaTech/rc2-viet/releases) không tự chứng minh 0.10.1 đã được tải lên.
+Bản hiện tại là **Basic 0.10.1**, dành cho Việt hóa và menu cơ bản; không chứa phần Nâng cấp. Chọn một trong hai gói:
+
+- **[Tải EXE Basic 0.10.1](https://github.com/GinzaTech/rc2-viet/releases/download/v0.10.1/RC2-TiengViet.exe)** — chạy trực tiếp; lần đầu dựng bản dịch cần mạng để tải engine đã được kiểm tra hash.
+- **[Tải Portable Basic 0.10.1](https://github.com/GinzaTech/rc2-viet/releases/download/v0.10.1/RC2-TiengViet-Portable.zip)** — giải nén toàn bộ, giữ thư mục `translation-engine` cạnh EXE; gói đã kèm engine dịch cục bộ.
+
+[Trang phát hành 0.10.1](https://github.com/GinzaTech/rc2-viet/releases/tag/v0.10.1) · [Checksum của các tệp phát hành](https://github.com/GinzaTech/rc2-viet/releases/download/v0.10.1/SHA256SUMS.txt). Bản `v0.2.0` ngày 08/10/2026 là bản cũ. Source và EXE mới nằm trên nhánh mặc định `codex/initial-release`; metadata build vẫn ghi `0.10.1-local` để nhận diện bản dựng đã kiểm chứng.
+
+EXE mới có kích thước **95.972.363 byte** và SHA-256 `b7715590c5a26cb42ed85044209e71cd04f4a4e05edf03c02ca220404fcfe790`. [Metadata build](dist/release-verification.json) là kết quả đóng gói cục bộ; trạng thái tải lên được đối chiếu trên trang phát hành GitHub.
 
 1. Mở EXE Basic hoặc giải nén Portable và giữ `translation-engine` cạnh EXE. Windows cần driver ADB/WinUSB phù hợp.
 2. Nối USB dữ liệu, chọn đúng trang **Tay DJI RC 2** hoặc **Điện thoại Android** và đúng serial. Bấm **Allow USB debugging** trên thiết bị nếu được hỏi.

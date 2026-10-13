@@ -2,6 +2,7 @@
 
 ## 0.10.1 — public Basic (13/10/2026)
 
+- Cập nhật đường tải EXE/Portable trực tiếp cho Release `v0.10.1`, thay đường tải của bản `v0.2.0` ngày 08/10. EXE Basic có SHA-256 `b7715590c5a26cb42ed85044209e71cd04f4a4e05edf03c02ca220404fcfe790`; gói Portable dùng cùng EXE và kèm engine dịch cục bộ. Phần Nâng cấp không nằm trong các tệp phát hành này.
 - Chốt phạm vi public: Việt hóa và menu LED/HUD/xuất hình/radio. Giao diện chỉ có hai thao tác riêng cho menu và bản dịch, không có bộ chọn Advanced; payload/CLI public chỉ nhận `basic`.
 - Bản thử nâng cấp được giữ ở sibling cục bộ `rc2-viet-advanced-local`, không được xuất bản. Mã, payload, APK riêng và khóa runtime/ký không được đưa vào source/EXE public.
 - Cầu SDK Basic tìm key theo identifier có nghĩa, hỗ trợ đổi tên field; vẫn kiểm tra kiểu/quyền/chữ ký callback, telemetry còn mới, kết nối, mặt đất/động cơ dừng và readback. Fixture đổi field không chứng minh APK RC 1.21.10 thực tương thích.
