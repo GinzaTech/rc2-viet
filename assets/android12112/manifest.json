@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "target": {
+    "package": "dji.go.v5",
+    "application": "com.AppGuard.AppGuard.RGTYT",
+    "version": "1.21.12",
+    "version_code": 3131451,
+    "source_sha256": "1da8d5b2ee5cdcb6002131b8f6535605e7445080d1ca6f8411067a0d1524ce0b"
+  },
+  "resource_sha256": "6f6029c5540613bb05a173e96eefbaf045132176c3640b2a428152194df664ee",
+  "resource_bytes": 2906536,
+  "translation_revision": "r13.1-resource-initialization-wording",
+  "direct_android_release": true,
+  "runtime_verified": false
+}

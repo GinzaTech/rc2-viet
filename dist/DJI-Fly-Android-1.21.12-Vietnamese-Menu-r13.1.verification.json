@@ -1,0 +1,117 @@
+{
+  "schema": 1,
+  "status": "PASS_OFFLINE_ANDROID_INSTALL_NOT_RUNTIME_TESTED",
+  "apk": "DJI-Fly-Android-1.21.12-Vietnamese-Menu-r13.1.apk",
+  "sha256": "6328e7679143163de8ef16034943ab99e86410891c058dffa99c8729a6ffe896",
+  "bytes": 727481653,
+  "source_sha256": "1da8d5b2ee5cdcb6002131b8f6535605e7445080d1ca6f8411067a0d1524ce0b",
+  "source_identity": {
+    "package": "dji.go.v5",
+    "application": "com.AppGuard.AppGuard.RGTYT",
+    "version": "1.21.12",
+    "code": 3131451
+  },
+  "certificate_sha256": "744bcae7b02111e24a0bb9f880bd85cc8802d0100f213954f76838a4c5b565aa",
+  "translation_sha256": "6f6029c5540613bb05a173e96eefbaf045132176c3640b2a428152194df664ee",
+  "merged_resource_sha256": "82e001acbec7db71a585ae4fc7a83179e8809e44bfba1537bb69c4ecbf18ea6a",
+  "menu_payload_sha256": "97e215a608e6ae85b32527b29755e3fd4d6a251beda7351af0561a442bae326f",
+  "menu_labels": [
+    "Tiện ích nâng cao",
+    "Nâng cao",
+    "Hiệu chỉnh gimbal",
+    "Đèn càng",
+    "EC / gốc",
+    "Ép xuất"
+  ],
+  "changes": {
+    "changed": [
+      "AndroidManifest.xml",
+      "classes.dex",
+      "resources.arsc"
+    ],
+    "added": [
+      "assets/rc2-menu/profile.json",
+      "assets/rc2-menu/recovery.zip",
+      "classes2.dex"
+    ]
+  },
+  "original_loader_v2_preserved": true,
+  "exact_official_source_recovery": "PASS",
+  "zip_integrity": "PASS",
+  "apksigner_sdk30_selection": "PASS",
+  "android_install_tested": false,
+  "phone_menu_runtime_tested": false,
+  "rc2_hardware_actions_on_phone_tested": false,
+  "embedded_vietnamese": {
+    "embedded_resources": 11068,
+    "translated_configurations": 208248,
+    "translated_string_values": 208969,
+    "appended_pool_strings": 7769,
+    "all_existing_locale_variants_translated": true
+  },
+  "profile": {
+    "revision": "structural-menu-v1",
+    "source_digest": "1da8d5b2ee5cdcb6002131b8f6535605e7445080d1ca6f8411067a0d1524ce0b",
+    "identity": {
+      "package": "dji.go.v5",
+      "application": "com.AppGuard.AppGuard.RGTYT",
+      "version": "1.21.12",
+      "code": 3131451
+    },
+    "application_descriptor": "Lcom/AppGuard/AppGuard/RGTYT;",
+    "bootstrap": {
+      "entry": "classes.dex",
+      "mode": "context_swap",
+      "class_count": 1627,
+      "descriptor": "Lcom/AppGuard/AppGuard/RGTYT;"
+    },
+    "helper_entry": "classes2.dex",
+    "retain_loader_v2": true,
+    "ui": {
+      "home": [
+        "main_page_ui_state_startfly_btn",
+        "main_page_ui_device_disconnect_state_button",
+        "direct_enter_fpv_view",
+        "layout_direct_enter_fpv",
+        "connection_guide_enter_fpv_button"
+      ],
+      "preview": [
+        "view_surface"
+      ],
+      "hud": [
+        "top_bar_shell_layout",
+        "osd_shell_top_layout",
+        "osd_shell_layout",
+        "left_bar_shell_layout",
+        "right_bar_shell_layout",
+        "map_shell_layout",
+        "radar_shell_layout",
+        "histogram_shell_layout",
+        "zoom_focus_layer_layout",
+        "right_bottom_shell_layout",
+        "attitude_bar_shell_layout",
+        "osd_shell_top_child_layout",
+        "portrait_right_bar_shell_layout",
+        "metering_shell_layout",
+        "gimbal_shell_layout"
+      ]
+    },
+    "device_runtime_verified": false,
+    "aircraft_api_runtime_verification_required": true,
+    "variant": "advanced",
+    "kind": "android-direct-vi-menu-r13.1",
+    "menu_payload_sha256": "97e215a608e6ae85b32527b29755e3fd4d6a251beda7351af0561a442bae326f",
+    "translation_sha256": "6f6029c5540613bb05a173e96eefbaf045132176c3640b2a428152194df664ee",
+    "translation_revision": "r13.1-resource-initialization-wording",
+    "embedded_vietnamese": {
+      "embedded_resources": 11068,
+      "translated_configurations": 208248,
+      "translated_string_values": 208969,
+      "appended_pool_strings": 7769,
+      "all_existing_locale_variants_translated": true
+    },
+    "standalone_language": true,
+    "phone_android_build": true,
+    "runtime_verified": false
+  }
+}

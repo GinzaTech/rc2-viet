@@ -60,7 +60,28 @@
       "reconnect_button_idle_state": "disabled"
     },
     "physical_install_of_final_r13_1": false,
-    "note": "Offline build and host checks passed. Final r13.1 EXE was not installed on physical RC 2 during this release verification."
+    "note": "Offline build and host checks passed. Final r13.1 EXE was not installed on physical RC 2 during this release verification.",
+    "android_direct_apk": {
+      "status": "PASS_OFFLINE_ANDROID_INSTALL_NOT_RUNTIME_TESTED",
+      "zip_integrity": "PASS",
+      "apksigner_sdk30_selection": "PASS",
+      "original_loader_v2_preserved": true,
+      "exact_official_source_recovery": "PASS",
+      "embedded_resources": 11068,
+      "android_install_tested": false,
+      "phone_menu_runtime_tested": false,
+      "rc2_hardware_actions_on_phone_tested": false
+    },
+    "android_direct_source_tests": {
+      "status": "PASS",
+      "passed": 3,
+      "command": "python -m pytest -q tests/test_android_direct_apk.py tests/test_r131_wording.py"
+    },
+    "curated_clone_full_suite_repeat": {
+      "status": "NOT_RUN_TO_COMPLETION",
+      "reason": "javac is not installed or available in PATH in the clean release clone; Java-dependent tests could not start",
+      "regression_interpretation": "environmental prerequisite missing, not an assertion failure in the Android direct APK build"
+    }
   },
   "packaging": {
     "full_fly_apk_embedded": false,
@@ -68,5 +89,14 @@
     "python_install_required": false,
     "java_install_required": false,
     "network_required": false
+  },
+  "android_artifact": {
+    "name": "DJI-Fly-Android-1.21.12-Vietnamese-Menu-r13.1.apk",
+    "bytes": 727481653,
+    "sha256": "6328e7679143163de8ef16034943ab99e86410891c058dffa99c8729a6ffe896",
+    "package": "dji.go.v5",
+    "version": "1.21.12",
+    "version_code": 3131451,
+    "certificate_sha256": "744bcae7b02111e24a0bb9f880bd85cc8802d0100f213954f76838a4c5b565aa"
   }
 }
