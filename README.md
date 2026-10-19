@@ -4,7 +4,7 @@ Bộ cài Windows tự đọc APK DJI Fly từ DJI RC 2, nhận diện đúng ph
 
 ## Chức năng
 
-- Tự patch tiếng Việt; dùng “Gmail” ở các trường đăng nhập và câu khởi tạo tài nguyên đã được viết lại dễ đọc.
+- Tự patch tiếng Việt
 - Bật/tắt đèn càng.
 - Chạm hai lần để ẩn hoặc hiện HUD.
 - Xuất hình với HUD, không HUD, hoặc ép thử lại đường xuất hình.
