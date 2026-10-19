@@ -1,0 +1,13 @@
+__pycache__/
+.pytest_cache/
+.coverage
+build/
+local-artifacts/
+*.py[cod]
+*.apk
+*.jks
+*.keystore
+*.p12
+*.dpapi
+*.key
+

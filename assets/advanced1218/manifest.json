@@ -1,0 +1,94 @@
+{
+  "schema": 1,
+  "version": "1.21.8",
+  "code": 3115809,
+  "source_sha256": "cfbf67368fa812c6e7d51430a07518ab47d056605bf373fcc69277e540caa32e",
+  "recipe_sha256": "be517b4e3de6ac99bcc6dee29bbc53616c54879520414370f3b0a1041d0f886d",
+  "entries": {
+    "additions/assets/rc2-menu/profile.json": {
+      "sha256": "19a193a0894a0424e8ed97b0154231fa1a4348a85d76aec5b195142fc1d1b6a2",
+      "bytes": 9216
+    },
+    "additions/classes23.dex": {
+      "sha256": "97e215a608e6ae85b32527b29755e3fd4d6a251beda7351af0561a442bae326f",
+      "bytes": 213932
+    },
+    "additions/classes24.dex": {
+      "sha256": "e50fa3b66ab7f0bb6de4f3e0e8f64facd0dd79c5b57b731a61d1f72202ebf8cf",
+      "bytes": 608776
+    },
+    "replacements/AndroidManifest.xml": {
+      "sha256": "d45a616de6ff98813d4ff73884ace6b95c642b7129b887238c7a248678239045",
+      "bytes": 155584
+    },
+    "replacements/classes.dex": {
+      "sha256": "5c688d9efca621bfbaf9c487e93f3f2464b5bf7dd1d6f904e90cef9f82054d41",
+      "bytes": 16860
+    },
+    "replacements/classes10.dex": {
+      "sha256": "c5c8124cc890abde733d2f7d228c0e03321b71b48a2cb38d5777b92c92453557",
+      "bytes": 7888844
+    },
+    "replacements/classes12.dex": {
+      "sha256": "dfabe93429f586379900ef4256ad5782038699eb77258d7674640f579ddb1785",
+      "bytes": 7969604
+    },
+    "replacements/classes13.dex": {
+      "sha256": "f27c172fb40b1400aac99e566f733a14fc610a45c8c70d6df98e61dd6d761ec2",
+      "bytes": 7650008
+    },
+    "replacements/classes14.dex": {
+      "sha256": "95fdb0ca402f383ce6ec3b0d7f8c68f921f314ddadeea41be879492297ff006a",
+      "bytes": 9885844
+    },
+    "replacements/classes20.dex": {
+      "sha256": "028898628ec37429619143b2ed186dd7a24e75604ffc1728716ad4ecb0e28528",
+      "bytes": 8776048
+    },
+    "replacements/classes21.dex": {
+      "sha256": "326a8e501c24cd86699cf75f5c213ce5351ca9901d54dea56326e3852ea3dbd3",
+      "bytes": 8157796
+    },
+    "replacements/classes4.dex": {
+      "sha256": "4981779141fccb2138f8e510b8815e297a1fd22ee2e897190416251380fe758f",
+      "bytes": 8662104
+    },
+    "replacements/classes5.dex": {
+      "sha256": "76ff88192789102313d3da9a8a9c9cebc4a1fb5f5abf4b5ff5b3f4eacd06270c",
+      "bytes": 9061908
+    },
+    "replacements/classes7.dex": {
+      "sha256": "c6d363297f5852a4ecfbc1576bd576b8fdf4151c979fe366bb46e25317ad366c",
+      "bytes": 10609516
+    },
+    "replacements/classes8.dex": {
+      "sha256": "68b72b3c8f8161006a20980742d6f904ccaadc59f888e1485439197ac53c7c5a",
+      "bytes": 9186568
+    },
+    "replacements/classes9.dex": {
+      "sha256": "6a66e147f3b5451953fcc0f3febd5fa5a88ae71ee124570170311b53ad3ecd5a",
+      "bytes": 8684944
+    }
+  },
+  "profile_kind": "rc2-advanced-1218",
+  "compatible_installed": {},
+  "feature_classes": 430,
+  "localized_ui_sites": 1150,
+  "translated_constants": 1126,
+  "local_only": true,
+  "publish_allowed": false,
+  "full_fly_apk_embedded": false,
+  "private_signing_key_embedded": false,
+  "recovery_capsule_created_from_user_source": true,
+  "visible_menu_sections": [
+    "Nâng cao",
+    "Hiệu chỉnh gimbal"
+  ],
+  "menu_hierarchy": {
+    "parent": "Tiện ích nâng cao",
+    "children": [
+      "Nâng cao",
+      "Hiệu chỉnh gimbal"
+    ]
+  }
+}

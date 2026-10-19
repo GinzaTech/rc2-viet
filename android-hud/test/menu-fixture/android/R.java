@@ -1,0 +1,1 @@
+package android; public final class R { public static final class attr { public static final int state_enabled=16842910,state_checked=16842912; } public static final class style { public static final int Theme_Material_Dialog_Alert=1; } }

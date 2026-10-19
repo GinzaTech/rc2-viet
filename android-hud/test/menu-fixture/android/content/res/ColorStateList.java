@@ -1,0 +1,1 @@
+package android.content.res; public class ColorStateList {public ColorStateList(int[][] states,int[] colors){} public static ColorStateList valueOf(int value){return new ColorStateList(new int[][]{{}},new int[]{value});}}

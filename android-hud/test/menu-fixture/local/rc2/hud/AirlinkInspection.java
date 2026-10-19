@@ -1,0 +1,1 @@
+package local.rc2.hud;final class AirlinkInspection {static AirlinkInspection instance;int closeCount;interface Reply {boolean active();void finished(Result result);}static final class Result {String metadata(){return "inert";}}AirlinkInspection(ClassLoader loader){instance=this;}void inspect(Reply reply){}void close(){closeCount++;}}

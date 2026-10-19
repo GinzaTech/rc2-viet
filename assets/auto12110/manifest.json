@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "source_sha256": "f6c11267d465c303e2aecb737fe4f6b41b54da083368cac497404f4c9a464f98",
+  "version": "1.21.10",
+  "version_code": 3115981,
+  "resource_sha256": "a9d86b6a3a46457f3a5b95a0276b3583011405c58009e0682084e1a72aa4a1fb",
+  "bytes": 2070812,
+  "embedded_resources": 11313,
+  "reviewed_against_apk_sha256": "79161774ff7f404665ee1a5326b9616de23e244962206e00144f8ef58bc45f68",
+  "translation_semantics_match_reviewed_apk": false,
+  "separate_overlay_required": false,
+  "translation_revision": "r13.1-resource-initialization-wording",
+  "manual_overrides": [
+    "ABC_app_launch_data_transition_initial_title_storage_optimize",
+    "ABC_app_launch_storage_freeup_initial_title_storage_optimize",
+    "ABC_fly_launch_download_resource_fail_check_local_storage_title",
+    "ABC_fly_launch_download_resource_fail_check_network_title",
+    "ABC_fly_launch_download_resource_success_initial_success_starting_title",
+    "ABC_fly_launch_download_resource_success_initial_title",
+    "ABC_fly_launch_resource_lack_quit_download_dialog_content",
+    "account_email_transfer_register_input_hint_title",
+    "account_guide_input_box_hint_subtitle",
+    "account_guide_subtitle"
+  ]
+}
