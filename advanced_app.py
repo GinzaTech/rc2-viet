@@ -105,6 +105,8 @@ def private_connection(device, assets, emit):
     class AdvancedConnection(transport.Connection):
         def bind_cancel(self,event):
             self._opening_cancel=event
+        def bind_reconnect(self,event):
+            self._opening_reconnect_event=event
         def _open(self):
             from rc2vi.hud_tools import check_cancel
             cancel=getattr(self,'_opening_cancel',None)

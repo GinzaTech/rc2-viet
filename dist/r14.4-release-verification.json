@@ -1,0 +1,223 @@
+{
+  "schema": 1,
+  "release": "r14.4",
+  "generated_at": "2026-10-20T21:15:14+07:00",
+  "artifact": {
+    "name": "RC2-TuDong-Patch-r14.4.exe",
+    "bytes": 162977230,
+    "sha256": "6fa73db9e8044028f4ff49078ce30ef16b34c0c106b3b03becdd2b0de5a49fc9",
+    "file_version": "14.4.0.0"
+  },
+  "changes": [
+    "USB permission request action shared by main page and Animation; idle identity-only request needs no grounded checkbox",
+    "10-second unauthorized retry and manual retry use fresh private sessions, one USB lease and existing keys",
+    "120-second total opening deadline, one-second pending-client timeouts, cancel and authorized CNXN protection",
+    "Manual reconnect event bound separately from cancellation for Animation and Deployment",
+    "Selected existing ZIP validates in background and enables boot/shutdown install independently of draft forms",
+    "ZIP path remembered/revalidated on restart; changed/deleted/malformed files checked before install",
+    "Resolved physical settings directory avoids MSIX cross-volume rename failure; persistence errors remain visible",
+    "Local authorization-report write failure cannot turn verified read-only USB authorization into a false failure"
+  ],
+  "validation": {
+    "source_test_groups": [
+      {
+        "report": "backend-integration.xml",
+        "tests": 219,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "report": "engine-usb-regressions.xml",
+        "tests": 114,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "report": "private-wrapper.xml",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "report": "ui-regressions.xml",
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    ],
+    "source_passed_total": 385,
+    "packaged_backend_tests": {
+      "report": "frozen-backend-regressions.xml",
+      "tests": 187,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "packaged_backend_context": "Executed code extracted from initial r14.4 EXE using host Python and fake USB/ADB; module equality verified in final EXE",
+    "final_packaged_backend_module_verification": {
+      "status": "PASS",
+      "packaged_backend_tests": 187,
+      "modules_unchanged_from_tested_build": {
+        "rc2vi.transport": "018e70b3fe7579e4fa587619a3d4339dc6cbacf0236944b65dfaf1fb98fb6df5",
+        "rc2vi.animation_install": "083d855ff6c8619af112ab9e93fb9233db74eff56670566facefeed07ab49288",
+        "rc2vi.usb_authorization": "4ab8a9c84ca0b0e88d4f92ee69b80f101c5f09350903b2853d598a834191d094",
+        "rc2vi.embedded_install": "953ac19c9923ad4614655b1425a7c925e3f535865bddf7760a05ab81d8c05a9a"
+      }
+    },
+    "frozen_package_ui": {
+      "single_window": true,
+      "existing_zip_validated": true,
+      "install_without_fresh_project": true,
+      "invalid_form_does_not_block_zip": true,
+      "fresh_validation_before_install": true,
+      "back_reopen_path_preserved": true,
+      "restart_path_remembered": true,
+      "restart_revalidated": true,
+      "missing_zip_disabled": true,
+      "invalid_zip_disabled": true,
+      "usb_request_button_present": true,
+      "usb_request_callback_shared": true,
+      "controls_inside_window": true,
+      "usb_opened": false,
+      "device_modified": false,
+      "status": "PASS",
+      "usb_open_attempts": 0,
+      "dialog_attempts": 0,
+      "install_callback_count": 1,
+      "usb_request_callback_calls": 1
+    },
+    "frozen_typing_idle": {
+      "status": "PASS",
+      "usb_opened": false,
+      "device_modified": false,
+      "install_callback_calls": 0,
+      "render_pipeline": "Pillow render_frame -> ImageTk.PhotoImage -> Tk Canvas",
+      "latency_limit_ms": 180,
+      "typing": {
+        "input_events": 20,
+        "presented_frames": 17,
+        "intermediate_frames_before_last_key": 14,
+        "latency_ms": {
+          "p50": 34.47,
+          "p95": 63.96,
+          "max": 63.96,
+          "last": 63.91
+        },
+        "sequences": [
+          {
+            "name": "normal",
+            "key_interval_ms": 80,
+            "input_events": 8,
+            "presented_frames": 8,
+            "painted_inputs": 8,
+            "coalesced_inputs": 0,
+            "intermediate_frames_before_last_key": 7,
+            "expected_last_text": "GinzaPro",
+            "presented_last_text": "GinzaPro",
+            "latency_ms": {
+              "p50": 34.42,
+              "p95": 49.49,
+              "max": 49.49,
+              "last": 34.71
+            },
+            "preview_resolution": [
+              496,
+              279
+            ],
+            "canvas_image_items": 1
+          },
+          {
+            "name": "fast",
+            "key_interval_ms": 20,
+            "input_events": 12,
+            "presented_frames": 9,
+            "painted_inputs": 9,
+            "coalesced_inputs": 3,
+            "intermediate_frames_before_last_key": 7,
+            "expected_last_text": "DJI Modder12",
+            "presented_last_text": "DJI Modder12",
+            "latency_ms": {
+              "p50": 48.58,
+              "p95": 63.96,
+              "max": 63.96,
+              "last": 63.91
+            },
+            "preview_resolution": [
+              496,
+              279
+            ],
+            "canvas_image_items": 1
+          }
+        ]
+      },
+      "idle": {
+        "duration_ms": 461.47,
+        "preview_renders": 0,
+        "button_redraws": {
+          "export": 0,
+          "install_boot": 0,
+          "install_shutdown": 0,
+          "restore_boot": 0,
+          "restore_shutdown": 0
+        },
+        "button_redraws_total": 0,
+        "hover_expected": "#303c49",
+        "hover_before": "#303c49",
+        "hover_after": "#303c49",
+        "hover_preserved": true
+      },
+      "errors": [],
+      "duration_ms": 2826.4
+    },
+    "frozen_main_ui": {
+      "status": "PASS",
+      "title": "RC2 Studio · Tiếng Việt, menu & Animation · r14.4",
+      "width": 900,
+      "height": 760,
+      "usb_opened": false,
+      "output_button_visible": true,
+      "animation_button_visible": true,
+      "reconnect_button_visible": true,
+      "reconnect_button_idle_state": "disabled",
+      "screenshot": "Giao-dien-chinh-r14.4.png"
+    },
+    "frozen_apk_tools": {
+      "status": "PASS",
+      "usb_opened": false,
+      "offline_runtime_ready": true,
+      "recipes": {
+        "1.21.8": "be517b4e3de6ac99bcc6dee29bbc53616c54879520414370f3b0a1041d0f886d",
+        "1.21.10": "e8342bd9e479318bfff88fa19fcc8afedda3481e718526c9d8cce4ab7a9d6acb"
+      },
+      "supported_versions": [
+        "1.21.8",
+        "1.21.10"
+      ],
+      "vietnamese_embedded": true,
+      "full_fly_apk_embedded": false,
+      "private_signing_key_embedded": false
+    },
+    "msix_package_path_persistence": "PASS after resolving the physical settings directory",
+    "interactive_launch": {
+      "started": true,
+      "responding": true,
+      "version": "r14.4"
+    }
+  },
+  "device_boundary": {
+    "usb_opened_by_validation": false,
+    "device_modified_by_validation": false,
+    "physical_authorization_dialog_verified": false,
+    "physical_boot_shutdown_install_verified": false,
+    "old_executables_and_user_drafts_preserved": true
+  },
+  "cleanup": {
+    "obsolete_executables_recycled": 6,
+    "build_folders_recycled": 8,
+    "source_and_recovery_preserved": true
+  }
+}

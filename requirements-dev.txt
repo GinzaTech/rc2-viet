@@ -2,3 +2,6 @@ pyinstaller==6.22.3
 pytest==9.1.1
 pytest-cov==7.0.0
 setuptools==84.0.0
+Pillow==12.3.0
+customtkinter==5.2.2
+darkdetect==0.8.0

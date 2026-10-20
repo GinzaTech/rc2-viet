@@ -277,23 +277,73 @@ class Relay:
             if thread is not threading.current_thread(): thread.join(timeout=2)
         self.link.close()
 
+class AuthorizationRetry(RuntimeError):
+    """Only an unopened, unauthorized private session may be recreated."""
+
+
 class Connection:
     def __init__(self,device: Device,assets: Path,emit):
         self.device=device; self.assets=assets; self.emit=emit
         self.relay=None; self.adb=None; self.owned=False
         self.lease=None
         self.closed_event=threading.Event()
+        self._closed=threading.Event()
+        self._opening_deadline=None
+        self._opening_private_retry=False
 
     def open(self):
-        if self.closed_event.is_set():
+        if self._closed.is_set() or self.closed_event.is_set():
             raise ConnectionError('Tạo phiên kết nối mới sau khi đóng ADB.')
+        self._check_opening()
         self.lease=UsbLease(self.device.serial)
-        try:return self._open()
+        self._opening_deadline=time.monotonic()+120
+        try:
+            while True:
+                self._check_opening()
+                if time.monotonic()>=self._opening_deadline:
+                    raise TimeoutError('Chưa được cho phép USB debugging trên tay điều khiển.')
+                try:return self._open()
+                except AuthorizationRetry as retry:
+                    # Keep the physical-controller lease while fully closing
+                    # the old relay/filtered daemon. Old clients stay closed;
+                    # only the next session gets a new cancellation event.
+                    self._close_session()
+                    self._check_opening()
+                    self.emit('reconnecting',str(retry))
+                    self.closed_event=threading.Event()
+                    self._opening_private_retry=True
         except BaseException:self.close();raise
 
+    def _check_opening(self):
+        if self._closed.is_set():
+            raise ConnectionError('Phiên kết nối đã đóng trong lúc chờ quyền USB.')
+        cancel=getattr(self,'_opening_cancel',None)
+        if cancel is not None and cancel.is_set():
+            raise InterruptedError('Đã dừng chờ Allow USB debugging.')
+        if self._opening_deadline is not None and time.monotonic()>=self._opening_deadline:
+            raise TimeoutError('Chưa được cho phép USB debugging trên tay điều khiển.')
+
+    def _authorization_ready(self):
+        # A request that races with authorization must never reset the newly
+        # authorized transport or be replayed by a later critical operation.
+        reconnect=getattr(self,'_opening_reconnect_event',None)
+        if reconnect is not None:reconnect.clear()
+
+    def _pending_timeout(self,retry_at,deadline):
+        remaining=deadline-time.monotonic()
+        if remaining<=0:
+            raise TimeoutError('Chưa được cho phép USB debugging trên tay điều khiển.')
+        # ADB connect/get-state can wait for an unauthorized transport. Bound
+        # each client, so manual retry/Stop are observed within about a second.
+        return min(1.,remaining,max(.05,retry_at-time.monotonic()))
+
     def _open(self):
+        self._check_opening()
         binary=self.assets/'adb'/'adb.exe'
-        server_present=check_standard_server()
+        # Inspect/adopt the existing server once. Authorization retries only
+        # recreate this Connection's private, filtered resources; unrelated
+        # existing servers are never reconnected or killed again.
+        server_present=False if self._opening_private_retry else check_standard_server()
         standard=Adb(binary)
         standard.no_autostart=True
         # Do not start a native USB-scanning server just to stop it again before
@@ -309,6 +359,8 @@ class Connection:
                 raise ValueError('Phiên ADB sẵn sàng không khớp RC 2 đã chọn.')
             self.adb=target;self.owned=False
             target.closed_event=self.closed_event
+            self._check_opening()
+            self._authorization_ready()
             self.emit('connected','Đã dùng phiên ADB sẵn sàng của RC 2.')
             return target
         key_path=Path.home()/'.android'/'adbkey'
@@ -327,6 +379,7 @@ class Connection:
             standard.command('kill-server')
         link=None
         for attempt in range(12):
+            self._check_opening()
             try:
                 link=UsbLink(self.device); break
             except OSError:
@@ -337,25 +390,52 @@ class Connection:
         self.adb.usb_filter=RELAY_USB_FILTER
         self.adb.closed_event=self.closed_event
         self.owned=True
+        deadline=self._opening_deadline
+        if deadline is None:deadline=time.monotonic()+120
         try:
-            self.adb.command('--one-device',RELAY_USB_FILTER,'start-server',timeout=15)
-            self.emit('pairing','Đang ghép nối RC 2; chờ xác nhận USB trên tay.')
-            self.adb.command('connect',self.relay.address,timeout=12,check=False)
+            self.adb.command('--one-device',RELAY_USB_FILTER,'start-server',timeout=min(15,max(.05,deadline-time.monotonic())))
+            self.emit('pairing','Đang ghép nối RC 2; chờ xác nhận USB trên tay. Sau 10 giây chưa được cho phép, công cụ sẽ xin lại.')
+            retry_at=time.monotonic()+10
+            try:self.adb.command('connect',self.relay.address,timeout=self._pending_timeout(retry_at,deadline),check=False)
+            except subprocess.TimeoutExpired:pass
             self.adb.serial=self.relay.address
-            deadline=time.monotonic()+120
             while time.monotonic()<deadline:
-                cancel=getattr(self,'_opening_cancel',None)
-                if cancel is not None and cancel.is_set():raise InterruptedError('Đã dừng chờ Allow USB debugging.')
+                self._check_opening()
                 if self.relay.stop_event.is_set():
                     raise RuntimeError(self.relay.error or 'Kết nối USB đã ngắt')
-                state=self.adb.command('get-state',timeout=5,check=False)
-                if state=='device' and self.relay.connected.is_set():
-                    self.emit('connected','Đã kết nối ADB với RC 2.')
-                    return self.adb
-                time.sleep(.5)
+                reconnect=getattr(self,'_opening_reconnect_event',None)
+                usb_authorized=self.relay.connected.is_set()
+                if usb_authorized:self._authorization_ready()
+                # With no USB CNXN yet there is no authorized transport to
+                # preserve; handle a manual request before another state poll.
+                if reconnect is not None and reconnect.is_set() and not usb_authorized:
+                    reconnect.clear()
+                    raise AuthorizationRetry('Đang đóng phiên chờ cũ và xin lại quyền USB theo yêu cầu; giữ nguyên khóa và tiến độ.')
+                poll_deadline=deadline if usb_authorized else retry_at
+                try:state=self.adb.command('get-state',timeout=self._pending_timeout(poll_deadline,deadline),check=False)
+                except subprocess.TimeoutExpired:state=''
+                self._check_opening()
+                usb_authorized=self.relay.connected.is_set()
+                if usb_authorized:
+                    # CNXN is already proof that the user authorized USB.
+                    # Wait for the local ADB listing without resetting it.
+                    self._authorization_ready()
+                    if state=='device':
+                        self.emit('connected','Đã kết nối ADB với RC 2.')
+                        return self.adb
+                elif reconnect is not None and reconnect.is_set():
+                    reconnect.clear()
+                    raise AuthorizationRetry('Đang đóng phiên chờ cũ và xin lại quyền USB theo yêu cầu; giữ nguyên khóa và tiến độ.')
+                if not usb_authorized and time.monotonic()>=retry_at:
+                    raise AuthorizationRetry('Chưa nhận được quyền USB sau 10 giây; đang đóng phiên chờ cũ và xin lại quyền trên RC 2.')
+                next_deadline=deadline if usb_authorized else retry_at
+                time.sleep(min(.5,max(0,next_deadline-time.monotonic()),max(0,deadline-time.monotonic())))
             raise TimeoutError('Chưa được cho phép USB debugging trên tay điều khiển.')
+        except AuthorizationRetry:
+            if self._opening_deadline is None:self.close()
+            raise
         except BaseException:
-            self.close(); raise
+            self.close();raise
 
     def alive(self):
         if self.relay is not None:return not self.relay.stop_event.is_set()
@@ -364,6 +444,12 @@ class Connection:
         except (OSError,RuntimeError,subprocess.TimeoutExpired):return False
 
     def close(self):
+        self._closed.set()
+        try:self._close_session()
+        finally:
+            if self.lease:self.lease.close();self.lease=None
+
+    def _close_session(self):
         self.closed_event.set()
         # Mark the expected disconnect before stopping our ADB server. Its
         # socket EOF must not be reported as a new USB failure to the GUI.
@@ -376,5 +462,4 @@ class Connection:
             except (OSError,subprocess.TimeoutExpired): pass
         if self.relay:
             self.relay.close(); self.relay=None
-        if self.lease:self.lease.close();self.lease=None
         self.owned=False;self.adb=None

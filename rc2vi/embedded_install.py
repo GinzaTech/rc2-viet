@@ -182,7 +182,11 @@ class Deployment:
         self.save()
         self.connection=private_connection(devices[0],self.assets,self.emit)
         if hasattr(self.connection,'bind_cancel'):
-            self.connection.bind_cancel(OpeningCancel(self.cancel,self.reconnect_event))
+            if hasattr(self.connection,'bind_reconnect'):
+                self.connection.bind_cancel(OpeningCancel(self.cancel,None))
+                self.connection.bind_reconnect(self.reconnect_event)
+            else:
+                self.connection.bind_cancel(OpeningCancel(self.cancel,self.reconnect_event))
         adb=self.connection.open();self.root=LoggedRoot(pin_adb(adb,self.serial),self.trace)
         if self.root.shell(self.root_guard()+'printf RC2_ID_OK',timeout=15).strip()!='RC2_ID_OK':
             raise DeploymentValidationError('Không xác minh được đúng RC 2/model/SDK30/root')

@@ -6,6 +6,7 @@ and certificate inspection read HUD_SIGN_PASS from their process environment.
 """
 
 from collections.abc import Callable, Mapping, Sequence
+import errno
 import hashlib
 import json
 import os
@@ -360,32 +361,77 @@ def _extract(archive: zipfile.ZipFile, members: list[zipfile.ZipInfo], stage: Pa
             raise ValueError('Bundled toolchain file failed integrity verification.')
 
 
+def _remove_created_cache(path: Path, parent: Path, identity: tuple[int, int]) -> None:
+    """Remove only the directory this invocation created, inside its parent."""
+    _check_ancestors(parent)
+    value = _physical_stat(path)
+    if ((value.st_dev, value.st_ino) != identity or not stat.S_ISDIR(value.st_mode)
+            or path.absolute().parent != parent.absolute()
+            or path.resolve(strict=True).parent != parent.resolve(strict=True)):
+        raise ValueError('Refusing to remove a replaced or relocated toolchain cache.')
+    shutil.rmtree(path)
+
+
+def _copy_publish_cache(stage: Path, root: Path, files: dict[str, str],
+                        directories: set[str], cancel: Cancel) -> None:
+    # Some Windows virtual filesystems reject same-parent directory rename
+    # with ERROR_NOT_SAME_DEVICE. Reserve an absent target exclusively, copy
+    # only verified inventory, then rehash everything before returning it.
+    try:
+        root.mkdir()
+    except FileExistsError:
+        _verify_cache(root, files, directories, cancel)
+        return
+    metadata = _physical_stat(root)
+    identity = metadata.st_dev, metadata.st_ino
+    try:
+        for name in sorted(directories, key=lambda value: (value.count('/'), value)):
+            check_cancel(cancel)
+            root.joinpath(*name.split('/')).mkdir()
+        for name in sorted(files):
+            check_cancel(cancel)
+            source = stage.joinpath(*name.split('/'))
+            target = root.joinpath(*name.split('/'))
+            # Exclusive file creation also refuses any unexpected competing
+            # file. Check cancellation between chunks of large Java files.
+            with source.open('rb') as incoming, target.open('xb') as outgoing:
+                while True:
+                    check_cancel(cancel)
+                    chunk = incoming.read(_CHUNK_SIZE)
+                    if not chunk:
+                        break
+                    outgoing.write(chunk)
+        _verify_cache(root, files, directories, cancel)
+    except BaseException:
+        _remove_created_cache(root, root.parent, identity)
+        raise
+
+
 def _publish_cache(archive: zipfile.ZipFile, members: list[zipfile.ZipInfo],
                    root: Path, files: dict[str, str], directories: set[str],
                    cancel: Cancel) -> None:
     # Only this invocation's uniquely named staging directory is removed.
     stage = Path(tempfile.mkdtemp(prefix=f'.{root.name}-', dir=root.parent))
+    metadata = _physical_stat(stage)
+    stage_identity = metadata.st_dev, metadata.st_ino
     try:
         _extract(archive, members, stage, files, cancel)
         _verify_cache(stage, files, directories, cancel)
         check_cancel(cancel)
         try:
             stage.rename(root)
-        except OSError:
-            if not _exists(root):
+        except OSError as error:
+            if _exists(root):
+                # Another builder may have won publication. Never trust bytes.
+                _verify_cache(root, files, directories, cancel)
+            elif error.errno == errno.EXDEV or getattr(error, 'winerror', None) == 17:
+                _copy_publish_cache(stage, root, files, directories, cancel)
+            else:
                 raise
-            # Another builder may have won publication. Never trust its bytes.
-            _verify_cache(root, files, directories, cancel)
         _verify_cache(root, files, directories, cancel)
     finally:
         if _exists(stage):
-            value = stage.lstat()
-            if stat.S_ISLNK(value.st_mode):
-                stage.unlink()
-            elif getattr(value, 'st_file_attributes', 0) & _REPARSE_POINT:
-                stage.rmdir()
-            else:
-                shutil.rmtree(stage)
+            _remove_created_cache(stage, stage.parent, stage_identity)
 
 
 class HudTools:
