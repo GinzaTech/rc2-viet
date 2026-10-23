@@ -1,5 +1,5 @@
 {
-  "status": "PASS_HOST_AND_DEVICE_UI_CHECKS",
+  "status": "PASS_HOST_CHECKS_PRIOR_MENU_DEVICE_UI_VERIFIED",
   "release": "r14.6.1",
   "verification_date": "2026-10-23",
   "package": "dji.go.v5",
@@ -8,17 +8,19 @@
   "source_sha256": "9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a",
   "artifacts": {
     "RC2-TuDong-Patch-r14.6.1.exe": {
-      "sha256": "7204ae814614e182b49c69489471d36c01501c62399d2784cd57fa7674aa7423",
-      "bytes": 198456553
+      "sha256": "fbf501a00991f7ebf3d61e11c1f87a24a808fdf92f5a9195b458c5187034f47f",
+      "bytes": 199031906
     }
   },
   "generated_apk": {
-    "sha256": "741a1909f9646ed2a521b4ad1aacb8ef82b7948d21651c8067ee8e82182d0a19",
+    "sha256": "91e03284ec148cabaafeedd34a715f596ef1533577cf9d670bfcf14b7e008b1b",
     "bytes": 525802402
   },
   "menu_recipe_sha256": "f2706464162872a67fb5f3a940b0ed112f6798bcff0f6e56f90bfb59a570df8c",
   "embedded_vietnamese_resources": 11994,
-  "translation_sha256": "dcb39692e2a56d9e2c5670c04691ee1b561d1116128ab487a55828b9be75b150",
+  "translation_sha256": "60381bce71f307f92c847f2abb0025e66a6cab351ee510a92052077bc579c509",
+  "translation_revision": "r14.6.1-12116-cellular-device-unbind-wording",
+  "reviewed_resources": 11425,
   "machine_translated_resources": 569,
   "all_machine_output_semantically_reviewed": false,
   "sdk30_signature_scheme": "v3",
@@ -27,22 +29,22 @@
   "official_dji_signature": false,
   "retained_original_v2_bytes": true,
   "source_tests": {
-    "tests": 833,
-    "failures": 0,
+    "tests": 855,
     "errors": 0,
+    "failures": 0,
     "skipped": 0
   },
   "clean_export_source_tests": {
     "status": "PASS",
-    "baseline_commit": "f6440ce96308f75b7ea5b8babbbee1f41cdc94ce",
-    "source_regular_files_verified": 275,
-    "overlaid_files": 13,
+    "baseline_commit": "2665f8e63ecac792142f139e9907f4b18fe9a483",
+    "source_regular_files_verified": 285,
+    "overlaid_files": 14,
     "source_files_after_tests_unchanged": true,
     "extra_workspace_dependencies_copied": false,
     "result": {
-      "tests": 833,
-      "failures": 0,
+      "tests": 855,
       "errors": 0,
+      "failures": 0,
       "skipped": 0
     }
   },
@@ -57,27 +59,132 @@
   "original_stock_recovered_byte_exactly": true,
   "resource_ids_and_configurations_unchanged": true,
   "native_entries_unchanged": 112,
+  "all_resource_entry_configurations_checked": 266594,
+  "all_resource_values_checked": 274021,
+  "reviewed_wording_names": 190,
+  "reviewed_wording_configurations": 3804,
   "unresolved_helper_api_dependencies": 0,
-  "hotfix_scope_from_r14_6": {
-    "changed_helper_class": "Llocal/rc2/hud/ScreenRoles;",
-    "changed_helper_method": "<clinit>()V",
-    "added_home_anchor": "go_fly_connection_disconnect_button",
-    "other_252_bridge_classes_exactly_preserved": true,
-    "other_methods_of_changed_class_exactly_preserved": true,
-    "all_host_dex_and_feature_dex_unchanged": true,
-    "translation_resources_unchanged": true,
-    "other_version_recipes_unchanged": true
+  "cellular_wording": {
+    "replacement_brand": "DJI Cellular",
+    "previous_translation_sha256": "dcb39692e2a56d9e2c5670c04691ee1b561d1116128ab487a55828b9be75b150",
+    "translation_sha256": "60381bce71f307f92c847f2abb0025e66a6cab351ee510a92052077bc579c509",
+    "only_reviewed_wording_values_changed": true,
+    "resource_ids_and_configurations_preserved": true,
+    "reviewed_resource_names": [
+      "cellular_data_permission_dialog_message",
+      "cellular_data_permission_dialog_title",
+      "dongle_service_esim_activated_successed_content_dialogue",
+      "firmware_update_drone_dongle_update_failed_msg",
+      "firmware_update_name_dongle",
+      "fpv_binding_info_delete_dialogue_btn",
+      "fpv_setting_transfer_mode_check_network_content",
+      "me_device_dongle_detail_dongle_service_statemrnt_content_tips",
+      "me_device_dongle_detail_page_esim_current_uesd_title",
+      "me_device_dongle_detail_page_esim_double_work_description",
+      "me_device_dongle_detail_page_esim_single_work_description",
+      "me_device_dongle_detail_page_operator_authentication_description_content",
+      "me_device_info_accessories_management_drone_dongle_apn_content",
+      "me_device_info_value_added_unbing_rc_btn"
+    ],
+    "changed_resource_count": 14,
+    "cellular_resource_names": [
+      "cellular_data_permission_dialog_message",
+      "cellular_data_permission_dialog_title",
+      "dongle_service_esim_activated_successed_content_dialogue",
+      "firmware_update_drone_dongle_update_failed_msg",
+      "firmware_update_name_dongle",
+      "fpv_setting_transfer_mode_check_network_content",
+      "me_device_dongle_detail_dongle_service_statemrnt_content_tips",
+      "me_device_dongle_detail_page_esim_current_uesd_title",
+      "me_device_dongle_detail_page_esim_double_work_description",
+      "me_device_dongle_detail_page_esim_single_work_description",
+      "me_device_dongle_detail_page_operator_authentication_description_content",
+      "me_device_info_accessories_management_drone_dongle_apn_content"
+    ],
+    "device_unbind_resource_names": [
+      "fpv_binding_info_delete_dialogue_btn",
+      "me_device_info_value_added_unbing_rc_btn"
+    ],
+    "device_unbind_action_label": "Huỷ kết nối thiết bị",
+    "standalone_changed_configurations": 56,
+    "embedded_string_configurations_checked": 258
   },
+  "menu_code_unchanged_from_prior_verified_hotfix": true,
+  "all_other_resource_values_and_styles_unchanged": true,
   "historical_mod_upgrade": {
-    "source_build": "PASS",
-    "actual_frozen_exe_upgrade": "PASS",
-    "previous_release": "r14.6",
-    "previous_apk_sha256": "5e9dac81a55d4c295d49a4de349b3757253d921538aaefc955f901ad2c012ccd",
-    "previous_recipe_sha256": "b8df8c71949f43ac5582f41144e0b46dcc73663a96a43bd59b26680117d350a1",
-    "recovered_stock_sha256": "9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a",
-    "recovered_byte_exactly": true,
-    "source_rebuilt_byte_exact_release_apk": true,
-    "frozen_upgrade_matched_zip_payload_entries": 15747
+    "actual_frozen_exe_builds": {
+      "stock": {
+        "status": "PASS",
+        "input_sha256": "9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a",
+        "recovered_stock_sha256": "9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a",
+        "apk_sha256": "91e03284ec148cabaafeedd34a715f596ef1533577cf9d670bfcf14b7e008b1b",
+        "same_mod_certificate": "c581d1c3ff00db3b4d3d7cf5f6c384bb7719763c0986a3ee6b629aa001956915",
+        "matched_zip_payload_entries": 15747
+      },
+      "r14.6": {
+        "status": "PASS",
+        "input_sha256": "5e9dac81a55d4c295d49a4de349b3757253d921538aaefc955f901ad2c012ccd",
+        "recovered_stock_sha256": "9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a",
+        "apk_sha256": "d22cf69e1f6787d67bcf2b394ce0195466f2ada6697dd9f5965f1eab7b1d380a",
+        "same_mod_certificate": "c581d1c3ff00db3b4d3d7cf5f6c384bb7719763c0986a3ee6b629aa001956915",
+        "matched_zip_payload_entries": 15747
+      },
+      "prior-r14.6.1": {
+        "status": "PASS",
+        "input_sha256": "741a1909f9646ed2a521b4ad1aacb8ef82b7948d21651c8067ee8e82182d0a19",
+        "recovered_stock_sha256": "9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a",
+        "apk_sha256": "fe452b95de3a14c210975b22149eefb127982bfc1fbcb9399b55945d84400fbc",
+        "same_mod_certificate": "c581d1c3ff00db3b4d3d7cf5f6c384bb7719763c0986a3ee6b629aa001956915",
+        "matched_zip_payload_entries": 15747
+      }
+    }
+  },
+  "device_installed": false,
+  "device_runtime_tested": false,
+  "user_deferred_device_update": true,
+  "current_candidate_verification_scope": "Host checks only. The new DJI Cellular and device-unbind wording candidate has not been installed or runtime-tested on RC 2.",
+  "prior_menu_hotfix_device_verification": {
+    "release_stage": "r14.6.1 before DJI Cellular wording correction",
+    "installed_apk_sha256": "741a1909f9646ed2a521b4ad1aacb8ef82b7948d21651c8067ee8e82182d0a19",
+    "translation_sha256": "dcb39692e2a56d9e2c5670c04691ee1b561d1116128ab487a55828b9be75b150",
+    "device_model": "DJI RC 2",
+    "device_installed": true,
+    "device_runtime_tested": true,
+    "same_signer_device_update": true,
+    "app_data_reset": false,
+    "uid_preserved": true,
+    "runtime": {
+      "vietnamese_home_rendered": true,
+      "home_menu_visible": true,
+      "menu_opened": true,
+      "utilities_selector_opened": true,
+      "advanced_panel_rendered": true,
+      "advanced_back_navigation": true,
+      "gimbal_panel_rendered_screenshot_review": true,
+      "gimbal_calibration_button_disabled_without_aircraft": true,
+      "gimbal_xml_accessibility_did_not_reflect_child_panel": true,
+      "gimbal_sdk_calibration_verified": false,
+      "gimbal_sdk_diagnostic": "REQUEST_HANDLER_NOT_FOUND; no calibration action attempted",
+      "flight_view_offline_opened": true,
+      "retired_flight_controls_absent_in_current_xml_and_screenshot": true,
+      "cell_voltage_mod_overlay_absent_in_reviewed_screenshot": true,
+      "record_decryption_ui_absent_in_reviewed_viewports": true,
+      "home_restored": true,
+      "process_alive_after_checks": true,
+      "aircraft_connected": false,
+      "flight_tested": false,
+      "aircraft_parameter_writes_performed": false,
+      "rf_led_display_output_operation_tested": false,
+      "scope": "Actual RC2 app installation, navigation and screenshots; disconnected-aircraft UI only."
+    },
+    "gimbal_review": {
+      "status": "PASS_GIMBAL_PANEL_RENDER_ONLY",
+      "accessibility_xml_stale": true,
+      "sdk_error": "REQUEST_HANDLER_NOT_FOUND",
+      "sdk_error_cause_verified": false,
+      "calibration_or_motion_tested": false
+    },
+    "scope": "Prior APK only; does not verify the new wording candidate on a physical device."
   },
   "flight_screen_removed_controls": [
     "ATTI",
@@ -85,52 +192,9 @@
     "battery cell voltage"
   ],
   "flight_record_decryption_removed": true,
-  "device_installed": true,
-  "device_runtime_tested": true,
-  "device_model": "DJI RC 2",
-  "installed_apk_digest_verified": true,
-  "same_signer_device_update": true,
-  "app_data_reset_on_r14_6_1_update": false,
-  "uid_preserved_on_r14_6_1_update": true,
-  "previous_official_to_mod_migration": {
-    "user_authorized_backup_uninstall_reinstall": true,
-    "internal_data_backup_verified": true,
-    "app_data_reset": true
-  },
-  "runtime": {
-    "vietnamese_home_rendered": true,
-    "home_menu_visible": true,
-    "menu_opened": true,
-    "utilities_selector_opened": true,
-    "advanced_panel_rendered": true,
-    "advanced_back_navigation": true,
-    "gimbal_panel_rendered_screenshot_review": true,
-    "gimbal_calibration_button_disabled_without_aircraft": true,
-    "gimbal_xml_accessibility_did_not_reflect_child_panel": true,
-    "gimbal_sdk_calibration_verified": false,
-    "gimbal_sdk_diagnostic": "REQUEST_HANDLER_NOT_FOUND; no calibration action attempted",
-    "flight_view_offline_opened": true,
-    "retired_flight_controls_absent_in_current_xml_and_screenshot": true,
-    "cell_voltage_mod_overlay_absent_in_reviewed_screenshot": true,
-    "record_decryption_ui_absent_in_reviewed_viewports": true,
-    "home_restored": true,
-    "process_alive_after_checks": true,
-    "aircraft_connected": false,
-    "flight_tested": false,
-    "aircraft_parameter_writes_performed": false,
-    "rf_led_display_output_operation_tested": false,
-    "scope": "Actual RC2 app installation, navigation and screenshots; disconnected-aircraft UI only."
-  },
-  "gimbal_review": {
-    "status": "PASS_GIMBAL_PANEL_RENDER_ONLY",
-    "accessibility_xml_stale": true,
-    "sdk_error": "REQUEST_HANDLER_NOT_FOUND",
-    "sdk_error_cause_verified": false,
-    "calibration_or_motion_tested": false
-  },
   "host_checks_usb_opened": false,
-  "device_checks_usb_opened": true,
   "unverified": [
+    "new wording candidate on RC 2",
     "physical video output",
     "RF behavior",
     "physical LED operation",

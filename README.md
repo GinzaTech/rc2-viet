@@ -4,7 +4,7 @@ Công cụ Windows cho DJI RC 2: tự lấy APK DJI Fly trên tay, patch tiếng
 
 Bản hiện tại: **r14.6.1** · [Tải RC2-TuDong-Patch-r14.6.1.exe](dist/RC2-TuDong-Patch-r14.6.1.exe) · Windows x64.
 
-[Báo cáo kiểm chứng r14.6.1](dist/r14.6.1-12116-verification.json). Đã cập nhật trên RC 2, mở menu, Tiện ích nâng cao và trang Nâng cao; bản sửa khôi phục nút menu trên trang chủ Fly RC 1.21.16.
+[Báo cáo kiểm chứng r14.6.1](dist/r14.6.1-12116-verification.json). Bản sửa tên **DJI Cellular** dành cho bộ cài, chưa cập nhật lên RC 2 theo lựa chọn của người dùng. Menu đã được kiểm tra trực tiếp trên bản trước khi sửa tên; báo cáo tách riêng hai phạm vi này.
 
 EXE được lưu bằng Git LFS. Nếu lấy dự án bằng Git, cài Git LFS rồi chạy `git lfs pull` để tải tệp chạy đầy đủ. [SHA-256](dist/SHA256SUMS.txt).
 
@@ -27,6 +27,8 @@ APK đã sửa được ký bằng khóa mod lưu riêng trên PC, không phải
 Bản r14.6 bổ sung Fly RC **1.21.16 / 3132286**. Bản r14.6.1 sửa nút menu không xuất hiện trên trang chủ khi Fly đổi tên điểm neo giao diện. Giữ thay đổi từ r14.5: gỡ nút ATTI, tắt GPS và phần hiển thị điện áp từng cell pin của menu đặc biệt khỏi màn hình bay. Mục **Giải mã bản ghi** cùng cơ chế giải mã tự động và thủ công cũng được gỡ.
 
 Cập nhật bản dịch ngày 23/10/2026: **Aircraft Flyaway → Báo mất flycam**, đồng bộ 30 chuỗi liên quan; hai thông báo cập nhật dùng **Phần mềm mới đã sẵn sàng**. Bản 1.21.16 đối chiếu lại câu nguồn và bổ sung tài nguyên mới. [Phạm vi bản dịch](docs/FLYAWAY_WORDING.md).
+
+Giữ nguyên tên thương hiệu **DJI Cellular**, dịch “Cellular Data” thành **Dữ liệu di động** và **Unbind devices → Huỷ kết nối thiết bị**. Đã sửa 14 chuỗi, đối chiếu đủ 258 cấu hình sau khi nhúng; mã menu và các giá trị/định dạng ngoài phạm vi giữ nguyên. Kết quả kiểm tra trên PC và kiểm tra menu từ APK trước được ghi riêng.
 
 Tiến độ được lưu riêng theo recipe và bản dịch, giữ các tệp r14.4 để đối chiếu. Nếu APK trên tay khớp toàn bộ recipe hiện tại, app kiểm tra lại gói và báo hoàn tất mà không ký hoặc cài lại.
 
@@ -100,11 +102,11 @@ Xuất thiết kế từ dòng lệnh:
 
 - Kiểm thử nguồn, GUI và backend lấy từ EXE xác minh hành vi trên PC; USB/ADB giả lập không thay thế kiểm thử RC 2 thật.
 - **r14.5 đã cập nhật giữ dữ liệu và kiểm tra trực tiếp trên RC 2 / Fly 1.21.8 khi máy bay đã hạ cánh, động cơ dừng.** Màn hình bay, menu Nâng cao và thao tác ẩn/hiện HUD đều không còn các thành phần đã gỡ. Fly 1.21.10 đã dựng và kiểm chứng offline; chưa chạy trên tay trong đợt này.
-- Bản 1.21.16 được lấy trực tiếp từ RC 2 sau cập nhật, kiểm chữ ký DJI và hash trước/sau. Đã sao lưu rồi gỡ/cài mod với sự cho phép do chữ ký khác DJI; lần cập nhật tiếp theo r14.6 → r14.6.1 giữ nguyên UID và không xóa dữ liệu. Đã kiểm tra giao diện tiếng Việt, nút menu trang chủ, Tiện ích nâng cao, trang Nâng cao và nút quay lại.
+- Bản 1.21.16 được lấy trực tiếp từ RC 2 sau cập nhật, kiểm chữ ký DJI và hash trước/sau. Đã sao lưu rồi gỡ/cài mod với sự cho phép do chữ ký khác DJI; lần cập nhật tiếp theo r14.6 → r14.6.1 trước khi sửa tên DJI Cellular giữ nguyên UID và không xóa dữ liệu. Trên APK đó đã kiểm tra giao diện tiếng Việt, nút menu trang chủ, Tiện ích nâng cao, trang Nâng cao và nút quay lại.
 - r14.6: 814 bài kiểm tra nguồn đạt; EXE phát hành đã tự kiểm tra cả ba profile và dựng APK 1.21.16 có nội dung khớp bản dựng từ mã nguồn. Chữ ký V3 trên SDK 30 đúng khóa mod cũ; phục hồi APK gốc khớp byte. [Bằng chứng](dist/r14.6-12116-verification.json).
-- r14.6.1: 833 bài kiểm tra đạt trên bản xuất mã nguồn tách biệt. EXE phát hành đã tự kiểm tra cả ba profile và dựng APK 1.21.16 với 15.747 mục nội dung ZIP khớp bản dựng từ nguồn. Luồng nâng bản mod r14.6 được kiểm tra bằng cả mã nguồn và EXE thật: phục hồi nguồn khớp byte, dựng bản sửa có nội dung khớp. [Bằng chứng hiện tại](dist/r14.6.1-12116-verification.json); [release r14.6](https://github.com/GinzaTech/rc2-viet/releases/tag/r14.6) được giữ nguyên làm lịch sử.
-- Đã mở màn hình bay khi không nối máy bay và đối chiếu XML/ảnh: không còn nút ATTI, tắt GPS, lớp điện áp cell của mod hoặc mục giải mã bản ghi trong các màn hình đã xem. Đã trở lại trang chủ, đọc lại hash APK đã cài và xác nhận tiến trình còn chạy.
-- Trang Hiệu chỉnh gimbal đã hiển thị trên tay; khi không nối máy bay, nút bắt đầu bị vô hiệu hóa. Chưa thử hiệu chuẩn hoặc chuyển động gimbal; SDK có báo `REQUEST_HANDLER_NOT_FOUND` trong lần mở trang này.
+- Bản chỉnh chữ r14.6.1 đạt 855 bài kiểm tra trên bản xuất mã nguồn tách biệt; kiểm tra 285 tệp và 14 thay đổi. APK dựng từ nguồn giữ nguyên mã menu/native và các tài nguyên ngoài 14 chuỗi đã sửa; phục hồi APK gốc khớp byte. EXE phát hành tự kiểm ba profile và dựng thành công từ stock, mod r14.6 và mod r14.6.1 cũ; mỗi bản có 15.747 mục nội dung ZIP khớp bản dựng từ nguồn. Bản mới chưa cài trên RC 2. [Bằng chứng hiện tại](dist/r14.6.1-12116-verification.json); [release r14.6](https://github.com/GinzaTech/rc2-viet/releases/tag/r14.6) được giữ nguyên làm lịch sử.
+- Trên APK trước khi sửa tên DJI Cellular, đã mở màn hình bay khi không nối máy bay và đối chiếu XML/ảnh: không còn nút ATTI, tắt GPS, lớp điện áp cell của mod hoặc mục giải mã bản ghi trong các màn hình đã xem. Đã trở lại trang chủ, đọc lại hash APK đã cài và xác nhận tiến trình còn chạy.
+- Trên cùng APK đó, trang Hiệu chỉnh gimbal đã hiển thị; khi không nối máy bay, nút bắt đầu bị vô hiệu hóa. Chưa thử hiệu chuẩn hoặc chuyển động gimbal; SDK có báo `REQUEST_HANDLER_NOT_FOUND` trong lần mở trang này.
 - Cài animation chỉ hỗ trợ thư viện DJI đã đối chiếu hash trên RC331/V14; firmware khác cần khảo sát riêng.
 - Công cụ không tự root, mở khóa bootloader, remount phân vùng hệ thống hay tự khởi động lại tay.
 - Đèn thật, xuất hình vật lý, RF, độ ổn định dài hạn và thử bay cần đánh giá riêng trên thiết bị.

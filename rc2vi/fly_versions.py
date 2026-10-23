@@ -35,7 +35,7 @@ FLY_12116 = FlyVersion(
     '9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a',
     'advanced12116', 'rc2-advanced-12116', 'rc2-advanced-12116-vietnamese-auto-v1',
     translation_directory='auto12116',
-    translation_sha256='dcb39692e2a56d9e2c5670c04691ee1b561d1116128ab487a55828b9be75b150',
+    translation_sha256='60381bce71f307f92c847f2abb0025e66a6cab351ee510a92052077bc579c509',
     translation_count=11994,
     replacement_entries=(
         'AndroidManifest.xml', 'classes.dex', 'classes10.dex', 'classes11.dex',

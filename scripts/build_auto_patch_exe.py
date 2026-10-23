@@ -39,6 +39,23 @@ def stage_version_assets(source, stage):
     return inventory, translations
 
 
+def stage_history_assets(source, stage):
+    """Bundle only hash-pinned recipe inventories and historical translations."""
+    from rc2vi.auto_recipe_history import history_assets
+    inventory = []
+    history_target = stage / 'auto-history'
+    history_target.mkdir()
+    for name, expected in history_assets():
+        archived = source / 'auto-history' / name
+        if sha256_file(archived) != expected:
+            raise ValueError('Previous recipe inventory checksum mismatch')
+        target = history_target / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(archived, target)
+        inventory.append('auto-history/' + name)
+    return inventory
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--build-root', type=Path, required=True)
@@ -49,15 +66,7 @@ def main():
     inventory = stage_assets(ROOT / 'assets', stage)
     version_inventory, translations = stage_version_assets(ROOT / 'assets', stage)
     inventory = sorted(set(inventory + version_inventory))
-    from rc2vi.auto_recipe_history import PREVIOUS_RECIPES
-    history_target = stage / 'auto-history'
-    history_target.mkdir()
-    for name, expected in PREVIOUS_RECIPES.values():
-        source = ROOT / 'assets/auto-history' / name
-        if sha256_file(source) != expected:
-            raise ValueError('Previous recipe inventory checksum mismatch')
-        shutil.copy2(source, history_target / name)
-        inventory.append('auto-history/' + name)
+    inventory.extend(stage_history_assets(ROOT / 'assets', stage))
     assert not any(p.suffix.lower() in {'.p12', '.jks', '.keystore', '.dpapi'} for p in stage.rglob('*'))
     assert all(p.stat().st_size < 64 * 1024**2 for p in stage.rglob('*.apk'))
     subprocess.run([sys.executable, '-m', 'PyInstaller', '--noconfirm', '--clean', '--onefile', '--windowed',

@@ -13,7 +13,7 @@ from .hud_backup import guard_path
 from .hud_capsule import CAPSULE_ENTRY, PROFILE_ENTRY, build_capsule, recover_capsule
 from .hud_tools import sha256_file, check_cancel
 from .resource_embed import embed
-from .auto_recipe_history import PREVIOUS_RECIPES, load_previous
+from .auto_recipe_history import PREVIOUS_RECIPES, load_previous, load_previous_translation
 from scripts.hud_apk import repack_apk, validate_apk_change
 from scripts.hud_signing_block import preserve_v2_file, block_entries_path, V2
 
@@ -142,6 +142,12 @@ class AutoPatchBuilder:
         self.menu._profile(template, template=True)
         replacements, additions = {}, {}
         with ZipFile(candidate) as archive:
+            claimed_translation = json.loads(archive.read(PROFILE_ENTRY)).get('translation_sha256')
+            if claimed_translation == self.translation_sha256:
+                translation, expected_count = self._translation(), self.version_profile.translation_count
+            else:
+                translation, expected_count = load_previous_translation(
+                    self.assets, recipe_sha256, claimed_translation, self.version_profile)
             for entry, row in manifest['entries'].items():
                 if entry == 'additions/' + PROFILE_ENTRY:
                     continue  # Reconstruct this profile from the pinned template below.
@@ -155,13 +161,13 @@ class AutoPatchBuilder:
                     raise ValueError('SHA-256 payload recipe cũ không khớp: ' + name)
                 (replacements if category == 'replacements' else additions)[name] = data
         with ZipFile(source) as archive:
-            resources, report = embed(archive.read('resources.arsc'), self._translation())
-        if report['embedded_resources'] != self.version_profile.translation_count:
+            resources, report = embed(archive.read('resources.arsc'), translation)
+        if report['embedded_resources'] != expected_count:
             raise ValueError('Số tài nguyên tiếng Việt không khớp bản RC đã kiểm chứng.')
         replacements['resources.arsc'] = resources
         capsule = build_capsule(source, stage / 'recovery.zip', set(replacements), self.cancel)
         profile = {**template, 'kind': self.version_profile.auto_kind,
-                   'recipe_sha256': recipe_sha256, 'translation_sha256': self.translation_sha256,
+                   'recipe_sha256': recipe_sha256, 'translation_sha256': claimed_translation,
                    'embedded_vietnamese': report, 'standalone_language': True}
         additions[CAPSULE_ENTRY] = capsule.read_bytes()
         additions[PROFILE_ENTRY] = json.dumps(profile, ensure_ascii=False, sort_keys=True).encode('utf-8')
@@ -237,6 +243,11 @@ class AutoPatchBuilder:
         if own and not reviewed:
             previous = profile.get('recipe_sha256')
             historical = previous if previous in PREVIOUS_RECIPES else None
+            if historical is not None:
+                current_manifest = self.menu._bundle()[0]
+                if (previous == current_manifest['recipe_sha256']
+                        and profile.get('translation_sha256') == self.translation_sha256):
+                    historical = None
             verified = self.verify(output, pulled, digest, historical_recipe=historical)
             if historical is None:
                 self.current_recovery = verified

@@ -29,6 +29,7 @@ from rc2vi.translation_complete import (compose_complete, IncompleteTranslation,
 from rc2vi.translation_memory import load_memories, load_corrections, with_reviewed_fragments
 from rc2vi.translation_build import TranslationBuilder, resource_snapshot
 from scripts.hud_manifest import inspect_application
+from rc2vi import cellular_wording, device_unbind_wording
 
 SOURCE_SHA256 = '9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a'
 BASELINE_SHA256 = 'f6c11267d465c303e2aecb737fe4f6b41b54da083368cac497404f4c9a464f98'
@@ -274,6 +275,35 @@ def verify_untouched_values(original, rebuilt, translated_keys):
             'nonstring_values_checked': nonstring, 'original_pool_prefix_unchanged': True}
 
 
+def compare_resource_values(original, rebuilt, allowed_changes):
+    """Compare resolved values across all configs, independent of pool indices."""
+    old_package, old_ids, old_configs = resource_ids(original)
+    new_package, new_ids, new_configs = resource_ids(rebuilt)
+    if (old_package, old_ids, old_configs) != (new_package, new_ids, new_configs):
+        raise ValueError('Resource identities or configurations changed')
+    id_names = {value: key for key, value in old_ids.items()}
+    after = {(key, config): positions for key, config, positions in rebuilt.entries()}
+    changed = Counter()
+    checked = 0
+    for key, config, positions in original.entries():
+        if (key, config) not in after:
+            raise ValueError('Resource entry configurations changed')
+        checked += 1
+        if semantic_values(original, positions, id_names) != semantic_values(rebuilt, after.pop((key, config)), id_names):
+            if key not in allowed_changes:
+                raise ValueError('Unrelated resource value changed: ' + key[1])
+            changed[key] += 1
+    if after:
+        raise ValueError('Resource entry configurations changed')
+    return {'resource_configurations_checked': checked,
+            'unchanged_configurations': checked - sum(changed.values()),
+            'changed_configurations': sum(changed.values()),
+            'changed_resources': [{'kind': key[0], 'name': key[1], 'configurations': count}
+                                  for key, count in sorted(changed.items())],
+            'resource_ids_and_configurations_preserved': True,
+            'unrelated_values_and_styles_unchanged': True}
+
+
 def decode_inputs(source, prior, work):
     """Use the existing pinned offline toolchain; never load/create signing keys."""
     work.mkdir(parents=True, exist_ok=True)
@@ -326,8 +356,32 @@ def reviewed_catalog(path, targets, compiled_english=None):
     value = json.loads(path.read_text(encoding='utf-8'))
     if value.get('source_sha256') != SOURCE_SHA256 or not isinstance(value.get('entries'), list):
         raise ValueError('Reviewed 1.21.16 wording is not bound to the current source')
+    return reviewed_rows(value['entries'], targets, compiled_english)
+
+
+def cellular_catalog(targets, compiled_english):
+    if (cellular_wording.SOURCE_SHA256 != SOURCE_SHA256
+            or cellular_wording.ENGLISH.keys() != cellular_wording.TRANSLATIONS.keys()):
+        raise ValueError('Cellular wording source or translation inventory differs')
+    return reviewed_rows([{'name': name, 'english': english,
+                          'vietnamese': cellular_wording.TRANSLATIONS[name]}
+                         for name, english in cellular_wording.ENGLISH.items()],
+                         targets, compiled_english)
+
+
+def device_unbind_catalog(targets, compiled_english):
+    if (device_unbind_wording.SOURCE_SHA256 != SOURCE_SHA256
+            or device_unbind_wording.ENGLISH.keys() != device_unbind_wording.TRANSLATIONS.keys()):
+        raise ValueError('Device unbind wording source or translation inventory differs')
+    return reviewed_rows([{'name': name, 'english': english,
+                          'vietnamese': device_unbind_wording.TRANSLATIONS[name]}
+                         for name, english in device_unbind_wording.ENGLISH.items()],
+                         targets, compiled_english)
+
+
+def reviewed_rows(rows, targets, compiled_english=None):
     entries, mismatches = [], []
-    for row in value['entries']:
+    for row in rows:
         key = 'string', row['name']
         try:
             source = targets[key]
@@ -490,16 +544,24 @@ def main(argv=None):
     old_catalog, rejected = prior_catalog(targets, tc.load_resources(prior_res), before, after)
     reviewed_hash = sha256_file(args.reviewed) if args.reviewed.is_file() else None
     manual, mismatches = reviewed_catalog(args.reviewed, targets, after['english'])
-    atomic_json(args.work / 'reviewed-contracts.json', {'accepted': len(manual['entries']), 'mismatches': mismatches})
+    cellular, cellular_mismatches = cellular_catalog(targets, after['english'])
+    unbind, unbind_mismatches = device_unbind_catalog(targets, after['english'])
+    mismatches.extend(cellular_mismatches)
+    mismatches.extend(unbind_mismatches)
+    atomic_json(args.work / 'reviewed-contracts.json', {'accepted': len(manual['entries']),
+        'cellular_accepted': len(cellular['entries']), 'device_unbind_accepted': len(unbind['entries']),
+        'mismatches': mismatches})
     if mismatches:
         raise ValueError('Reviewed wording mismatched source/format contract; see reviewed-contracts.json')
     memories, overrides, memory_digest = load_memories(ROOT / 'assets')
     corrections = load_corrections(ROOT / 'assets')
-    catalogs = [manual, old_catalog, *memories]
+    catalogs = [preferred_catalog([unbind, cellular, manual]), old_catalog, *memories]
     atomic_json(args.work / 'selection-inputs.json', {'source_sha256': SOURCE_SHA256,
         'baseline_sha256': BASELINE_SHA256, 'prior_translation_sha256': PRIOR_TRANSLATION_SHA256,
         'prior_compiled_contract_matches': len(old_catalog['entries']), 'prior_rejections': rejected,
         'reviewed_12116': len(manual['entries']), 'memory_digest': memory_digest,
+        'reviewed_cellular': len(cellular['entries']), 'cellular_revision': cellular_wording.REVISION,
+        'reviewed_device_unbind': len(unbind['entries']), 'device_unbind_revision': device_unbind_wording.REVISION,
         'manual_override_file_sha256': reviewed_hash,
         'app_name_preserved': True})
     translate = lambda texts: ['' for _ in texts]
@@ -591,7 +653,7 @@ def main(argv=None):
     metadata = {'schema': 1, 'source_sha256': SOURCE_SHA256, 'version': '1.21.16', 'version_code': 3132286,
         'resource_sha256': hashlib.sha256(translation).hexdigest(), 'bytes': len(translation),
         'embedded_resources': embed_report['embedded_resources'], 'separate_overlay_required': False,
-        'translation_revision': 'r14.6-12116-vietnamese-menu', 'source_package': after['package'],
+        'translation_revision': device_unbind_wording.REVISION, 'source_package': after['package'],
         'prior_translation_sha256': PRIOR_TRANSLATION_SHA256, 'reviewed': report['reviewed'],
         'machine': report['machine'], 'unresolved': 0, 'complete': True,
         'all_machine_output_semantically_reviewed': False if report['machine'] else None,
