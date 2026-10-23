@@ -70,7 +70,7 @@ class App:
         from rc2vi import desktop_theme as ui
 
         root = self.root
-        root.title('RC2 Studio · Tiếng Việt, menu & Animation · r14.6')
+        root.title('RC2 Studio · Tiếng Việt, menu & Animation · r14.6.1')
         root.geometry('900x760')
         root.minsize(800, 680)
         ui.setup(root)
@@ -94,7 +94,7 @@ class App:
         ui.label(title, 'RC2 Studio', size=28, bold=True).pack(side='left')
         version = ui.frame(title, color=ui.PANEL, radius=10)
         version.pack(side='left', padx=(12, 0))
-        ui.label(version, 'r14.6', muted=True, size=11).pack(padx=10, pady=3)
+        ui.label(version, 'r14.6.1', muted=True, size=11).pack(padx=10, pady=3)
         ui.label(identity, 'Tiếng Việt  /  Menu nâng cao  /  Animation',
                  muted=True, size=13).pack(anchor='w', pady=(1, 0))
         self.animation_button = ui.button(heading, 'Mở Animation  →', self.open_animation,
@@ -261,7 +261,7 @@ class App:
             self.root.minsize(800, 680)
             self.root.geometry(self._page_geometry.get('patch', '900x760'))
             self.patch_page.pack(fill='both', expand=True, padx=24, pady=20)
-        self.root.title('RC2 Studio · Tiếng Việt, menu & Animation · r14.6')
+        self.root.title('RC2 Studio · Tiếng Việt, menu & Animation · r14.6.1')
         self.controls()
         return True
 

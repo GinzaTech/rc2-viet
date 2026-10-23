@@ -1,4 +1,4 @@
-"""Build RC2 r14.6 with a separate audited recipe and translation per version."""
+"""Build RC2 r14.6.1 with a separate audited recipe and translation per version."""
 import argparse
 import json
 from pathlib import Path
@@ -61,14 +61,14 @@ def main():
     assert not any(p.suffix.lower() in {'.p12', '.jks', '.keystore', '.dpapi'} for p in stage.rglob('*'))
     assert all(p.stat().st_size < 64 * 1024**2 for p in stage.rglob('*.apk'))
     subprocess.run([sys.executable, '-m', 'PyInstaller', '--noconfirm', '--clean', '--onefile', '--windowed',
-                    '--name', 'RC2-TuDong-Patch-r14.6', '--specpath', str(build / 'spec'),
+                    '--name', 'RC2-TuDong-Patch-r14.6.1', '--specpath', str(build / 'spec'),
                     '--workpath', str(build / 'work'), '--distpath', str(ROOT / 'dist'),
                     '--version-file', str(ROOT / 'packaging/fly12116-windows-version.txt'),
                     '--hidden-import', 'PIL.ImageTk', '--hidden-import', 'PIL.ImageGrab',
                     '--collect-data', 'customtkinter',
                     '--copy-metadata', 'customtkinter', '--copy-metadata', 'darkdetect',
                     '--add-data', str(stage) + ';assets', str(ROOT / 'auto_patch_app.py')], cwd=ROOT, check=True)
-    exe = ROOT / 'dist/RC2-TuDong-Patch-r14.6.exe'
+    exe = ROOT / 'dist/RC2-TuDong-Patch-r14.6.1.exe'
     from rc2vi.animation import EFFECTS, LOOP_EFFECTS, PRESETS
     report = {'exe': str(exe), 'sha256': sha256_file(exe), 'bytes': exe.stat().st_size,
               'full_fly_apk_embedded': False, 'private_signing_key_embedded': False,
@@ -77,7 +77,7 @@ def main():
               'animation_editor': True, 'animation_effects': dict(EFFECTS),
               'animation_loop_effects': dict(LOOP_EFFECTS), 'animation_presets': dict(PRESETS),
               'animation_projects_portable': True, 'animation_device_tested_this_release': False,
-              'desktop_style': 'rounded-dark-mint', 'desktop_ui_revision': 'r14.6',
+              'desktop_style': 'rounded-dark-mint', 'desktop_ui_revision': 'r14.6.1',
               'flight_screen_overlay_revision': 'r14.5',
               'flight_screen_removed_controls': ['ATTI', 'GPS disable', 'battery cell voltage'],
               'flight_record_decryption_removed': True,

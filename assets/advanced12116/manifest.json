@@ -3,8 +3,20 @@
   "version": "1.21.16",
   "code": 3132286,
   "source_sha256": "9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a",
-  "recipe_sha256": "b8df8c71949f43ac5582f41144e0b46dcc73663a96a43bd59b26680117d350a1",
+  "recipe_sha256": "f2706464162872a67fb5f3a940b0ed112f6798bcff0f6e56f90bfb59a570df8c",
   "entries": {
+    "additions/assets/rc2-menu/profile.json": {
+      "sha256": "865885b226fde70b41b7c8ed736869cce42b7b682abffae1776ec034071468f5",
+      "bytes": 10405
+    },
+    "additions/classes23.dex": {
+      "sha256": "2699749ca8bfa1db365db3ee11264863fb741e1e365cd1616a15df80acd62a2d",
+      "bytes": 213768
+    },
+    "additions/classes24.dex": {
+      "sha256": "7d4bfec41d5ec0cb7a54493c4e04bf260cbe92cf65b1d330c8cd8c4463af984e",
+      "bytes": 606184
+    },
     "replacements/AndroidManifest.xml": {
       "sha256": "b98a6abda8ae4b1719509e0a674ede336b18ff76e19cfdd5bde336bdf2ef7100",
       "bytes": 161204
@@ -64,18 +76,6 @@
     "replacements/classes9.dex": {
       "sha256": "cc553b226dcc9836f7c57cd13f85339a7c39178591e951d4ca96ef6b9b9ed564",
       "bytes": 9193936
-    },
-    "additions/classes23.dex": {
-      "sha256": "a363b714153e4d15486a15ef09ceea7af23520a41b01e0444eaffb329c742452",
-      "bytes": 213720
-    },
-    "additions/classes24.dex": {
-      "sha256": "7d4bfec41d5ec0cb7a54493c4e04bf260cbe92cf65b1d330c8cd8c4463af984e",
-      "bytes": 606184
-    },
-    "additions/assets/rc2-menu/profile.json": {
-      "sha256": "bd6aa31175e555bc5eaca9d597f60fde82e48a4bfcb2141fb4d6dc3ec4f795c5",
-      "bytes": 9930
     }
   },
   "profile_kind": "rc2-advanced-12116",

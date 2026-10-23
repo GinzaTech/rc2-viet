@@ -4,7 +4,8 @@ package local.rc2.hud;
 final class ScreenRoles {
     interface Lookup { boolean has(String name); }
     static final String[] HOME = {"main_page_ui_state_startfly_btn", "main_page_ui_device_disconnect_state_button",
-        "direct_enter_fpv_view", "layout_direct_enter_fpv", "connection_guide_enter_fpv_button"};
+        "direct_enter_fpv_view", "layout_direct_enter_fpv", "connection_guide_enter_fpv_button",
+        "go_fly_connection_disconnect_button"};
     static final String[] HUD = {"top_bar_shell_layout", "osd_shell_top_layout", "osd_shell_layout",
         "left_bar_shell_layout", "right_bar_shell_layout", "map_shell_layout", "radar_shell_layout",
         "histogram_shell_layout", "zoom_focus_layer_layout", "right_bottom_shell_layout", "attitude_bar_shell_layout",

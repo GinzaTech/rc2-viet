@@ -1,0 +1,144 @@
+{
+  "status": "PASS_HOST_AND_DEVICE_UI_CHECKS",
+  "release": "r14.6.1",
+  "verification_date": "2026-10-23",
+  "package": "dji.go.v5",
+  "version": "1.21.16",
+  "version_code": 3132286,
+  "source_sha256": "9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a",
+  "artifacts": {
+    "RC2-TuDong-Patch-r14.6.1.exe": {
+      "sha256": "7204ae814614e182b49c69489471d36c01501c62399d2784cd57fa7674aa7423",
+      "bytes": 198456553
+    }
+  },
+  "generated_apk": {
+    "sha256": "741a1909f9646ed2a521b4ad1aacb8ef82b7948d21651c8067ee8e82182d0a19",
+    "bytes": 525802402
+  },
+  "menu_recipe_sha256": "f2706464162872a67fb5f3a940b0ed112f6798bcff0f6e56f90bfb59a570df8c",
+  "embedded_vietnamese_resources": 11994,
+  "translation_sha256": "dcb39692e2a56d9e2c5670c04691ee1b561d1116128ab487a55828b9be75b150",
+  "machine_translated_resources": 569,
+  "all_machine_output_semantically_reviewed": false,
+  "sdk30_signature_scheme": "v3",
+  "certificate_sha256": "c581d1c3ff00db3b4d3d7cf5f6c384bb7719763c0986a3ee6b629aa001956915",
+  "same_signer_as_prior_mod": true,
+  "official_dji_signature": false,
+  "retained_original_v2_bytes": true,
+  "source_tests": {
+    "tests": 833,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "clean_export_source_tests": {
+    "status": "PASS",
+    "baseline_commit": "f6440ce96308f75b7ea5b8babbbee1f41cdc94ce",
+    "source_regular_files_verified": 275,
+    "overlaid_files": 13,
+    "source_files_after_tests_unchanged": true,
+    "extra_workspace_dependencies_copied": false,
+    "result": {
+      "tests": 833,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "actual_frozen_exe_self_test": "PASS",
+  "actual_frozen_exe_build": "PASS",
+  "self_test_versions": [
+    "1.21.8",
+    "1.21.10",
+    "1.21.16"
+  ],
+  "matched_zip_payload_entries": 15747,
+  "original_stock_recovered_byte_exactly": true,
+  "resource_ids_and_configurations_unchanged": true,
+  "native_entries_unchanged": 112,
+  "unresolved_helper_api_dependencies": 0,
+  "hotfix_scope_from_r14_6": {
+    "changed_helper_class": "Llocal/rc2/hud/ScreenRoles;",
+    "changed_helper_method": "<clinit>()V",
+    "added_home_anchor": "go_fly_connection_disconnect_button",
+    "other_252_bridge_classes_exactly_preserved": true,
+    "other_methods_of_changed_class_exactly_preserved": true,
+    "all_host_dex_and_feature_dex_unchanged": true,
+    "translation_resources_unchanged": true,
+    "other_version_recipes_unchanged": true
+  },
+  "historical_mod_upgrade": {
+    "source_build": "PASS",
+    "actual_frozen_exe_upgrade": "PASS",
+    "previous_release": "r14.6",
+    "previous_apk_sha256": "5e9dac81a55d4c295d49a4de349b3757253d921538aaefc955f901ad2c012ccd",
+    "previous_recipe_sha256": "b8df8c71949f43ac5582f41144e0b46dcc73663a96a43bd59b26680117d350a1",
+    "recovered_stock_sha256": "9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a",
+    "recovered_byte_exactly": true,
+    "source_rebuilt_byte_exact_release_apk": true,
+    "frozen_upgrade_matched_zip_payload_entries": 15747
+  },
+  "flight_screen_removed_controls": [
+    "ATTI",
+    "GPS disable",
+    "battery cell voltage"
+  ],
+  "flight_record_decryption_removed": true,
+  "device_installed": true,
+  "device_runtime_tested": true,
+  "device_model": "DJI RC 2",
+  "installed_apk_digest_verified": true,
+  "same_signer_device_update": true,
+  "app_data_reset_on_r14_6_1_update": false,
+  "uid_preserved_on_r14_6_1_update": true,
+  "previous_official_to_mod_migration": {
+    "user_authorized_backup_uninstall_reinstall": true,
+    "internal_data_backup_verified": true,
+    "app_data_reset": true
+  },
+  "runtime": {
+    "vietnamese_home_rendered": true,
+    "home_menu_visible": true,
+    "menu_opened": true,
+    "utilities_selector_opened": true,
+    "advanced_panel_rendered": true,
+    "advanced_back_navigation": true,
+    "gimbal_panel_rendered_screenshot_review": true,
+    "gimbal_calibration_button_disabled_without_aircraft": true,
+    "gimbal_xml_accessibility_did_not_reflect_child_panel": true,
+    "gimbal_sdk_calibration_verified": false,
+    "gimbal_sdk_diagnostic": "REQUEST_HANDLER_NOT_FOUND; no calibration action attempted",
+    "flight_view_offline_opened": true,
+    "retired_flight_controls_absent_in_current_xml_and_screenshot": true,
+    "cell_voltage_mod_overlay_absent_in_reviewed_screenshot": true,
+    "record_decryption_ui_absent_in_reviewed_viewports": true,
+    "home_restored": true,
+    "process_alive_after_checks": true,
+    "aircraft_connected": false,
+    "flight_tested": false,
+    "aircraft_parameter_writes_performed": false,
+    "rf_led_display_output_operation_tested": false,
+    "scope": "Actual RC2 app installation, navigation and screenshots; disconnected-aircraft UI only."
+  },
+  "gimbal_review": {
+    "status": "PASS_GIMBAL_PANEL_RENDER_ONLY",
+    "accessibility_xml_stale": true,
+    "sdk_error": "REQUEST_HANDLER_NOT_FOUND",
+    "sdk_error_cause_verified": false,
+    "calibration_or_motion_tested": false
+  },
+  "host_checks_usb_opened": false,
+  "device_checks_usb_opened": true,
+  "unverified": [
+    "physical video output",
+    "RF behavior",
+    "physical LED operation",
+    "flight behavior",
+    "gimbal calibration and motion",
+    "long-term stability"
+  ],
+  "private_data_published": false,
+  "private_signing_key_bundled": false,
+  "previous_r14_6_release_unchanged": true
+}
