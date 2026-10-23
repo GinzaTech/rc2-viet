@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "status": "PASS_INSTALLED_AND_UI_CHECKED",
+  "release": "r14.6.1-vi3",
+  "verification_date": "2026-10-23",
+  "checked_at_utc": "2026-10-23T12:28:46.190296+00:00",
+  "package": "dji.go.v5",
+  "version": "1.21.16",
+  "version_code": 3132286,
+  "installed_apk_sha256": "280123777f5abcddc71047788822a07e9dbeaa845d5c5a2ec6899d77c8771af3",
+  "translation_sha256": "7ae58691f03056aeab336edde3c0e29e383b7eab88592f82f29b6d84beb9b3d9",
+  "certificate_sha256": "c581d1c3ff00db3b4d3d7cf5f6c384bb7719763c0986a3ee6b629aa001956915",
+  "same_mod_signer_update": true,
+  "uid_preserved": true,
+  "app_uninstalled": false,
+  "app_data_reset": false,
+  "installed_hash_read_back": true,
+  "app_launched": true,
+  "gmail_login_label_visible": true,
+  "visually_checked_login_label_occurrences": 1,
+  "visually_checked_login_label": "Nhập số điện thoại hay Gmail",
+  "compiled_login_label_resources": [
+    "account_guide_input_box_hint_subtitle",
+    "account_guide_subtitle"
+  ],
+  "registration_label": {
+    "text": "Nhập Gmail",
+    "compiled_resources_checked": true,
+    "device_registration_flow_opened": false
+  },
+  "menu_opened": true,
+  "utilities_opened": true,
+  "advanced_opened": true,
+  "advanced_back_button_verified": true,
+  "back_to_home": true,
+  "pid_alive_after_ui_checks": true,
+  "no_androidruntime_fatal_current_pid": true,
+  "ui_viewports_verified": [
+    "advanced",
+    "back_to_home",
+    "home",
+    "login",
+    "menu",
+    "utilities"
+  ],
+  "all_translation_resources_visually_checked": false,
+  "aircraft_control_or_parameter_write_commands_sent": false,
+  "aircraft_control_actions_toggled": false,
+  "menu_sdk_status_queries_attempted": true,
+  "menu_sdk_status_query_result": "Aircraft disconnected; SDK GET queries did not establish aircraft state",
+  "flight_tested": false,
+  "private_evidence_local_only": true,
+  "private_serial_uid_accounts_paths_screenshots_published": false,
+  "host_verification": {
+    "file": "r14.6.1-vi3-12116-verification.json",
+    "sha256": "a5cfe0cf54abc72caed837452bf4d221210ef23c218f99a7409fa2f66ac75707",
+    "unchanged": true,
+    "release_acceptance_tests": 933,
+    "scope": "Historical host evidence; this addendum does not rerun tests or change release build bytes."
+  },
+  "release_exe": {
+    "file": "RC2-TuDong-Patch-r14.6.1.exe",
+    "sha256": "7c1255f3f85e16fbbd499e65370fac1a59bdd8e27dd2166708b480185277cc8b",
+    "bytes": 200284954,
+    "unchanged": true
+  },
+  "prior_vi2_transition": {
+    "from_official_dji_signer": true,
+    "backup_verified": true,
+    "backup_bytes": 390326272,
+    "user_authorized_backup_and_reinstall": true,
+    "data_reset_required": true,
+    "scope": "Earlier stock-to-vi2 install only; Gmail vi3 update above did not reset data."
+  },
+  "local_evidence_sha256": {
+    "installed.json": "86c2e4b6ddeff4b7ae29f7ab178415d1b16ae9d7c30ccc2d42ab93658e7b5b9f",
+    "ui-verification.json": "9b4bf8999fa65a520f4a4c7bdb4f2fa8f7657d8cc8c0451095f62c833886aea8"
+  }
+}
