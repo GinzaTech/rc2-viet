@@ -28,6 +28,9 @@ REVIEW_BASELINE_TRANSLATION = '60381bce71f307f92c847f2abb0025e66a6cab351ee510a92
 REVIEW_BASELINE_RECIPE = 'f2706464162872a67fb5f3a940b0ed112f6798bcff0f6e56f90bfb59a570df8c'
 REVIEW_BASELINE_SOURCE = '9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a'
 REVIEW_BASELINE_PATH = 'translations/' + REVIEW_BASELINE_TRANSLATION + '.arsc'
+FULL_REVIEW_TRANSLATION = '5a6f2ee5fefaac6697993df998338c7895924905e0fb90552654ea6bae417fdd'
+FULL_REVIEW_MANIFEST_SHA256 = '465c1c76eef6d90f5d362ef9d17ff07d906c633a13e74b1993dec6b73224d8cb'
+REVIEW_HISTORY_TRANSLATIONS = [REVIEW_BASELINE_TRANSLATION, FULL_REVIEW_TRANSLATION]
 
 
 def sha(raw):
@@ -85,23 +88,40 @@ def test_published_historical_pairs_keep_exact_old_translation_and_recipe(recipe
     assert count == 11994
 
 
-def test_r1461_public_review_baseline_keeps_exact_archived_bytes_and_pair():
-    binding = history.PREVIOUS_TRANSLATIONS[REVIEW_BASELINE_TRANSLATION]
+@pytest.mark.parametrize('translation', REVIEW_HISTORY_TRANSLATIONS, ids=['wording-baseline', 'full-review-vi2'])
+def test_r1461_public_review_keeps_exact_archived_bytes_and_pair(translation):
+    path = 'translations/' + translation + '.arsc'
+    binding = history.PREVIOUS_TRANSLATIONS[translation]
     assert binding == {
-        'path': REVIEW_BASELINE_PATH,
+        'path': path,
         'source_sha256': REVIEW_BASELINE_SOURCE,
         'recipes': frozenset({REVIEW_BASELINE_RECIPE}),
         'embedded_resources': 11994,
     }
-    archived = (ASSETS / 'auto-history' / REVIEW_BASELINE_PATH).read_bytes()
-    assert sha(archived) == REVIEW_BASELINE_TRANSLATION
+    archived = (ASSETS / 'auto-history' / path).read_bytes()
+    assert sha(archived) == translation
     manifest, _ = history.load_previous(ASSETS, REVIEW_BASELINE_RECIPE, FLY_12116)
     assert manifest['source_sha256'] == REVIEW_BASELINE_SOURCE
     raw, count = history.load_previous_translation(
-        ASSETS, REVIEW_BASELINE_RECIPE, REVIEW_BASELINE_TRANSLATION, FLY_12116)
+        ASSETS, REVIEW_BASELINE_RECIPE, translation, FLY_12116)
     assert raw == archived
     assert count == 11994
-    assert (REVIEW_BASELINE_PATH, REVIEW_BASELINE_TRANSLATION) in history.history_assets()
+    assert (path, translation) in history.history_assets()
+
+
+def test_published_vi2_manifest_matches_frozen_full_review_table():
+    path = ASSETS / 'auto-history/translations' / (FULL_REVIEW_TRANSLATION + '.manifest.json')
+    raw = path.read_bytes()
+    assert sha(raw) == FULL_REVIEW_MANIFEST_SHA256
+    manifest = json.loads(raw)
+    assert manifest['source_sha256'] == REVIEW_BASELINE_SOURCE
+    assert manifest['resource_sha256'] == FULL_REVIEW_TRANSLATION
+    assert manifest['embedded_resources'] == 11994
+    assert manifest['bytes'] == 2413360
+    assert manifest['translation_revision'] == 'r14.6.1-12116-full-vietnamese-review-1'
+    assert manifest['semantic_review']['complete'] is True
+    assert manifest['semantic_review_corrected_resources'] == 3052
+    assert ('translations/' + path.name, FULL_REVIEW_MANIFEST_SHA256) not in history.history_assets()
 
 
 @pytest.mark.parametrize('recipe,translation,profile', [
@@ -119,11 +139,24 @@ def test_r1461_public_review_baseline_rejects_unreviewed_pairs(recipe, translati
         history.load_previous_translation(ASSETS, recipe, translation, profile)
 
 
+@pytest.mark.parametrize('recipe,profile', [
+    (OLD_RECIPES[0], FLY_12116),
+    ('f' * 64, FLY_12116),
+    (REVIEW_BASELINE_RECIPE, FLY_1218),
+    (REVIEW_BASELINE_RECIPE, replace(FLY_12116, source_sha256='0' * 64)),
+], ids=['unpublished-r146-pair', 'unknown-recipe', 'other-fly-source', 'changed-source'])
+def test_published_vi2_rejects_unreviewed_source_recipe_pairs(recipe, profile):
+    with pytest.raises(ValueError, match='Historical recipe/translation pair has not been verified'):
+        history.load_previous_translation(ASSETS, recipe, FULL_REVIEW_TRANSLATION, profile)
+
+
 @pytest.mark.parametrize('change', ['append', 'same-length', 'empty', 'missing'])
-def test_r1461_public_review_baseline_requires_exact_archive(tmp_path, change):
-    archive = tmp_path / 'auto-history' / REVIEW_BASELINE_PATH
+@pytest.mark.parametrize('translation', REVIEW_HISTORY_TRANSLATIONS, ids=['wording-baseline', 'full-review-vi2'])
+def test_r1461_public_review_requires_exact_archive(tmp_path, change, translation):
+    path = 'translations/' + translation + '.arsc'
+    archive = tmp_path / 'auto-history' / path
     archive.parent.mkdir(parents=True)
-    original = (ASSETS / 'auto-history' / REVIEW_BASELINE_PATH).read_bytes()
+    original = (ASSETS / 'auto-history' / path).read_bytes()
     if change == 'append':
         archive.write_bytes(original + b' ')
     elif change == 'same-length':
@@ -132,7 +165,7 @@ def test_r1461_public_review_baseline_requires_exact_archive(tmp_path, change):
         archive.write_bytes(b'')
     with pytest.raises(ValueError, match='Historical translation data has changed|Missing historical translation data'):
         history.load_previous_translation(
-            tmp_path, REVIEW_BASELINE_RECIPE, REVIEW_BASELINE_TRANSLATION, FLY_12116)
+            tmp_path, REVIEW_BASELINE_RECIPE, translation, FLY_12116)
 
 
 @pytest.mark.parametrize('recipe,translation,profile', [

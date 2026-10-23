@@ -20,9 +20,9 @@
   "preserved_composition_resources": 689,
   "excluded_integer_arrays": 2,
   "preserved_raw_resources": 691,
-  "resource_sha256": "5a6f2ee5fefaac6697993df998338c7895924905e0fb90552654ea6bae417fdd",
-  "bytes": 2413360,
-  "translation_revision": "r14.6.1-12116-full-vietnamese-review-1",
+  "resource_sha256": "7ae58691f03056aeab336edde3c0e29e383b7eab88592f82f29b6d84beb9b3d9",
+  "bytes": 2413424,
+  "translation_revision": "r14.6.1-12116-full-review-gmail-1",
   "semantic_review": {
     "complete": true,
     "reviewed_resources": 11994,
@@ -82,7 +82,7 @@
     ],
     "runtime_visual_validation": false
   },
-  "semantic_review_catalog_sha256": "3e7b8171d74e3a6298c3233fa35e3edb692864748376de382a4a27d80637ac69",
+  "semantic_review_catalog_sha256": "fc0a7afedbaaafa37ed9b5ee5aa6d7eb86286f0ee465ce528eeaa67c06a61948",
   "semantic_review_baseline_manifest_sha256": "fa26dc0ff2be4b81a60b4706ebf55649a47a708cba2a1d4eac726e0d84a8a3ec",
   "semantic_review_baseline_translation_sha256": "60381bce71f307f92c847f2abb0025e66a6cab351ee510a92052077bc579c509",
   "semantic_review_corrected_resources": 3052,
@@ -91,5 +91,13 @@
   "aapt2_parse": "PASS",
   "aapt2_resource_id_inventory_identical": true,
   "signed": false,
-  "installed": false
+  "installed": false,
+  "user_wording_overrides": [
+    "account_guide_input_box_hint_subtitle",
+    "account_guide_subtitle",
+    "account_email_transfer_register_input_hint_title"
+  ],
+  "generic_email_input_still_supported": true,
+  "user_wording_override_resources": 3,
+  "curated_translation_changed_resources": 3055
 }

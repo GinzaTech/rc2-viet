@@ -33,6 +33,58 @@ def test_metadata_keeps_machine_origin_and_adds_full_semantic_review():
     assert 'private_path' not in result
     result['semantic_review']['reviewed_resources'] = 1
     assert review['coverage']['reviewed_resources'] == 11994
+    assert 'user_wording_overrides' not in result
+    assert 'generic_email_input_still_supported' not in result
+
+
+def test_metadata_records_user_wording_separately_without_relabelling_machine_origin():
+    from rc2vi import gmail_wording
+    baseline, review, report = evidence()
+    review.update({'user_wording_overrides': list(gmail_wording.ENGLISH),
+                   'generic_email_input_still_supported': True})
+    report['corrected_resources'] = 3055
+    result = apply.reviewed_metadata(baseline, review, report, 'c' * 64)
+    assert (result['reviewed'], result['machine']) == (11425, 569)
+    assert result['semantic_review_corrected_resources'] == 3052
+    assert result['user_wording_override_resources'] == 3
+    assert result['curated_translation_changed_resources'] == 3055
+    assert result['generic_email_input_still_supported'] is True
+    assert result['user_wording_overrides'] == list(gmail_wording.ENGLISH)
+    result['user_wording_overrides'].append('unrelated_email')
+    assert review['user_wording_overrides'] == list(gmail_wording.ENGLISH)
+
+
+@pytest.mark.parametrize('overrides,generic', [
+    (['unrelated_email'], True), ([], True), (None, True),
+    ('account_guide_subtitle', True), (list(apply.gmail_wording.ENGLISH), False),
+])
+def test_metadata_rejects_unscoped_or_behavior_changing_user_wording_claims(overrides, generic):
+    baseline, review, report = evidence()
+    review.update({'user_wording_overrides': overrides,
+                   'generic_email_input_still_supported': generic})
+    with pytest.raises(ValueError, match='User wording override evidence'):
+        apply.reviewed_metadata(baseline, review, report, 'c' * 64)
+
+
+def test_all_nine_user_labels_are_locked_in_compiled_resource_readback():
+    from rc2vi.resource_embed import Table
+    from rc2vi.device_unbind_wording import TRANSLATIONS as unbind
+    from rc2vi.cellular_wording import TRANSLATIONS as cellular
+    from rc2vi.flyaway_wording import TRANSLATIONS as flyaway, FIRMWARE_TRANSLATIONS
+    from test_resource_embed import table
+    names = list(unbind) + list(apply.gmail_wording.TRANSLATIONS) + [
+        'firmware_update_name_dongle', 'me_device_info_value_added_loss_certification_btn',
+        'firmware_update_click_check_upgrade_device_is_not_latest_version_dialog_content',
+        'firmware_update_detail_new_firmware_version_title']
+    translations = {**unbind, **cellular, **flyaway, **FIRMWARE_TRANSLATIONS,
+                    **apply.gmail_wording.TRANSLATIONS}
+    texts = [translations[name] for name in names]
+    configs = [(b'', [(index, index) for index in range(len(names))])]
+    raw = table('string', names, texts, configs)
+    assert apply.verify_locked_labels(Table(raw)) == {'status': 'PASS', 'labels_checked': 9}
+    texts[names.index('account_guide_subtitle')] = 'Nhập số điện thoại hay thư điện tử'
+    with pytest.raises(ValueError, match='User-approved label changed: account_guide_subtitle'):
+        apply.verify_locked_labels(Table(table('string', names, texts, configs)))
 
 
 @pytest.mark.parametrize('field,value', [

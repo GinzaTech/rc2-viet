@@ -102,6 +102,15 @@ def test_canonical_product_spelling_needs_an_explicit_reviewed_comparison_equiva
         _text_contract('network_message', original, changed, [['20 m', '30 m']])
 
 
+def test_gmail_label_exception_is_not_a_general_product_spelling_equivalent():
+    from rc2vi.reviewed_translation import TOKEN_EQUIVALENTS
+    assert ('email', 'Gmail') not in TOKEN_EQUIVALENTS
+    assert ('Email', 'Gmail') not in TOKEN_EQUIVALENTS
+    with pytest.raises(ValueError, match='Unapproved'):
+        _text_contract('unrelated_email_label', {'text': 'Enter email', 'spans': []},
+                       {'text': 'Nhập Gmail', 'spans': []}, [['email', 'Gmail']])
+
+
 @pytest.mark.parametrize('original,translated', [
     ('<b><i>Warning</i></b>', '<b><i>Cảnh báo</b></i>'),
     ('<b>%1$s</b> %2$s', '<b>%2$s</b> %1$s'),

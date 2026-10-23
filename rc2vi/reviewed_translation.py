@@ -12,6 +12,7 @@ import struct
 import xml.etree.ElementTree as ET
 
 from . import translation_catalog as tc
+from .gmail_wording import approved_equivalent as approved_gmail_equivalent
 from .resource_embed import Table
 from .translation_complete import _escape, _validate, _literal_offsets
 
@@ -113,7 +114,9 @@ def _text_contract(name, original, translated, token_equivalents=()):
     for pair in token_equivalents:
         if (not isinstance(pair, (list, tuple)) or len(pair) != 2
                 or not all(isinstance(value, str) for value in pair)
-                or tuple(pair) not in TOKEN_EQUIVALENTS or pair[0] not in before):
+                or (tuple(pair) not in TOKEN_EQUIVALENTS
+                    and not approved_gmail_equivalent(name, before, pair))
+                or pair[0] not in before):
             raise ValueError('Unapproved reviewed lexical equivalent')
         normalized = normalized.replace(pair[0], pair[1])
     source = ET.Element('string', {'name': name})

@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "revision": "r14.6.1-12116-full-vietnamese-review-1",
+  "revision": "r14.6.1-12116-full-review-gmail-1",
   "source_sha256": "9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a",
   "source_resources_sha256": "fc44abaa822ca846082d7ef9e505d88e038360959fa1f141f8d8b91d53ac599b",
   "baseline_translation_sha256": "60381bce71f307f92c847f2abb0025e66a6cab351ee510a92052077bc579c509",
@@ -113559,6 +113559,132 @@
       "reason": "Android là tên hệ điều hành, không phải người máy.",
       "review_shard": 1,
       "review_group": 11992
+    },
+    {
+      "kind": "string",
+      "name": "account_guide_input_box_hint_subtitle",
+      "source_contract": [
+        [
+          null,
+          3,
+          {
+            "text": "Enter phone number or email",
+            "spans": []
+          }
+        ]
+      ],
+      "previous_contract": [
+        [
+          null,
+          3,
+          {
+            "text": "Nhập số điện thoại hay thư điện tử",
+            "spans": []
+          }
+        ]
+      ],
+      "translation_contract": [
+        [
+          null,
+          3,
+          {
+            "text": "Nhập số điện thoại hay Gmail",
+            "spans": []
+          }
+        ]
+      ],
+      "reason": "User-selected Gmail display wording for this account hint; generic email validation remains unchanged",
+      "token_equivalents": [
+        [
+          "email",
+          "Gmail"
+        ]
+      ],
+      "change_origin": "user_wording_override"
+    },
+    {
+      "kind": "string",
+      "name": "account_guide_subtitle",
+      "source_contract": [
+        [
+          null,
+          3,
+          {
+            "text": "Enter Phone Number or Email",
+            "spans": []
+          }
+        ]
+      ],
+      "previous_contract": [
+        [
+          null,
+          3,
+          {
+            "text": "Nhập số điện thoại hay thư điện tử",
+            "spans": []
+          }
+        ]
+      ],
+      "translation_contract": [
+        [
+          null,
+          3,
+          {
+            "text": "Nhập số điện thoại hay Gmail",
+            "spans": []
+          }
+        ]
+      ],
+      "reason": "User-selected Gmail display wording for this account hint; generic email validation remains unchanged",
+      "token_equivalents": [
+        [
+          "Email",
+          "Gmail"
+        ]
+      ],
+      "change_origin": "user_wording_override"
+    },
+    {
+      "kind": "string",
+      "name": "account_email_transfer_register_input_hint_title",
+      "source_contract": [
+        [
+          null,
+          3,
+          {
+            "text": "Enter email",
+            "spans": []
+          }
+        ]
+      ],
+      "previous_contract": [
+        [
+          null,
+          3,
+          {
+            "text": "Nhập thư điện tử",
+            "spans": []
+          }
+        ]
+      ],
+      "translation_contract": [
+        [
+          null,
+          3,
+          {
+            "text": "Nhập Gmail",
+            "spans": []
+          }
+        ]
+      ],
+      "reason": "User-selected Gmail display wording for this account hint; generic email validation remains unchanged",
+      "token_equivalents": [
+        [
+          "email",
+          "Gmail"
+        ]
+      ],
+      "change_origin": "user_wording_override"
     }
   ],
   "baseline_manifest_sha256": "fa26dc0ff2be4b81a60b4706ebf55649a47a708cba2a1d4eac726e0d84a8a3ec",
@@ -113620,5 +113746,11 @@
       }
     ],
     "runtime_visual_validation": false
-  }
+  },
+  "user_wording_overrides": [
+    "account_guide_input_box_hint_subtitle",
+    "account_guide_subtitle",
+    "account_email_transfer_register_input_hint_title"
+  ],
+  "generic_email_input_still_supported": true
 }

@@ -20,6 +20,7 @@ from rc2vi.resource_embed import Table, embed
 from rc2vi.hud_tools import sha256_file
 from rc2vi.reviewed_translation import apply_reviewed_table
 from rc2vi.translation_build import TranslationBuilder
+from rc2vi import gmail_wording
 
 SOURCE_SHA256 = '9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a'
 BASELINE_SHA256 = '60381bce71f307f92c847f2abb0025e66a6cab351ee510a92052077bc579c509'
@@ -83,6 +84,20 @@ def reviewed_metadata(baseline, review, report, catalog_sha256):
         'resource_ids_and_configurations_preserved': True,
         'aapt2_parse': 'PASS', 'aapt2_resource_id_inventory_identical': True,
         'separate_overlay_required': False, 'signed': False, 'installed': False})
+    if 'user_wording_overrides' in review:
+        overrides = review['user_wording_overrides']
+        if (overrides != list(gmail_wording.ENGLISH)
+                or review.get('generic_email_input_still_supported') is not True
+                or type(report.get('corrected_resources')) is not int
+                or report['corrected_resources'] < len(overrides)):
+            raise ValueError('User wording override evidence mismatch')
+        metadata.update({
+            'user_wording_overrides': copy.deepcopy(overrides),
+            'generic_email_input_still_supported': True,
+            'user_wording_override_resources': len(overrides),
+            'semantic_review_corrected_resources': report['corrected_resources'] - len(overrides),
+            'curated_translation_changed_resources': report['corrected_resources'],
+        })
     return metadata
 
 
@@ -93,7 +108,8 @@ def verify_locked_labels(table):
     from rc2vi.flyaway_wording import TRANSLATIONS as flyaway, FIRMWARE_TRANSLATIONS
     _, ids, _ = resource_ids(table)
     values = english(table, {value: key for key, value in ids.items()})
-    expected = {**unbind, 'firmware_update_name_dongle': cellular['firmware_update_name_dongle'],
+    expected = {**unbind, **gmail_wording.TRANSLATIONS,
+        'firmware_update_name_dongle': cellular['firmware_update_name_dongle'],
         **{name: {**flyaway, **FIRMWARE_TRANSLATIONS}[name] for name in ('me_device_info_value_added_loss_certification_btn',
             'firmware_update_click_check_upgrade_device_is_not_latest_version_dialog_content',
             'firmware_update_detail_new_firmware_version_title')}}

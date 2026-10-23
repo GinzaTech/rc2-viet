@@ -1,0 +1,132 @@
+{
+  "status": "PASS_HOST_CHECKS_GMAIL_DEVICE_UPDATE_PENDING_USB",
+  "release": "r14.6.1-vi3",
+  "verification_date": "2026-10-23",
+  "package": "dji.go.v5",
+  "version": "1.21.16",
+  "version_code": 3132286,
+  "source_sha256": "9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a",
+  "menu_recipe_sha256": "f2706464162872a67fb5f3a940b0ed112f6798bcff0f6e56f90bfb59a570df8c",
+  "artifacts": {
+    "RC2-TuDong-Patch-r14.6.1.exe": {
+      "sha256": "7c1255f3f85e16fbbd499e65370fac1a59bdd8e27dd2166708b480185277cc8b",
+      "bytes": 200284954
+    }
+  },
+  "generated_apk": {
+    "sha256": "280123777f5abcddc71047788822a07e9dbeaa845d5c5a2ec6899d77c8771af3",
+    "bytes": 525810594,
+    "public_full_apk": false
+  },
+  "translation_sha256": "7ae58691f03056aeab336edde3c0e29e383b7eab88592f82f29b6d84beb9b3d9",
+  "translation_bytes": 2413424,
+  "translation_revision": "r14.6.1-12116-full-review-gmail-1",
+  "review_catalog_sha256": "fc0a7afedbaaafa37ed9b5ee5aa6d7eb86286f0ee465ce528eeaa67c06a61948",
+  "embedded_vietnamese_resources": 11994,
+  "semantic_review": {
+    "resources": 11994,
+    "groups": 8786,
+    "corrected_resources": 3052,
+    "method": "AI semantic comparison against compiled source; exact duplicate wording grouped with all resource names visible"
+  },
+  "user_wording": {
+    "changed_resources": 3,
+    "changed_configurations": 72,
+    "labels": {
+      "account_guide_input_box_hint_subtitle": "Nhập số điện thoại hay Gmail",
+      "account_guide_subtitle": "Nhập số điện thoại hay Gmail",
+      "account_email_transfer_register_input_hint_title": "Nhập Gmail"
+    },
+    "display_only": true,
+    "generic_email_input_still_supported": true
+  },
+  "curated_translation_changed_resources": 3055,
+  "all_machine_output_semantically_reviewed": true,
+  "source_tests": {
+    "tests": 933,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  "source_test_scope": {
+    "modules": 30,
+    "scope": "release acceptance",
+    "full_repository_all_tests_passed_claimed": false
+  },
+  "clean_export": {
+    "baseline_commit": "e5a25b8c4631ac7013cb5748e8cbf32dc4857245",
+    "overlaid_files": 14,
+    "source_regular_files_verified": 297,
+    "source_files_after_tests_unchanged": true,
+    "workspace_overlays_after_tests_unchanged": true,
+    "extra_dependencies_copied": false
+  },
+  "actual_frozen_exe_self_test": "PASS",
+  "actual_frozen_exe_build": "PASS",
+  "self_test_versions": [
+    "1.21.8",
+    "1.21.10",
+    "1.21.16"
+  ],
+  "actual_frozen_builds": {
+    "stock": {
+      "status": "PASS",
+      "input_sha256": "9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a",
+      "apk_sha256": "eb7b2dd61f138a67d0a4bd2a61e258cc9daa13111cce59677fae2f06aaf9847b",
+      "source_sha256": "9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a",
+      "certificate_sha256": "c581d1c3ff00db3b4d3d7cf5f6c384bb7719763c0986a3ee6b629aa001956915",
+      "matched_zip_payloads": 15747
+    },
+    "vi2": {
+      "status": "PASS",
+      "input_sha256": "5ac09cad16f03b6d4757c4c090913dfce09265f81d9432e8fc8bcb1c1da64afc",
+      "apk_sha256": "eb7b2dd61f138a67d0a4bd2a61e258cc9daa13111cce59677fae2f06aaf9847b",
+      "source_sha256": "9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a",
+      "certificate_sha256": "c581d1c3ff00db3b4d3d7cf5f6c384bb7719763c0986a3ee6b629aa001956915",
+      "matched_zip_payloads": 15747
+    }
+  },
+  "certificate_sha256": "c581d1c3ff00db3b4d3d7cf5f6c384bb7719763c0986a3ee6b629aa001956915",
+  "sdk30_signature_scheme": "v3",
+  "same_signer_as_prior_mod": true,
+  "official_dji_signature": false,
+  "all_resource_entry_configurations_checked": 266594,
+  "all_resource_values_checked": 274021,
+  "resource_ids_and_configurations_unchanged": true,
+  "all_other_resource_values_and_styles_unchanged": true,
+  "all_code_native_manifest_and_menu_payloads_unchanged_from_vi2": true,
+  "native_entries_unchanged": 112,
+  "matched_unchanged_zip_entries": 15745,
+  "original_stock_recovered_byte_exactly": true,
+  "aapt2_parse": "PASS",
+  "user_approved_labels_checked": 9,
+  "device_installed": false,
+  "device_runtime_tested": false,
+  "device_update_reason": "RC2 disconnected from Windows before the Gmail update started. Awaiting USB reconnection.",
+  "prior_vi2_actual_install": {
+    "installed_apk_sha256": "5ac09cad16f03b6d4757c4c090913dfce09265f81d9432e8fc8bcb1c1da64afc",
+    "version": "1.21.16",
+    "device_installed": true,
+    "app_launched": true,
+    "transition_from_official_stock_required_data_reset": true,
+    "user_authorized_backup_and_reinstall": true,
+    "backup_verified": true,
+    "backup_bytes": 390326272,
+    "scope": "Prior vi2 only; does not prove Gmail labels rendered on RC2."
+  },
+  "previous_vi2_proof": {
+    "file": "r14.6.1-vi2-12116-verification.json",
+    "sha256": "225e89c162c164dd7a3522f18459c4e2fed1e8b87bbd7aefa656be3d5da3311f",
+    "unchanged": true
+  },
+  "evidence_sha256": {
+    "candidate.json": "15c27a884eda3663804fb123ea5a817b9b594d186f630921cbf6b1830ecea92a",
+    "frozen.json": "ec4330d2def44594f9cbafef734dd748f76e06e5d63aa01ca9646cc8a350789e",
+    "source-tests.json": "a3d8b26f9e7fb46e43b872da3738b182bfb084da460ac04936bef8992420e177",
+    "translation-checks.json": "8a99a0859a28504adaa9f0711978dbee7b43961b978d86938c22329920dfb37f"
+  },
+  "known_repository_limits": "The prior exploratory vi2 run had two baseline-reproduced failures outside this release acceptance scope. No new full-repository all-pass claim.",
+  "flight_or_aircraft_commands_tested": false,
+  "private_signing_key_bundled": false,
+  "full_apk_bundled": false
+}
