@@ -35,6 +35,14 @@ PREVIOUS_TRANSLATIONS = {
         }),
         'embedded_resources': 11994,
     },
+    '60381bce71f307f92c847f2abb0025e66a6cab351ee510a92052077bc579c509': {
+        'path': 'translations/60381bce71f307f92c847f2abb0025e66a6cab351ee510a92052077bc579c509.arsc',
+        'source_sha256': '9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a',
+        'recipes': frozenset({
+            'f2706464162872a67fb5f3a940b0ed112f6798bcff0f6e56f90bfb59a570df8c',
+        }),
+        'embedded_resources': 11994,
+    },
 }
 
 

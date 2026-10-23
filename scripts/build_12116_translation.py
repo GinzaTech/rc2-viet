@@ -625,6 +625,8 @@ def main(argv=None):
                  '--auto-add-overlay', '--no-resource-deduping', '--no-resource-removal', '-R', compiled)
     with ZipFile(unsigned) as archive:
         translation = archive.read('resources.arsc')
+    from scripts.apply_12116_review import postcompile_review, reviewed_metadata
+    translation, semantic_review = postcompile_review(after['raw'], translation)
     patched, embed_report = embed(after['raw'], translation)
     final_table = Table(patched)
     _, final_ids, final_configs = resource_ids(final_table)
@@ -645,6 +647,8 @@ def main(argv=None):
         raise ValueError('Original input changed during translation build')
     if args.reviewed.is_file() and sha256_file(args.reviewed) != reviewed_hash:
         raise ValueError('Reviewed wording changed during build; rerun using the local machine cache')
+    if semantic_review and sha256_file(semantic_review['review_path']) != semantic_review['catalog_sha256']:
+        raise ValueError('Semantic review catalog changed during build')
     args.output.mkdir(parents=True, exist_ok=True)
     target = args.output / 'vietnamese.arsc'
     if target.exists() and target.read_bytes() != translation:
@@ -663,8 +667,13 @@ def main(argv=None):
         'preserved_composition_resources': report['preserved'], 'excluded_integer_arrays': len(exclusions),
         'preserved_raw_resources': report['preserved'] + len(exclusions),
         'signed': False, 'installed': False}
+    if semantic_review:
+        metadata = reviewed_metadata({**metadata,
+            'resource_sha256': semantic_review['report']['baseline_translation_sha256']},
+            semantic_review['catalog'], semantic_review['report'], semantic_review['catalog_sha256'])
     atomic_json(args.output / 'manifest.json', metadata)
     atomic_json(args.work / 'build-report.json', {**metadata, 'embedding': embed_report,
+        'semantic_review_checks': semantic_review['report'] if semantic_review else None,
         'preservation_checks': preservation_report, 'composition_exclusions': exclusions,
         'source_unchanged': True, 'baseline_unchanged': sha256_file(args.baseline) == BASELINE_SHA256})
     print(json.dumps({'state': 'BUILT', **metadata}), flush=True)

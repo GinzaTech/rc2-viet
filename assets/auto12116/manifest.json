@@ -3,11 +3,8 @@
   "source_sha256": "9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a",
   "version": "1.21.16",
   "version_code": 3132286,
-  "resource_sha256": "60381bce71f307f92c847f2abb0025e66a6cab351ee510a92052077bc579c509",
-  "bytes": 2199724,
   "embedded_resources": 11994,
   "separate_overlay_required": false,
-  "translation_revision": "r14.6.1-12116-cellular-device-unbind-wording",
   "source_package": {
     "id": 127,
     "name": "dji.go.v5",
@@ -18,15 +15,81 @@
   "machine": 569,
   "unresolved": 0,
   "complete": true,
-  "all_machine_output_semantically_reviewed": false,
-  "resource_ids_and_configurations_preserved": true,
-  "aapt2_parse": "PASS",
-  "aapt2_resource_id_inventory_identical": true,
   "raw_text_resources": 12685,
   "composition_text_resources": 12683,
   "preserved_composition_resources": 689,
   "excluded_integer_arrays": 2,
   "preserved_raw_resources": 691,
+  "resource_sha256": "5a6f2ee5fefaac6697993df998338c7895924905e0fb90552654ea6bae417fdd",
+  "bytes": 2413360,
+  "translation_revision": "r14.6.1-12116-full-vietnamese-review-1",
+  "semantic_review": {
+    "complete": true,
+    "reviewed_resources": 11994,
+    "reviewed_groups": 8786,
+    "unresolved": 0,
+    "preserved_resources": 691,
+    "method": "AI semantic comparison against compiled source; exact duplicate wording grouped with all resource names visible",
+    "reviewer_shards": [
+      {
+        "shard": 0,
+        "reviewed_groups": 2926,
+        "reviewed_resources": 4106,
+        "input_sha256": "86d877ef83e3906c6134a4d72d44fddc5e1fe5bc9fe04be388de077ac8188455",
+        "ledger_sha256": "5d8ff4dc1f45c3b2310c942887d92cba0a1855f0d09f68ef3b3753ad5c36e710",
+        "corrections_sha256": "74f9033c1bc3776d043c98f648738a6162a843096321b074bd92aea18d31aa63",
+        "ledger_statuses": {
+          "kept": 2037,
+          "corrected": 889
+        }
+      },
+      {
+        "shard": 1,
+        "reviewed_groups": 2872,
+        "reviewed_resources": 4001,
+        "input_sha256": "b4d74def9e32bf58be2ab83f2ac9bc6b31b24fe0b152d3021d6ea1693239c349",
+        "ledger_sha256": "a3fc6de8dd48430a1593c65e7d2e5e3163de6c5f4adb0066523e4e05d449727c",
+        "corrections_sha256": "c6795e983ab6e242f2939df217823c8d83e35f6b75d3c81b45265efe767eea8f",
+        "ledger_statuses": {
+          "corrected": 910,
+          "kept": 1961,
+          "needs_context": 1
+        }
+      },
+      {
+        "shard": 2,
+        "reviewed_groups": 2988,
+        "reviewed_resources": 3887,
+        "input_sha256": "74eb14eff5e6e7c0d7bdeb8edd4fc675768df7f08099478b4a45e88c6d19c34f",
+        "ledger_sha256": "0db565ac037d0f3dbf1c5791193f6082fd8954eadb9052dd6e78b3687e7ca4cf",
+        "corrections_sha256": "fb7d938de2687b53114e1832f3f3da444afac91d1c05d393fc5c97237bd04dc2",
+        "ledger_statuses": {
+          "corrected": 936,
+          "kept": 2051,
+          "needs_context": 1
+        }
+      }
+    ],
+    "context_decisions": [
+      {
+        "group": 1937,
+        "decision": "Generic Vietnamese preposition; no duration or model assumption"
+      },
+      {
+        "group": 2217,
+        "decision": "Straight-line RTH confirmed by Chinese in the same stock APK"
+      }
+    ],
+    "runtime_visual_validation": false
+  },
+  "semantic_review_catalog_sha256": "3e7b8171d74e3a6298c3233fa35e3edb692864748376de382a4a27d80637ac69",
+  "semantic_review_baseline_manifest_sha256": "fa26dc0ff2be4b81a60b4706ebf55649a47a708cba2a1d4eac726e0d84a8a3ec",
+  "semantic_review_baseline_translation_sha256": "60381bce71f307f92c847f2abb0025e66a6cab351ee510a92052077bc579c509",
+  "semantic_review_corrected_resources": 3052,
+  "all_machine_output_semantically_reviewed": true,
+  "resource_ids_and_configurations_preserved": true,
+  "aapt2_parse": "PASS",
+  "aapt2_resource_id_inventory_identical": true,
   "signed": false,
   "installed": false
 }

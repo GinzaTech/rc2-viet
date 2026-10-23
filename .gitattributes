@@ -16,6 +16,7 @@
 artifacts/translation-engine/** -text -whitespace
 assets/translation/** -text -whitespace
 assets/auto-history/** -text -whitespace
+assets/auto12116/** -text -whitespace
 # Preserve the published bytes covered by dist/SHA256SUMS.txt.
 dist/** -text -whitespace
 dist/RC2-TuDong-Patch-*.exe filter=lfs diff=lfs merge=lfs -text

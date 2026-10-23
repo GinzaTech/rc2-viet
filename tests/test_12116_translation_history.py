@@ -24,6 +24,10 @@ OLD_RECIPES = [
     'b8df8c71949f43ac5582f41144e0b46dcc73663a96a43bd59b26680117d350a1',
     'f2706464162872a67fb5f3a940b0ed112f6798bcff0f6e56f90bfb59a570df8c',
 ]
+REVIEW_BASELINE_TRANSLATION = '60381bce71f307f92c847f2abb0025e66a6cab351ee510a92052077bc579c509'
+REVIEW_BASELINE_RECIPE = 'f2706464162872a67fb5f3a940b0ed112f6798bcff0f6e56f90bfb59a570df8c'
+REVIEW_BASELINE_SOURCE = '9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a'
+REVIEW_BASELINE_PATH = 'translations/' + REVIEW_BASELINE_TRANSLATION + '.arsc'
 
 
 def sha(raw):
@@ -79,6 +83,56 @@ def test_published_historical_pairs_keep_exact_old_translation_and_recipe(recipe
     raw, count = history.load_previous_translation(ASSETS, recipe, OLD_TRANSLATION, FLY_12116)
     assert sha(raw) == OLD_TRANSLATION
     assert count == 11994
+
+
+def test_r1461_public_review_baseline_keeps_exact_archived_bytes_and_pair():
+    binding = history.PREVIOUS_TRANSLATIONS[REVIEW_BASELINE_TRANSLATION]
+    assert binding == {
+        'path': REVIEW_BASELINE_PATH,
+        'source_sha256': REVIEW_BASELINE_SOURCE,
+        'recipes': frozenset({REVIEW_BASELINE_RECIPE}),
+        'embedded_resources': 11994,
+    }
+    archived = (ASSETS / 'auto-history' / REVIEW_BASELINE_PATH).read_bytes()
+    assert sha(archived) == REVIEW_BASELINE_TRANSLATION
+    manifest, _ = history.load_previous(ASSETS, REVIEW_BASELINE_RECIPE, FLY_12116)
+    assert manifest['source_sha256'] == REVIEW_BASELINE_SOURCE
+    raw, count = history.load_previous_translation(
+        ASSETS, REVIEW_BASELINE_RECIPE, REVIEW_BASELINE_TRANSLATION, FLY_12116)
+    assert raw == archived
+    assert count == 11994
+    assert (REVIEW_BASELINE_PATH, REVIEW_BASELINE_TRANSLATION) in history.history_assets()
+
+
+@pytest.mark.parametrize('recipe,translation,profile', [
+    (OLD_RECIPES[0], REVIEW_BASELINE_TRANSLATION, FLY_12116),
+    ('f' * 64, REVIEW_BASELINE_TRANSLATION, FLY_12116),
+    (REVIEW_BASELINE_RECIPE, REVIEW_BASELINE_TRANSLATION, FLY_1218),
+    (REVIEW_BASELINE_RECIPE, REVIEW_BASELINE_TRANSLATION,
+     replace(FLY_12116, source_sha256='0' * 64)),
+    (REVIEW_BASELINE_RECIPE, 'f' * 64, FLY_12116),
+    (REVIEW_BASELINE_RECIPE, None, FLY_12116),
+], ids=['unpublished-r146-pair', 'unknown-recipe', 'other-fly-source',
+        'changed-source', 'unknown-table', 'invalid-table-digest'])
+def test_r1461_public_review_baseline_rejects_unreviewed_pairs(recipe, translation, profile):
+    with pytest.raises(ValueError, match='Historical'):
+        history.load_previous_translation(ASSETS, recipe, translation, profile)
+
+
+@pytest.mark.parametrize('change', ['append', 'same-length', 'empty', 'missing'])
+def test_r1461_public_review_baseline_requires_exact_archive(tmp_path, change):
+    archive = tmp_path / 'auto-history' / REVIEW_BASELINE_PATH
+    archive.parent.mkdir(parents=True)
+    original = (ASSETS / 'auto-history' / REVIEW_BASELINE_PATH).read_bytes()
+    if change == 'append':
+        archive.write_bytes(original + b' ')
+    elif change == 'same-length':
+        archive.write_bytes(bytes([original[0] ^ 1]) + original[1:])
+    elif change == 'empty':
+        archive.write_bytes(b'')
+    with pytest.raises(ValueError, match='Historical translation data has changed|Missing historical translation data'):
+        history.load_previous_translation(
+            tmp_path, REVIEW_BASELINE_RECIPE, REVIEW_BASELINE_TRANSLATION, FLY_12116)
 
 
 @pytest.mark.parametrize('recipe,translation,profile', [

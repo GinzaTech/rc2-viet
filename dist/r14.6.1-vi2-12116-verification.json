@@ -1,0 +1,276 @@
+{
+  "status": "PASS_HOST_CHECKS_PRIOR_MENU_DEVICE_UI_VERIFIED",
+  "release": "r14.6.1-vi2",
+  "verification_date": "2026-10-23",
+  "package": "dji.go.v5",
+  "version": "1.21.16",
+  "version_code": 3132286,
+  "source_sha256": "9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a",
+  "artifacts": {
+    "RC2-TuDong-Patch-r14.6.1.exe": {
+      "sha256": "985dfd1c82907e6a95f95d5f5c99050819cc11cdf508948caa38f3a81cd41144",
+      "bytes": 199656357
+    }
+  },
+  "generated_apk": {
+    "sha256": "5ac09cad16f03b6d4757c4c090913dfce09265f81d9432e8fc8bcb1c1da64afc",
+    "bytes": 525810594,
+    "public_full_apk": false
+  },
+  "menu_recipe_sha256": "f2706464162872a67fb5f3a940b0ed112f6798bcff0f6e56f90bfb59a570df8c",
+  "translation_sha256": "5a6f2ee5fefaac6697993df998338c7895924905e0fb90552654ea6bae417fdd",
+  "translation_bytes": 2413360,
+  "translation_revision": "r14.6.1-12116-full-vietnamese-review-1",
+  "review_catalog_sha256": "3e7b8171d74e3a6298c3233fa35e3edb692864748376de382a4a27d80637ac69",
+  "embedded_vietnamese_resources": 11994,
+  "semantic_review": {
+    "complete": true,
+    "method": "AI semantic comparison against compiled source; exact duplicate wording grouped with all resource names visible",
+    "reviewed_resources": 11994,
+    "reviewed_groups": 8786,
+    "resource_kinds": {
+      "string": 11984,
+      "array": 4,
+      "plurals": 6
+    },
+    "corrected_resources": 3052,
+    "corrections_by_kind": {
+      "string": 3048,
+      "array": 3,
+      "plurals": 1
+    },
+    "unresolved": 0,
+    "runtime_visual_validation": false
+  },
+  "composition_origin": {
+    "reviewed": 11425,
+    "machine": 569,
+    "meaning": "Translation composition provenance only; every resource has now received AI semantic review."
+  },
+  "all_machine_output_semantically_reviewed": true,
+  "source_tests": {
+    "tests": 907,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  "source_test_scope": {
+    "kind": "selected_release_acceptance",
+    "module_count": 29,
+    "full_repository_all_tests_passed_claimed": false
+  },
+  "clean_export_source_tests": {
+    "status": "PASS",
+    "baseline_commit": "8d742f27ffe5b80e1292c8fa5c493cc56c244601",
+    "source_regular_files_verified": 292,
+    "overlaid_files": 13,
+    "source_files_after_tests_unchanged": true,
+    "workspace_overlays_after_tests_unchanged": true,
+    "extra_workspace_dependencies_copied": false,
+    "pythonpath_cleared": true,
+    "result": {
+      "tests": 907,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    }
+  },
+  "sdk30_signature_scheme": "v3",
+  "certificate_sha256": "c581d1c3ff00db3b4d3d7cf5f6c384bb7719763c0986a3ee6b629aa001956915",
+  "same_signer_as_prior_mod": true,
+  "official_dji_signature": false,
+  "actual_frozen_exe_self_test": "PASS",
+  "actual_frozen_exe_build": "PASS",
+  "self_test_versions": [
+    "1.21.8",
+    "1.21.10",
+    "1.21.16"
+  ],
+  "historical_mod_upgrade": {
+    "actual_frozen_exe_builds": {
+      "stock-9bec": {
+        "status": "PASS",
+        "input_sha256": "9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a",
+        "recovered_stock_sha256": "9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a",
+        "apk_sha256": "f990029aa6b079f7e06fbc1ffd5634ce2b1677b1433f6c8e0caaa2208465c899",
+        "certificate_sha256_sdk30": "c581d1c3ff00db3b4d3d7cf5f6c384bb7719763c0986a3ee6b629aa001956915",
+        "matched_zip_payload_entries": 15747
+      },
+      "published-91e-60381": {
+        "status": "PASS",
+        "input_sha256": "91e03284ec148cabaafeedd34a715f596ef1533577cf9d670bfcf14b7e008b1b",
+        "recovered_stock_sha256": "9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a",
+        "apk_sha256": "f990029aa6b079f7e06fbc1ffd5634ce2b1677b1433f6c8e0caaa2208465c899",
+        "certificate_sha256_sdk30": "c581d1c3ff00db3b4d3d7cf5f6c384bb7719763c0986a3ee6b629aa001956915",
+        "matched_zip_payload_entries": 15747
+      },
+      "prior-741": {
+        "status": "PASS",
+        "input_sha256": "741a1909f9646ed2a521b4ad1aacb8ef82b7948d21651c8067ee8e82182d0a19",
+        "recovered_stock_sha256": "9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a",
+        "apk_sha256": "03bebb7d340805d1d0db51be71ab32ffc5c338f9decec49a4e16476b60ea47b9",
+        "certificate_sha256_sdk30": "c581d1c3ff00db3b4d3d7cf5f6c384bb7719763c0986a3ee6b629aa001956915",
+        "matched_zip_payload_entries": 15747
+      },
+      "r14.6-5e9": {
+        "status": "PASS",
+        "input_sha256": "5e9dac81a55d4c295d49a4de349b3757253d921538aaefc955f901ad2c012ccd",
+        "recovered_stock_sha256": "9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a",
+        "apk_sha256": "03bebb7d340805d1d0db51be71ab32ffc5c338f9decec49a4e16476b60ea47b9",
+        "certificate_sha256_sdk30": "c581d1c3ff00db3b4d3d7cf5f6c384bb7719763c0986a3ee6b629aa001956915",
+        "matched_zip_payload_entries": 15747
+      }
+    }
+  },
+  "matched_zip_payload_entries": 15747,
+  "original_stock_recovered_byte_exactly": true,
+  "resource_ids_and_configurations_unchanged": true,
+  "all_other_resource_values_and_styles_unchanged": true,
+  "native_entries_unchanged": 112,
+  "aapt2_parse": "PASS",
+  "device_installed": false,
+  "device_runtime_tested": false,
+  "compiled_resource_checks": {
+    "standalone": {
+      "resource_configurations_checked": 47976,
+      "unchanged_configurations": 35768,
+      "changed_configurations": 12208,
+      "resource_ids_and_configurations_preserved": true,
+      "unrelated_values_and_styles_unchanged": true
+    },
+    "embedded": {
+      "resource_configurations_checked": 266594,
+      "unchanged_configurations": 218916,
+      "changed_configurations": 47678,
+      "resource_ids_and_configurations_preserved": true,
+      "unrelated_values_and_styles_unchanged": true
+    },
+    "reviewed_embedding": {
+      "embedded_resources": 11994,
+      "translated_configurations": 222667,
+      "translated_string_values": 223505,
+      "appended_pool_strings": 8584,
+      "all_existing_locale_variants_translated": true
+    },
+    "stock_preservation": {
+      "resource_configurations_checked": 266594,
+      "untouched_values_checked": 50516,
+      "nonstring_values_checked": 27790,
+      "original_pool_prefix_unchanged": true
+    },
+    "locked_labels": {
+      "status": "PASS",
+      "labels_checked": 6
+    },
+    "aapt2": {
+      "status": "PASS",
+      "embedded_inventory_identical": true,
+      "standalone_inventory_count": 11994
+    },
+    "input_hash_guard": "PASS"
+  },
+  "all_frozen_payloads_match_reviewed_candidate": true,
+  "inputs_and_exe_unchanged": true,
+  "device_update_reason": "DJI RC 2 was not detected on the host. No USB session was opened.",
+  "current_candidate_verification_scope": "AI semantic review and host structural/build checks only. The vi2 translation candidate has not been installed or runtime-tested on RC 2.",
+  "prior_menu_hotfix_device_verification": {
+    "release_stage": "r14.6.1 before DJI Cellular wording correction",
+    "installed_apk_sha256": "741a1909f9646ed2a521b4ad1aacb8ef82b7948d21651c8067ee8e82182d0a19",
+    "translation_sha256": "dcb39692e2a56d9e2c5670c04691ee1b561d1116128ab487a55828b9be75b150",
+    "device_model": "DJI RC 2",
+    "device_installed": true,
+    "device_runtime_tested": true,
+    "same_signer_device_update": true,
+    "app_data_reset": false,
+    "uid_preserved": true,
+    "runtime": {
+      "vietnamese_home_rendered": true,
+      "home_menu_visible": true,
+      "menu_opened": true,
+      "utilities_selector_opened": true,
+      "advanced_panel_rendered": true,
+      "advanced_back_navigation": true,
+      "gimbal_panel_rendered_screenshot_review": true,
+      "gimbal_calibration_button_disabled_without_aircraft": true,
+      "gimbal_xml_accessibility_did_not_reflect_child_panel": true,
+      "gimbal_sdk_calibration_verified": false,
+      "gimbal_sdk_diagnostic": "REQUEST_HANDLER_NOT_FOUND; no calibration action attempted",
+      "flight_view_offline_opened": true,
+      "retired_flight_controls_absent_in_current_xml_and_screenshot": true,
+      "cell_voltage_mod_overlay_absent_in_reviewed_screenshot": true,
+      "record_decryption_ui_absent_in_reviewed_viewports": true,
+      "home_restored": true,
+      "process_alive_after_checks": true,
+      "aircraft_connected": false,
+      "flight_tested": false,
+      "aircraft_parameter_writes_performed": false,
+      "rf_led_display_output_operation_tested": false,
+      "scope": "Actual RC2 app installation, navigation and screenshots; disconnected-aircraft UI only."
+    },
+    "gimbal_review": {
+      "status": "PASS_GIMBAL_PANEL_RENDER_ONLY",
+      "accessibility_xml_stale": true,
+      "sdk_error": "REQUEST_HANDLER_NOT_FOUND",
+      "sdk_error_cause_verified": false,
+      "calibration_or_motion_tested": false
+    },
+    "scope": "Prior 741 APK only; does not verify the vi2 full-review translation candidate on a physical device."
+  },
+  "flight_screen_removed_controls": [
+    "ATTI",
+    "GPS disable",
+    "battery cell voltage"
+  ],
+  "flight_record_decryption_removed": true,
+  "host_checks_usb_opened": false,
+  "private_data_published": false,
+  "private_signing_key_bundled": false,
+  "previous_r14_6_1_public_proof": {
+    "file": "r14.6.1-12116-verification.json",
+    "sha256": "c0963fe97847e70664279f7179062936e2752083ecea76feb06b37378487161f",
+    "preserved": true
+  },
+  "evidence_sha256": {
+    "review-candidate-verification.json": "4ffa8beb4a6671ffe8d120010a867979451b978bbd8d242eaf1224a3b02a6e1f",
+    "review-frozen-verification.json": "f8e88a086f9bc09cbb83a84fa6d4ea083f3b1ee3f97d5bfc68f653e926b3f23e",
+    "review-exe-build.json": "c27fa416b2728223382fcd78b1aa709cedfdbba8f6c640053618596521e14ba6",
+    "review-source-tests.json": "d5ef8e3bdf0622312c8cb5bc59acefb4768f54d059162e764ffa1b9eaa250f7a",
+    "review-source-tests-full.json": "c31a4c45f02043ed0809f0740fa61535195551d7dcedc58da1fe033aa24f4e06",
+    "review-source-baseline-triage.json": "dddee3bcf216e76e859d45f85e1116b1c173ec0c9d3130f68cee26d987fc7c40",
+    "coverage-verification.json": "812fdbf8584b9bf7fa368adcc41b6a35534f6ba553c54476792fd5f39d34adb8",
+    "all-resources.json": "e6c8862a2a46f09abfd54d35f4310699d312a663f9d20db2f59deec015374267",
+    "review-translation-verification.json": "4eb815ae6f3655ead29450a98e9d614c7d218f7a5a4d0f334d1601011f2ec520",
+    "actual-exe-build-report.json": "be98c760aa7284235a231b75a72d478a8d047f53e251e23d21dfe59dc6c4577f"
+  },
+  "unverified": [
+    "vi2 translation rendering and composed strings on RC 2",
+    "physical video output",
+    "RF behavior",
+    "physical LED operation",
+    "flight behavior",
+    "gimbal calibration and motion",
+    "long-term stability"
+  ],
+  "all_resource_entry_configurations_checked": 266594,
+  "all_resource_values_checked": 274021,
+  "changed_resource_configurations": 47678,
+  "all_code_native_manifest_and_menu_payloads_unchanged_from_published_91e": true,
+  "exploratory_full_repository": {
+    "tests": 1493,
+    "passed": 1491,
+    "failures": 2,
+    "errors": 0,
+    "skipped": 0,
+    "scope": "Exploratory full-repository run; separate from release acceptance",
+    "failure_modules": [
+      "tests/test_android_direct_apk.py",
+      "tests/test_displayport_retry.py"
+    ],
+    "baseline_commit": "8d742f27ffe5b80e1292c8fa5c493cc56c244601",
+    "baseline_failures_reproduced": true,
+    "baseline_overlays": 0,
+    "source_files_checked": 292,
+    "source_files_after_tests_unchanged": true,
+    "release_acceptance_gate": false
+  }
+}
