@@ -1,4 +1,4 @@
-# RC2 r14.4 — Animation
+# RC2 r14.5 — Animation
 
 Mở **Animation** ở góc trên cửa sổ EXE. Animation hiển thị ngay trong cửa sổ hiện tại. Bấm **← Quay lại** ở góc trên bên trái để về phần patch tiếng Việt và menu. Thiết kế đang sửa, ô nhập chưa hoàn tất và tác vụ xuất được giữ khi chuyển trang; phần xem trước tạm dừng khi quay lại. Thiết kế, xem trước và xuất gói được cả khi chưa nối RC2.
 
@@ -9,6 +9,8 @@ Bản r14.2 cập nhật chữ trong khi gõ, giữ một khung xem trước li�
 Bản r14.3 sửa bước đặt quyền gói sau khi truyền: ADB từ Windows có thể đổi quyền tệp thành `666`. App đặt lại chủ sở hữu `0:0` và quyền `644` cho tệp tạm do phiên đó tạo, rồi mới kiểm tra SHA-256, kích thước và quyền. Nếu còn sai lệch, thông báo chỉ rõ mục không khớp và dừng trước khi đổi cấu hình animation.
 
 Bản r14.4 thêm **Xin lại quyền USB** tại trang chính và Animation. Khi đã chọn tay, có thể xin quyền riêng trước khi cài. Nếu đang chờ Allow mà chưa được chấp thuận sau 10 giây, app đóng phiên chờ cũ và tạo phiên mới với cùng khóa ADB; có thể bấm nút để xin lại sớm hơn. Tổng thời gian chờ mỗi lần kết nối tối đa 120 giây. Khi đã kết nối, cơ chế này dừng; app không tự ngắt phiên đang truyền hoặc đang ghi cấu hình. Hộp thoại xuất hiện hay không còn phụ thuộc trạng thái cho phép của Android trên tay; vẫn phải chọn Allow khi được hỏi.
+
+Bản r14.5 cập nhật recipe Fly để gỡ nút ATTI, tắt GPS và điện áp từng cell pin của menu đặc biệt khỏi màn hình bay. Bản này cũng gỡ mục **Giải mã bản ghi** và cơ chế giải mã tự động, thủ công. Các chức năng thiết kế và cài animation giữ nguyên.
 
 ## Các kiểu hiệu ứng
 

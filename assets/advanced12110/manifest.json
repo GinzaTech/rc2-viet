@@ -3,7 +3,7 @@
   "version": "1.21.10",
   "code": 3115981,
   "source_sha256": "f6c11267d465c303e2aecb737fe4f6b41b54da083368cac497404f4c9a464f98",
-  "recipe_sha256": "e8342bd9e479318bfff88fa19fcc8afedda3481e718526c9d8cce4ab7a9d6acb",
+  "recipe_sha256": "28472e5a0c998672cf0074aec483f3ec4255f28fa418461f38751fef110eb020",
   "entries": {
     "replacements/AndroidManifest.xml": {
       "sha256": "0ca2717cabb46242a35d4872ed86df99f15201e6a105f180d322a41763007018",
@@ -58,16 +58,16 @@
       "bytes": 8672184
     },
     "additions/assets/rc2-menu/profile.json": {
-      "sha256": "84e9c27d7528995c00eceaa95f25a065d5e3e4dacd8cdf77b670a960b4b70410",
-      "bytes": 9218
+      "sha256": "b9e530594b1cbe28786e50e4f5c02cc886de4f76fd650d24f475f3cea71ad31a",
+      "bytes": 9337
     },
     "additions/classes23.dex": {
-      "sha256": "97e215a608e6ae85b32527b29755e3fd4d6a251beda7351af0561a442bae326f",
-      "bytes": 213932
+      "sha256": "800c8fd5787035ffb890ab93e42674900615924f667a85c7dc5c866aac56c317",
+      "bytes": 213720
     },
     "additions/classes24.dex": {
-      "sha256": "e50fa3b66ab7f0bb6de4f3e0e8f64facd0dd79c5b57b731a61d1f72202ebf8cf",
-      "bytes": 608776
+      "sha256": "ef334782ba18134a4c7ec69d27af3d0369f240bac076bfaa8a360d56519aee4f",
+      "bytes": 606184
     }
   },
   "profile_kind": "rc2-advanced-12110",

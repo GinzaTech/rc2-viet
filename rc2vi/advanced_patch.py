@@ -108,6 +108,8 @@ class AdvancedBuilder:
         self.version_code = VERSION_CODE if profile is None else profile.code
         self.profile_kind = PROFILE_KIND if profile is None else profile.profile_kind
         self.recipe_directory = "advanced12110" if profile is None else profile.recipe_directory
+        self.replacement_entries = (REPLACEMENT_ENTRIES if profile is None or profile.replacement_entries is None
+                                    else frozenset(profile.replacement_entries))
         self.assets, self.work = guard_path(assets), guard_path(work)
         self.emit, self.cancel = emit, cancel
         self.tools = HudTools(self.assets, self.work, cancel)
@@ -127,7 +129,7 @@ class AdvancedBuilder:
         with ZipFile(source) as archive:
             apk_entries(archive)
             names = set(archive.namelist())
-            if (not REPLACEMENT_ENTRIES | {'resources.arsc'} <= names
+            if (not self.replacement_entries | {'resources.arsc'} <= names
                     or (ADDITION_ENTRIES | {CAPSULE_ENTRY}) & names):
                 raise ValueError('Stock APK inventory differs')
             if archive.getinfo('AndroidManifest.xml').file_size > 4 * 1024 * 1024:
@@ -164,11 +166,11 @@ class AdvancedBuilder:
             if not isinstance(row, dict) or set(row) != {'certificate_sha256'}:
                 raise ValueError('Invalid historical signer row')
             _hex(row['certificate_sha256'])
-        expected = {'replacements/' + n for n in REPLACEMENT_ENTRIES} | {
+        expected = {'replacements/' + n for n in self.replacement_entries} | {
             'additions/' + n for n in ADDITION_ENTRIES}
         rows = manifest['entries']
         if not isinstance(rows, dict) or set(rows) != expected:
-            raise ValueError('Recipe must contain exactly 13 replacements and 3 additions')
+            raise ValueError('Recipe payload inventory differs from the selected RC version')
         for name, row in rows.items():
             _name(name)
             if (not isinstance(row, dict) or set(row) != {'sha256', 'bytes'}
@@ -196,7 +198,7 @@ class AdvancedBuilder:
                 payloads[info.filename] = data
         profile = _json_object(payloads['additions/' + PROFILE_ENTRY])
         self._profile(profile, template=True)
-        replacements = {name: payloads['replacements/' + name] for name in REPLACEMENT_ENTRIES}
+        replacements = {name: payloads['replacements/' + name] for name in self.replacement_entries}
         if self._identity(inspect_application(replacements['AndroidManifest.xml'])) != profile['plan']['identity']:
             raise ValueError('Replacement manifest identity differs from profile')
         self._unchanged_bundle(manifest, _hash(raw))

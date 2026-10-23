@@ -1,5 +1,6 @@
 """Standalone desktop/CLI for the actual offline RC2 APK patch pipeline."""
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -10,7 +11,7 @@ import threading
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 
-from rc2vi.auto_patch import AutoPatchBuilder, atomic_json
+from rc2vi.auto_patch import AutoPatchBuilder, atomic_json, TRANSLATION_SHA256
 from rc2vi.auto_workflow import AutoPatchRun
 from rc2vi.usb_windows import discover
 from rc2vi.hud_tools import sha256_file
@@ -21,6 +22,22 @@ def locations():
     base = Path(getattr(sys, '_MEIPASS', Path(__file__).resolve().parent))
     local = Path(os.environ.get('LOCALAPPDATA', str(Path.home() / 'AppData/Local')))
     return base / 'assets', local / 'RC2AutoPatch'
+
+
+def patch_work_directory(base, assets, serial):
+    """Resume one device/recipe combination while retaining earlier releases."""
+    fingerprint = hashlib.sha256()
+    fingerprint.update(('rc2-auto-work-v1:' + TRANSLATION_SHA256).encode('ascii'))
+    for profile in SUPPORTED:
+        fingerprint.update((profile.translation_directory + ':' +
+                            (profile.translation_sha256 or TRANSLATION_SHA256)).encode('ascii'))
+        manifest = Path(assets) / profile.recipe_directory / 'manifest.json'
+        if not manifest.is_file() or not 0 < manifest.stat().st_size <= 256 * 1024:
+            raise ValueError('Thiếu hoặc không đọc được dữ liệu phiên bản menu đã kiểm chứng.')
+        fingerprint.update(profile.recipe_directory.encode('ascii'))
+        fingerprint.update(hashlib.sha256(manifest.read_bytes()).digest())
+    device = hashlib.sha256(serial.encode('utf-8')).hexdigest()[:16]
+    return Path(base) / ('rc2-' + device + '-' + fingerprint.hexdigest()[:16])
 
 
 class App:
@@ -53,7 +70,7 @@ class App:
         from rc2vi import desktop_theme as ui
 
         root = self.root
-        root.title('RC2 Studio · Tiếng Việt, menu & Animation · r14.4')
+        root.title('RC2 Studio · Tiếng Việt, menu & Animation · r14.6')
         root.geometry('900x760')
         root.minsize(800, 680)
         ui.setup(root)
@@ -77,13 +94,14 @@ class App:
         ui.label(title, 'RC2 Studio', size=28, bold=True).pack(side='left')
         version = ui.frame(title, color=ui.PANEL, radius=10)
         version.pack(side='left', padx=(12, 0))
-        ui.label(version, 'r14.4', muted=True, size=11).pack(padx=10, pady=3)
+        ui.label(version, 'r14.6', muted=True, size=11).pack(padx=10, pady=3)
         ui.label(identity, 'Tiếng Việt  /  Menu nâng cao  /  Animation',
                  muted=True, size=13).pack(anchor='w', pady=(1, 0))
         self.animation_button = ui.button(heading, 'Mở Animation  →', self.open_animation,
                                           width=170, height=42)
         self.animation_button.pack(side='right', padx=(16, 0))
-        ui.label(body, 'Fly RC 1.21.8 / 1.21.10 · Đèn càng · HUD · Xuất hình · FCC/EC · Hiệu chỉnh gimbal',
+        supported = ' / '.join(profile.version for profile in SUPPORTED)
+        ui.label(body, 'Fly RC ' + supported + ' · Đèn càng · HUD · Xuất hình · FCC/EC · Hiệu chỉnh gimbal',
                  muted=True, size=12, wraplength=820, anchor='w').pack(fill='x', pady=(12, 18))
 
         device = ui.frame(body, color=ui.SURFACE, radius=20)
@@ -243,7 +261,7 @@ class App:
             self.root.minsize(800, 680)
             self.root.geometry(self._page_geometry.get('patch', '900x760'))
             self.patch_page.pack(fill='both', expand=True, padx=24, pady=20)
-        self.root.title('RC2 Studio · Tiếng Việt, menu & Animation · r14.4')
+        self.root.title('RC2 Studio · Tiếng Việt, menu & Animation · r14.6')
         self.controls()
         return True
 
@@ -296,8 +314,11 @@ class App:
         if not (self.serial.get() and self.grounded.get()): return
         allow_data_reset = self.reset.get()
         serial = self.serial.get()
-        import hashlib
-        self.current_work = self.base / ('rc2-' + hashlib.sha256(serial.encode()).hexdigest()[:16])
+        try:
+            self.current_work = patch_work_directory(self.base, self.assets, serial)
+        except (OSError, ValueError) as error:
+            messagebox.showerror('Chưa thể tiếp tục', str(error), parent=self.root)
+            return
         stop_file = self.current_work / 'STOP'
         if stop_file.exists():
             if stop_file.read_text('utf-8').strip() != 'RC2-AUTO-PATCH-STOP':
@@ -639,13 +660,17 @@ def main(argv=None):
             builder = AutoPatchBuilder(assets, work / 'self-test-tools', emit)
             builder._translation()
             recipes = {}
+            translations = {}
             for profile in SUPPORTED:
                 builder.select_profile(profile)
+                builder._translation()
                 manifest, _, _, _, _ = builder.menu._bundle()
                 recipes[profile.version] = manifest['recipe_sha256']
+                translations[profile.version] = builder.translation_sha256
             builder.tools.prepare()
             result = {'status': 'PASS', 'usb_opened': False, 'offline_runtime_ready': True,
                       'recipes': recipes, 'supported_versions': list(recipes), 'vietnamese_embedded': True,
+                      'translations': translations,
                       'full_fly_apk_embedded': False, 'private_signing_key_embedded': False}
         elif args.build_from_apk is not None:
             import uuid

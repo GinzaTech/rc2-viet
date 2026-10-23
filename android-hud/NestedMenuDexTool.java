@@ -14,7 +14,13 @@ import com.android.tools.smali.dexlib2.writer.io.FileDataStore;
 /** Change only the utilities menu and its generated callbacks in the Basic bridge. */
 public final class NestedMenuDexTool {
     static boolean includeHome;
+    static boolean flightOnly;
     static boolean selected(String type) {
+        for(String name:new String[]{"PortIntegration","PortHooks"}) {
+            String root="Llocal/rc2/hud/"+name;
+            if(type.equals(root+";")||type.startsWith(root+"$"))return true;
+        }
+        if(flightOnly)return false;
         if(includeHome)for(String name:new String[]{"DeviceMenu","ExternalOutput","DisplayPortRetry","HudProvider","CapabilityReader","CapabilityAudit"}) {
             String root="Llocal/rc2/hud/"+name;
             if(type.equals(root+";")||type.startsWith(root+"$"))return true;
@@ -27,17 +33,19 @@ public final class NestedMenuDexTool {
         return false;
     }
     public static void main(String[] args) throws Exception {
-        if(args[0].equals("dump")) {
+        flightOnly=args[0].equals("merge-flight")||args[0].equals("dump-flight");
+        if(args[0].equals("dump")||args[0].equals("dump-flight")) {
             Path folder=Paths.get(args[1]);Files.createDirectories(folder);
             for(int i=2;i<args.length;i++)for(Map.Entry<String,ClassDef> row:AdaptiveHudTool.classes(Paths.get(args[i])).entrySet()) {
                 String type=row.getKey();
-                if(selected(type)||type.equals("Lflysettings/S;")||type.equals("Llocal/rc2/hud/DeviceMenu;"))
+                if(selected(type)||type.equals("Lflysettings/S;")||type.equals("Lfrtool/X;")||
+                    type.equals("Lfrtool/Decryptor;")||type.equals("Llocal/rc2/hud/DeviceMenu;"))
                     Files.writeString(folder.resolve(type.substring(1,type.length()-1).replace('/','.')+".smali"),AdaptiveHudTool.dump(row.getValue()),StandardCharsets.UTF_8);
             }
             return;
         }
         includeHome=args[0].equals("merge-ui");
-        if((!args[0].equals("merge")&&!includeHome)||args.length!=5)throw new IllegalArgumentException();
+        if((!args[0].equals("merge")&&!includeHome&&!flightOnly)||args.length!=5)throw new IllegalArgumentException();
         Map<String,ClassDef> original=AdaptiveHudTool.classes(Paths.get(args[1]));
         Map<String,ClassDef> fresh=AdaptiveHudTool.classes(Paths.get(args[2]));
         Map<String,ClassDef> result=new TreeMap<>(original);

@@ -125,8 +125,45 @@ def map_builder(text, slots, next_style=False):
     return text
 
 
+def remove_record_decryption(text):
+    """Retire the menu row and every automatic/manual decrypt entry point."""
+    type_name = text.splitlines()[0].split()[-1]
+    if type_name == 'Lflysettings/S;':
+        def without_row(body):
+            pattern = r'(?ms)^    \.line 864\n.*?(?=^    \.line 877\n)'
+            rows = list(re.finditer(pattern, body))
+            if (len(rows) != 1 or rows[0][0].count('Lflysettings/S;->frDecrypt()Z') != 1
+                    or rows[0][0].count('Lflysettings/S$14;') != 2
+                    or rows[0][0].count('->switchRow(') != 1):
+                raise ValueError('Flight-record decryption menu row differs')
+            return body[:rows[0].start()] + body[rows[0].end():]
+        text = method(text, 'tabAdvanced(Landroid/content/Context;)Lflysettings/Columns;', without_row)
+        text = method(text, 'frDecrypt()Z', lambda body: body.splitlines()[0] +
+                      '\n    .registers 1\n    const/4 v0, 0x0\n    return v0\n.end method')
+        text = method(text, 'setFrDecrypt(Z)V', lambda body: body.splitlines()[0] +
+                      '\n    .registers 1\n    return-void\n.end method')
+    elif type_name in ('Lfrtool/X;', 'Lfrtool/Decryptor;'):
+        signatures = (['arm()V', 'ask(Landroid/app/Activity;)V', 'attach(Landroid/app/Activity;)V',
+                       'onSettingOn(Landroid/content/Context;)V', 'scan(Landroid/content/Context;)V',
+                       'startPoller(Landroid/content/Context;)V'] if type_name == 'Lfrtool/X;' else
+                      ['decryptAllAsync(Landroid/content/Context;Lfrtool/Decryptor$Done;)V',
+                       'decryptFilesAsync(Landroid/content/Context;Ljava/util/List;Lfrtool/Decryptor$Done;)V'])
+        for signature in signatures:
+            registers = max(1, parameters(signature, True))
+            text = method(text, signature, lambda body, n=registers: body.splitlines()[0] +
+                          f'\n    .registers {n}\n    return-void\n.end method')
+        if type_name == 'Lfrtool/X;':
+            text = method(text, 'enabled(Landroid/content/Context;)Z', lambda body: body.splitlines()[0] +
+                          '\n    .registers 1\n    const/4 v0, 0x0\n    return v0\n.end method')
+    return text
+
+
 def feature_adjustments(text):
     changes = []
+    before = text
+    text = remove_record_decryption(text)
+    if text != before:
+        changes.append('flight_record_decryption_removed')
     if text.splitlines()[0].endswith("Lflysettings/S;"):
         text=method(text,"showSettings(Landroid/content/Context;)V",lambda m:
             ".method public static showSettings(Landroid/content/Context;)V\n    .registers 1\n"

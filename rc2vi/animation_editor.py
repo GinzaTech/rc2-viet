@@ -157,7 +157,7 @@ class AnimationEditor:
             self.window = parent.winfo_toplevel()
         else:
             self.window = ctk.CTkToplevel(parent)
-            self.window.title('RC2 · Animation Studio · r14.4')
+            self.window.title('RC2 · Animation Studio · r14.5')
             self.window.geometry('1240x760')
             self.window.minsize(1050, 650)
             theme.setup(self.window)
@@ -206,7 +206,7 @@ class AnimationEditor:
 
     def _update_title(self):
         if self._visible and not self._destroyed:
-            title = f"RC2 · Animation Studio · r14.4 · {self.project['name']}"
+            title = f"RC2 · Animation Studio · r14.5 · {self.project['name']}"
             if self.dirty:
                 title += ' *'
             if self.window.title() != title:

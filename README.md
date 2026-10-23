@@ -1,8 +1,10 @@
-# RC2 Studio r14.4
+# RC2 Studio r14.6
 
 Công cụ Windows cho DJI RC 2: tự lấy APK DJI Fly trên tay, patch tiếng Việt và menu nâng cao; thiết kế và cài animation khởi động/tắt máy.
 
-Bản hiện tại: **r14.4** · [Tải RC2-TuDong-Patch-r14.4.exe](dist/RC2-TuDong-Patch-r14.4.exe) · Windows x64.
+Bản hiện tại: **r14.6** · [Tải RC2-TuDong-Patch-r14.6.exe](dist/RC2-TuDong-Patch-r14.6.exe) · Windows x64.
+
+[Báo cáo kiểm chứng r14.6](dist/r14.6-12116-verification.json). Bản mới đã qua kiểm tra trên PC, chưa cài lên RC 2.
 
 EXE được lưu bằng Git LFS. Nếu lấy dự án bằng Git, cài Git LFS rồi chạy `git lfs pull` để tải tệp chạy đầy đủ. [SHA-256](dist/SHA256SUMS.txt).
 
@@ -14,11 +16,19 @@ EXE được lưu bằng Git LFS. Nếu lấy dự án bằng Git, cài Git LFS 
 4. Bấm **Patch tiếng Việt + menu và cài**. App đọc APK, nhận diện nguồn, patch, ký, kiểm tra rồi cài; giữ cáp và nguồn đến khi có kết quả.
 5. Bấm **Mở Animation** để thiết kế trong cùng cửa sổ. **Quay lại** trở về trang tiếng Việt/menu, giữ bản nháp và tác vụ xuất đang chạy.
 
-Profile APK được hỗ trợ: **Fly RC 1.21.8 / 1.21.10**, đối chiếu phiên bản và SHA-256 nguồn. Mặc định cập nhật giữ dữ liệu khi cùng chữ ký. Chỉ bật tùy chọn gỡ/cài lại khi chấp nhận xóa dữ liệu Fly nếu khác chữ ký.
+Profile APK được hỗ trợ: **Fly RC 1.21.8 / 1.21.10 / 1.21.16**, đối chiếu phiên bản, mã phiên bản và SHA-256 nguồn. Bản 1.21.16 dùng recipe menu và bảng dịch riêng, lấy từ APK gốc trên RC 2; không dùng APK điện thoại thay thế.
+
+APK đã sửa được ký bằng khóa mod lưu riêng trên PC, không phải khóa DJI. Các bản mod cùng khóa có thể cập nhật giữ dữ liệu theo điều kiện của Android; APK chính thức của DJI không cài đè trực tiếp lên bản mod qua cơ chế cập nhật thông thường. Chứng chỉ trong APK không chứa khóa ký riêng để tái ký thành DJI. Chỉ bật tùy chọn gỡ/cài lại khi chấp nhận xóa dữ liệu Fly nếu khác chữ ký. [Chi tiết bản 1.21.16 và chữ ký](docs/FLY_12116.md).
 
 **Xin lại quyền USB** có ở cả hai trang. Có thể xin riêng trước khi cài hoặc bấm lại khi đang chờ Allow. Sau 10 giây chưa được chấp thuận, app tạo phiên chờ mới bằng cùng khóa ADB; tổng thời gian chờ tối đa 120 giây. Phiên đã được cấp quyền không bị ngắt bởi cơ chế này. Nút xin quyền không bỏ qua xác nhận trên RC 2.
 
 ## Tiếng Việt và menu
+
+Bản r14.6 bổ sung Fly RC **1.21.16 / 3132286**, giữ thay đổi từ r14.5: gỡ nút ATTI, tắt GPS và phần hiển thị điện áp từng cell pin của menu đặc biệt khỏi màn hình bay. Mục **Giải mã bản ghi** cùng cơ chế giải mã tự động và thủ công cũng được gỡ.
+
+Cập nhật bản dịch ngày 23/10/2026: **Aircraft Flyaway → Báo mất flycam**, đồng bộ 30 chuỗi liên quan; hai thông báo cập nhật dùng **Phần mềm mới đã sẵn sàng**. Bản 1.21.16 đối chiếu lại câu nguồn và bổ sung tài nguyên mới. [Phạm vi bản dịch](docs/FLYAWAY_WORDING.md).
+
+Tiến độ được lưu riêng theo recipe và bản dịch, giữ các tệp r14.4 để đối chiếu. Nếu APK trên tay khớp toàn bộ recipe hiện tại, app kiểm tra lại gói và báo hoàn tất mà không ký hoặc cài lại.
 
 - Tiếng Việt tích hợp vào APK được dựng từ đúng nguồn đã nhận diện.
 - Đèn càng; chạm hai lần ẩn/hiện HUD; xuất hình; FCC và khôi phục vùng gốc đã đọc trong phiên.
@@ -40,7 +50,7 @@ Profile APK được hỗ trợ: **Fly RC 1.21.8 / 1.21.10**, đối chiếu phi
 
 Mặc định 1920×1080, 24 fps. Giới hạn xuất: tổng 15 giây, tối đa 30 fps, ảnh giải mã của đoạn lặp tối đa 256 MiB, ZIP tối đa 512 MiB.
 
-[Hướng dẫn Animation và kiểm chứng r14.4](docs/ANIMATION_R14.md).
+[Hướng dẫn Animation và kiểm chứng r14.5](docs/ANIMATION_R14.md).
 
 ## Chạy từ mã nguồn
 
@@ -57,11 +67,11 @@ Các asset công cụ, recipe và tài nguyên đã pin phải có trong `assets
 Tạo thư mục build mới cho mỗi lần dựng:
 
 ```powershell
-$rc2BuildDir = Join-Path 'local-artifacts' ('build-r14.4-' + (Get-Date -Format 'yyyyMMdd-HHmmss'))
+$rc2BuildDir = Join-Path 'local-artifacts' ('build-r14.6-' + (Get-Date -Format 'yyyyMMdd-HHmmss'))
 .\.venv\Scripts\python.exe scripts\build_auto_patch_exe.py --build-root $rc2BuildDir
 ```
 
-Đầu ra: `dist/RC2-TuDong-Patch-r14.4.exe`; hash, inventory và thông tin đóng gói ở `build-report.json` trong thư mục build vừa tạo.
+Đầu ra: `dist/RC2-TuDong-Patch-r14.6.exe`; hash, inventory và thông tin đóng gói ở `build-report.json` trong thư mục build vừa tạo.
 
 ## Kiểm tra ngoại tuyến
 
@@ -69,11 +79,11 @@ Các lệnh sau không mở USB hoặc sửa thiết bị. Dùng đường dẫn
 
 ```powershell
 $rc2Check = Join-Path $env:LOCALAPPDATA 'RC2Check'
-.\dist\RC2-TuDong-Patch-r14.4.exe --self-test --work "$rc2Check\tools"
-.\dist\RC2-TuDong-Patch-r14.4.exe --animation-self-test --work "$rc2Check\export"
-.\dist\RC2-TuDong-Patch-r14.4.exe --animation-ui-self-test --work "$rc2Check\editor"
-.\dist\RC2-TuDong-Patch-r14.4.exe --navigation-ui-self-test --work "$rc2Check\navigation"
-.\dist\RC2-TuDong-Patch-r14.4.exe --animation-package-ui-self-test --work "$rc2Check\package"
+.\dist\RC2-TuDong-Patch-r14.6.exe --self-test --work "$rc2Check\tools"
+.\dist\RC2-TuDong-Patch-r14.6.exe --animation-self-test --work "$rc2Check\export"
+.\dist\RC2-TuDong-Patch-r14.6.exe --animation-ui-self-test --work "$rc2Check\editor"
+.\dist\RC2-TuDong-Patch-r14.6.exe --navigation-ui-self-test --work "$rc2Check\navigation"
+.\dist\RC2-TuDong-Patch-r14.6.exe --animation-package-ui-self-test --work "$rc2Check\package"
 ```
 
 `--smoke-ui` và `--smoke-animation-ui` mở giao diện, chụp đúng cửa sổ và ghi báo cáo; chỉ kiểm kê thiết bị Windows, không mở phiên USB. Có thể chỉ định `--report <tệp.json>` cho mọi chế độ kiểm tra.
@@ -81,13 +91,15 @@ $rc2Check = Join-Path $env:LOCALAPPDATA 'RC2Check'
 Xuất thiết kế từ dòng lệnh:
 
 ```powershell
-.\dist\RC2-TuDong-Patch-r14.4.exe --animation-export .\mau.rc2anim --work .\local-artifacts\export
+.\dist\RC2-TuDong-Patch-r14.6.exe --animation-export .\mau.rc2anim --work .\local-artifacts\export
 ```
 
 ## Phạm vi kiểm chứng
 
 - Kiểm thử nguồn, GUI và backend lấy từ EXE xác minh hành vi trên PC; USB/ADB giả lập không thay thế kiểm thử RC 2 thật.
-- **r14.4 chưa kiểm thử xin quyền USB hoặc cài animation trên RC 2 thật.** Không suy ra kết quả phần cứng từ self-test.
+- **r14.5 đã cập nhật giữ dữ liệu và kiểm tra trực tiếp trên RC 2 / Fly 1.21.8 khi máy bay đã hạ cánh, động cơ dừng.** Màn hình bay, menu Nâng cao và thao tác ẩn/hiện HUD đều không còn các thành phần đã gỡ. Fly 1.21.10 đã dựng và kiểm chứng offline; chưa chạy trên tay trong đợt này.
+- Bản 1.21.16 được lấy trực tiếp từ RC 2 sau cập nhật, kiểm chữ ký DJI và hash trước/sau. APK mod r14.6 cần kiểm tra riêng trên thiết bị; kết quả ngoại tuyến không chứng minh menu hoạt động trên RC 2 thật.
+- r14.6: 814 bài kiểm tra nguồn đạt; EXE phát hành đã tự kiểm tra cả ba profile và dựng APK 1.21.16 có nội dung khớp bản dựng từ mã nguồn. Chữ ký V3 trên SDK 30 đúng khóa mod cũ; phục hồi APK gốc khớp byte. [Bằng chứng](dist/r14.6-12116-verification.json).
 - Cài animation chỉ hỗ trợ thư viện DJI đã đối chiếu hash trên RC331/V14; firmware khác cần khảo sát riêng.
 - Công cụ không tự root, mở khóa bootloader, remount phân vùng hệ thống hay tự khởi động lại tay.
 - Đèn thật, xuất hình vật lý, RF, độ ổn định dài hạn và thử bay cần đánh giá riêng trên thiết bị.

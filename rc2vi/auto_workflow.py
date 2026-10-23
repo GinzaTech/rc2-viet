@@ -201,6 +201,20 @@ class AutoPatchRun:
             expected = for_identity(snapshot['version'], snapshot['code'])
             if sha256_file(source, self.cancel) != expected.source_sha256:
                 raise ValueError('Nguồn tiến độ không khớp phiên bản trên tay; chưa cài.')
+            current = getattr(builder, 'current_recovery', None)
+            if (isinstance(current, dict) and current.get('digest') == snapshot['digest']
+                    and current.get('source_digest') == expected.source_sha256
+                    and HASH.fullmatch(current.get('certificate_sha256', ''))):
+                # recover() only supplies this after verifying every current
+                # recipe byte. Recheck the live package before accepting it.
+                if probe.retry(probe.snapshot, 'verify_current_apk') != snapshot:
+                    raise DeploymentValidationError('APK trên tay đã thay đổi sau khi kiểm chứng; chưa cài.')
+                self.save(status='complete', phase='complete', installed_verified=True, final=snapshot,
+                          built=None, verified_current={'digest': current['digest'],
+                                 'certificate_sha256': current['certificate_sha256']},
+                          already_current=True)
+                self.emit('installed', 'RC 2 đã có đúng recipe hiện tại; không cần ký hoặc cài lại.')
+                return self.state
             # A pull/retry owns its USB session. Start keepalive only once
             # capture/recovery has finished; never retain its old transport
             # across a reconnect or open shell channels during bulk capture.

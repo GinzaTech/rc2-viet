@@ -13,14 +13,24 @@ from .hud_backup import guard_path
 from .hud_capsule import CAPSULE_ENTRY, PROFILE_ENTRY, build_capsule, recover_capsule
 from .hud_tools import sha256_file, check_cancel
 from .resource_embed import embed
+from .auto_recipe_history import PREVIOUS_RECIPES, load_previous
 from scripts.hud_apk import repack_apk, validate_apk_change
 from scripts.hud_signing_block import preserve_v2_file, block_entries_path, V2
 
 KIND = 'rc2-advanced-12110-vietnamese-auto-v1'
-TRANSLATION_SHA256 = 'a9d86b6a3a46457f3a5b95a0276b3583011405c58009e0682084e1a72aa4a1fb'
+TRANSLATION_SHA256 = '552e54ff5b3b4d2e8b70307cf75e4dbbe086838e2aec6b8e7eeec414caa03ddc'
 # These releases were built, signed and byte-checked in this workspace. A capsule
 # on its own never authorizes importing an arbitrary modified application.
 REVIEWED_EMBEDDED = {
+    # r14.5 APKs independently verified against the preceding translation table.
+    'e809af9ff09d32bd44699785c71f54f61a1458d24e2a72a70304e08e469bcc86':
+        'c581d1c3ff00db3b4d3d7cf5f6c384bb7719763c0986a3ee6b629aa001956915',
+    '71b9859ccb4aa82ae72146011c98757533236f5b586e6771c4c29e51ba732a51':
+        'c581d1c3ff00db3b4d3d7cf5f6c384bb7719763c0986a3ee6b629aa001956915',
+    # Independently audited prior build with the older d6867ddf translation.
+    # Only this complete APK digest and signer pair may use that upgrade path.
+    '2874a7e8327951c0a6d2117049ab0a4012f578c03d964b5fb756a31ec911c23c':
+        'c581d1c3ff00db3b4d3d7cf5f6c384bb7719763c0986a3ee6b629aa001956915',
     '1436b7bc9cd43befb7c3f282d9dd2a1398b3c83e856306dccd49a3e0047a3ab7':
         '744bcae7b02111e24a0bb9f880bd85cc8802d0100f213954f76838a4c5b565aa',
     '42f1ae6f7f7b1b08aed3c7e9fdaa6ef552b3a9f301b19df347658e1f6b629664':
@@ -95,11 +105,15 @@ class AutoPatchBuilder:
     def _select_source(self, source):
         self.select_profile(for_source(sha256_file(source, self.cancel)))
 
+    @property
+    def translation_sha256(self):
+        return self.version_profile.translation_sha256 or TRANSLATION_SHA256
+
     def _translation(self):
-        path = guard_path(self.assets / 'auto12110/vietnamese.arsc')
+        path = guard_path(self.assets / self.version_profile.translation_directory / 'vietnamese.arsc')
         if not path.is_file() or path.stat().st_size > 8 * 1024 * 1024:
             raise ValueError('Thiếu dữ liệu tiếng Việt đã kiểm chứng của bản tự động.')
-        if sha256_file(path, self.cancel) != TRANSLATION_SHA256:
+        if sha256_file(path, self.cancel) != self.translation_sha256:
             raise ValueError('Dữ liệu tiếng Việt bị thay đổi; chưa dựng hoặc cài APK.')
         return path.read_bytes()
 
@@ -109,19 +123,51 @@ class AutoPatchBuilder:
         manifest, manifest_hash, replacements, additions, template = self.menu._bundle()
         with ZipFile(source) as archive:
             resources, report = embed(archive.read('resources.arsc'), self._translation())
-        if report['embedded_resources'] != 11313:
+        if report['embedded_resources'] != self.version_profile.translation_count:
             raise ValueError('Số tài nguyên tiếng Việt không khớp bản RC đã kiểm chứng.')
         replacements = {**replacements, 'resources.arsc': resources}
         capsule = build_capsule(source, stage / 'recovery.zip', set(replacements), self.cancel)
         profile = {**template, 'kind': self.version_profile.auto_kind, 'recipe_sha256': manifest['recipe_sha256'],
-                   'translation_sha256': TRANSLATION_SHA256, 'embedded_vietnamese': report,
+                   'translation_sha256': self.translation_sha256, 'embedded_vietnamese': report,
                    'standalone_language': True}
         additions = {**additions, CAPSULE_ENTRY: capsule.read_bytes(),
                      PROFILE_ENTRY: json.dumps(profile, ensure_ascii=False, sort_keys=True).encode('utf-8')}
         self.menu._unchanged_bundle(manifest, manifest_hash)
         return replacements, additions, profile
 
-    def verify(self, source, candidate, expected_digest=None):
+    def _previous_payloads(self, source, candidate, stage, recipe_sha256):
+        self._select_source(source)
+        self.menu._stock(source)
+        manifest, template = load_previous(self.assets, recipe_sha256, self.version_profile)
+        self.menu._profile(template, template=True)
+        replacements, additions = {}, {}
+        with ZipFile(candidate) as archive:
+            for entry, row in manifest['entries'].items():
+                if entry == 'additions/' + PROFILE_ENTRY:
+                    continue  # Reconstruct this profile from the pinned template below.
+                check_cancel(self.cancel)
+                category, name = entry.split('/', 1)
+                info = archive.getinfo(name)
+                if info.file_size != row['bytes']:
+                    raise ValueError('Kích thước payload recipe cũ không khớp: ' + name)
+                data = archive.read(info)
+                if hashlib.sha256(data).hexdigest() != row['sha256']:
+                    raise ValueError('SHA-256 payload recipe cũ không khớp: ' + name)
+                (replacements if category == 'replacements' else additions)[name] = data
+        with ZipFile(source) as archive:
+            resources, report = embed(archive.read('resources.arsc'), self._translation())
+        if report['embedded_resources'] != self.version_profile.translation_count:
+            raise ValueError('Số tài nguyên tiếng Việt không khớp bản RC đã kiểm chứng.')
+        replacements['resources.arsc'] = resources
+        capsule = build_capsule(source, stage / 'recovery.zip', set(replacements), self.cancel)
+        profile = {**template, 'kind': self.version_profile.auto_kind,
+                   'recipe_sha256': recipe_sha256, 'translation_sha256': self.translation_sha256,
+                   'embedded_vietnamese': report, 'standalone_language': True}
+        additions[CAPSULE_ENTRY] = capsule.read_bytes()
+        additions[PROFILE_ENTRY] = json.dumps(profile, ensure_ascii=False, sort_keys=True).encode('utf-8')
+        return replacements, additions, profile
+
+    def verify(self, source, candidate, expected_digest=None, *, historical_recipe=None):
         source, candidate = guard_path(source), guard_path(candidate)
         before = sha256_file(candidate, self.cancel)
         if expected_digest is not None and before != expected_digest:
@@ -129,7 +175,10 @@ class AutoPatchBuilder:
         self.work.mkdir(parents=True, exist_ok=True)
         with tempfile.TemporaryDirectory(prefix='verify-', dir=self.work) as folder:
             stage = Path(folder)
-            replacements, additions, profile = self._payloads(source, stage)
+            if historical_recipe is None:
+                replacements, additions, profile = self._payloads(source, stage)
+            else:
+                replacements, additions, profile = self._previous_payloads(source, candidate, stage, historical_recipe)
             validate_apk_change(source, candidate, replacements=replacements, additions=additions)
             if block_entries_path(candidate).get(V2) != block_entries_path(source).get(V2):
                 raise ValueError('Loader V2 không khớp APK gốc.')
@@ -148,6 +197,7 @@ class AutoPatchBuilder:
                 'embedded_vietnamese': True, 'separate_overlay_required': False}
 
     def recover(self, pulled, output):
+        self.current_recovery = None
         pulled, output = guard_path(pulled), guard_path(output)
         digest = sha256_file(pulled, self.cancel)
         if digest in {p.source_sha256 for p in SUPPORTED}:
@@ -158,7 +208,7 @@ class AutoPatchBuilder:
             return output
         with ZipFile(pulled) as archive:
             if PROFILE_ENTRY not in archive.namelist():
-                raise ValueError('Menu local chỉ hỗ trợ nguồn RC 1.21.8 / 1.21.10 đã kiểm chứng; chưa thay Fly.')
+                raise ValueError('Menu local chỉ hỗ trợ đúng APK Fly RC đã kiểm chứng; chưa thay Fly.')
             if archive.getinfo(PROFILE_ENTRY).file_size > 128 * 1024:
                 raise ValueError('Thông tin APK vượt giới hạn.')
             profile = json.loads(archive.read(PROFILE_ENTRY))
@@ -185,7 +235,11 @@ class AutoPatchBuilder:
         if block_entries_path(pulled).get(V2) != block_entries_path(output).get(V2):
             raise ValueError('Loader của APK đã thay đổi.')
         if own and not reviewed:
-            self.verify(output, pulled, digest)
+            previous = profile.get('recipe_sha256')
+            historical = previous if previous in PREVIOUS_RECIPES else None
+            verified = self.verify(output, pulled, digest, historical_recipe=historical)
+            if historical is None:
+                self.current_recovery = verified
         else:
             # Both the complete file hash and selected certificate were pinned.
             if sha256_file(pulled, self.cancel) != digest:
@@ -202,7 +256,8 @@ class AutoPatchBuilder:
         if output.is_file():
             self.emit('building', 'Đang kiểm chứng lại APK đã dựng để tiếp tục…')
             return self.verify(source, output)
-        self.emit('building', 'Đang patch menu local và nhúng 11.313 tài nguyên tiếng Việt vào APK…')
+        count = format(self.version_profile.translation_count, ',').replace(',', '.')
+        self.emit('building', 'Đang patch menu local và nhúng ' + count + ' tài nguyên tiếng Việt vào APK…')
         with tempfile.TemporaryDirectory(prefix='build-', dir=self.work) as folder:
             stage = Path(folder)
             replacements, additions, profile = self._payloads(source, stage)

@@ -647,6 +647,7 @@ def test_partial_usb_keypair_is_preserved(tmp_path):
 
 def test_real_core_constructor_contract_with_appdata_signer_and_confirm_adapter(monkeypatch, tmp_path):
     from rc2vi import hud_keys
+    monkeypatch.setenv('LOCALAPPDATA', str(tmp_path / 'local-appdata'))
     monkeypatch.setattr(app, 'paths', lambda: (tmp_path, tmp_path / 'appdata'))
     monkeypatch.setattr(hud_keys, 'HudKeyStore', lambda tools, root=None: SimpleNamespace(root=root or tmp_path/'legacy-signing'))
     backend = app.Backend(tmp_path / 'assets', tmp_path / 'work-d', lambda *e: None, threading.Event())
@@ -717,6 +718,7 @@ def test_cancel_stops_blocked_pairing_and_allows_fresh_retry(rig):
 
 def test_builder_reuses_existing_pc_signer_for_data_retaining_updates(monkeypatch,tmp_path):
     from rc2vi import hud_keys
+    monkeypatch.setenv('LOCALAPPDATA', str(tmp_path / 'local-appdata'))
     legacy=tmp_path/'legacy-signing'
     legacy.mkdir();(legacy/'signer.json').write_text('{}','utf-8')
     monkeypatch.setattr(hud_keys,'HudKeyStore',lambda tools,root=None:SimpleNamespace(root=root or legacy))

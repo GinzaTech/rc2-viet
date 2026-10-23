@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "source_sha256": "9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a",
+  "version": "1.21.16",
+  "version_code": 3132286,
+  "resource_sha256": "dcb39692e2a56d9e2c5670c04691ee1b561d1116128ab487a55828b9be75b150",
+  "bytes": 2199924,
+  "embedded_resources": 11994,
+  "separate_overlay_required": false,
+  "translation_revision": "r14.6-12116-vietnamese-menu",
+  "source_package": {
+    "id": 127,
+    "name": "dji.go.v5",
+    "type_id_offset": 0
+  },
+  "prior_translation_sha256": "552e54ff5b3b4d2e8b70307cf75e4dbbe086838e2aec6b8e7eeec414caa03ddc",
+  "reviewed": 11425,
+  "machine": 569,
+  "unresolved": 0,
+  "complete": true,
+  "all_machine_output_semantically_reviewed": false,
+  "resource_ids_and_configurations_preserved": true,
+  "aapt2_parse": "PASS",
+  "aapt2_resource_id_inventory_identical": true,
+  "raw_text_resources": 12685,
+  "composition_text_resources": 12683,
+  "preserved_composition_resources": 689,
+  "excluded_integer_arrays": 2,
+  "preserved_raw_resources": 691,
+  "signed": false,
+  "installed": false
+}

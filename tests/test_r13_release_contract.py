@@ -22,8 +22,9 @@ def test_r13_utilities_have_exactly_advanced_and_gimbal_calibration():
     assert all(hidden not in policy for hidden in ('"Chung"', '"Điều khiển"', '"An toàn"', '"Bộ chống rung"'))
 
 
-def test_r13_supports_both_exact_fly_versions_with_matching_recipe_metadata():
-    assert [(p.version, p.code) for p in SUPPORTED] == [('1.21.8', 3115809), ('1.21.10', 3115981)]
+def test_supported_exact_fly_versions_have_matching_recipe_metadata():
+    assert [(p.version, p.code) for p in SUPPORTED] == [
+        ('1.21.8', 3115809), ('1.21.10', 3115981), ('1.21.16', 3132286)]
     expected = ['Nâng cao', 'Hiệu chỉnh gimbal']
     for profile in SUPPORTED:
         manifest = json.loads((ROOT / 'assets' / profile.recipe_directory / 'manifest.json').read_text('utf-8'))

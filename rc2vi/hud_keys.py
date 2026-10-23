@@ -213,7 +213,56 @@ class HudKeyStore:
                 json.dump(value, output, sort_keys=True)
             check_cancel(self.cancel)
             # Same-directory atomic rename retains this already protected DACL.
-            metadata.replace(self._file('signer.json'))
+            destination = self._file('signer.json')
+            try:
+                metadata.replace(destination)
+            except OSError as error:
+                if getattr(error, 'winerror', None) != 17:
+                    raise
+                # Some redirected AppData filesystems reject even same-directory
+                # rename with ERROR_NOT_SAME_DEVICE. Both callers hold _locked;
+                # retain the previous identity before any individual-file write.
+                import hashlib
+
+                def write_private(path: Path, data: bytes) -> None:
+                    mode = 'r+b' if path.exists() else 'x+b'
+                    with path.open(mode) as output:
+                        self._private_file(path)
+                        output.seek(0)
+                        if output.write(data) != len(data):
+                            raise OSError('Short HUD signer metadata write.')
+                        output.truncate()
+                        output.flush()
+                        os.fsync(output.fileno())
+                        output.seek(0)
+                        if hashlib.sha256(output.read()).digest() != hashlib.sha256(data).digest():
+                            raise ValueError('HUD signer metadata write failed integrity verification.')
+
+                previous = None
+                if destination.exists():
+                    self._private_file(destination)
+                    previous = destination.read_bytes()
+                    retained = self._file('signer-' + uuid.uuid4().hex + '.previous.json')
+                    try:
+                        write_private(retained, previous)
+                    except BaseException:
+                        retained.unlink(missing_ok=True)
+                        raise
+                try:
+                    check_cancel(self.cancel)
+                    write_private(destination, metadata.read_bytes())
+                    metadata.unlink()
+                except BaseException:
+                    try:
+                        # Recovery must complete even if the caller canceled.
+                        if previous is None:
+                            destination.unlink(missing_ok=True)
+                        else:
+                            write_private(destination, previous)
+                    except BaseException:
+                        raise RuntimeError('HUD signer metadata recovery failed; '
+                                           'previous private metadata and keys are retained.') from None
+                    raise
         except BaseException:
             metadata.unlink(missing_ok=True)
             password_file.unlink(missing_ok=True)

@@ -16,6 +16,7 @@ import java.util.WeakHashMap;
 /** Candidate-only bridge; no aircraft command is sent from installation. */
 final class PortIntegration {
     private static final String TAG="RC2FeaturePort";
+    private static final String[] FLIGHT_EXTRA_TAGS={"flyctl-qt","flyctl-qt-b","openfcc-battery-readout"};
     private static boolean installed;
     private static final Map<View,Boolean> hiddenPowerTargets=new WeakHashMap<>();
     static void install(Application application) {
@@ -28,7 +29,6 @@ final class PortIntegration {
         if(!p.contains("enc_logs"))p.edit().putBoolean("enc_logs",true).apply();
         call(application,"rthguard.Guard","init",new Class<?>[]{Context.class},application);
         call(application,"lte4g.Auto","arm",new Class<?>[0]);
-        if(p.getBoolean("fr_decrypt",false))call(application,"frtool.X","arm",new Class<?>[0]);
         Log.i(TAG,"feature_modules_registered");
     }
     static Object call(Context c,String type,String method,Class<?>[] signature,Object... args) {
@@ -42,20 +42,30 @@ final class PortIntegration {
     static void resumed(Activity a,int role) {
         View root=a.findViewById(android.R.id.content);
         if(role==1 && root!=null)call(a,"redfly.Power","bind",new Class<?>[]{View.class},root);
-        if(a.getClass().getName().contains("FlightRecord"))call(a,"frtool.X","attach",new Class<?>[]{Activity.class},a);
         if(role==2) {
-            call(a,"flyctl.Q","attach",new Class<?>[]{Activity.class},a);
+            // Special controls belong in the menu. Never attach the quick-toggle
+            // row (GPS, ATTI, VPS, RC GPS and ToF) or cell-voltage readout here.
+            removeFlightExtras(a,root);
             call(a,"rthguard.Guard","attach",new Class<?>[]{Activity.class},a);
-            call(a,"frtool.X","attach",new Class<?>[]{Activity.class},a);
-            if(root instanceof ViewGroup)call(a,"app.openfcc.battery.BatteryOverlay","attach",new Class<?>[]{ViewGroup.class},root);
         }
     }
     static void paused(Activity a) {
-        View root=a.findViewById(android.R.id.content);
-        if(root instanceof ViewGroup)call(a,"app.openfcc.battery.BatteryOverlay","detach",new Class<?>[]{ViewGroup.class},root);
-        if(root instanceof ViewGroup)for(String tag:new String[]{"flyctl-qt","flyctl-qt-b"}) {
-            View v=root.findViewWithTag(tag);
-            if(v!=null && v.getParent() instanceof ViewGroup)((ViewGroup)v.getParent()).removeView(v);
+        removeFlightExtras(a,a.findViewById(android.R.id.content));
+    }
+    private static void removeFlightExtras(Activity a,View root) {
+        if(root instanceof ViewGroup) {
+            // detach also cancels the readout's subscriptions and refresh timer.
+            call(a,"app.openfcc.battery.BatteryOverlay","detach",new Class<?>[]{ViewGroup.class},root);
+            removeFlightExtraViews((ViewGroup)root);
+        }
+    }
+    private static void removeFlightExtraViews(ViewGroup root) {
+        for(int i=root.getChildCount()-1;i>=0;i--) {
+            View child=root.getChildAt(i);
+            boolean extra=false;
+            for(String tag:FLIGHT_EXTRA_TAGS)if(tag.equals(child.getTag())){extra=true;break;}
+            if(extra)root.removeView(child);
+            else if(child instanceof ViewGroup)removeFlightExtraViews((ViewGroup)child);
         }
     }
     static void placePower(View power,float fallbackX,float fallbackY) {
@@ -81,17 +91,13 @@ final class PortIntegration {
         if(Boolean.TRUE.equals(hiddenPowerTargets.get(power)))power.setVisibility(View.INVISIBLE);
     }
     static int hideExtras(ViewGroup root,java.util.Map<View,Integer> original) {
-        int changed=0;
-        for(String tag:new String[]{"flyctl-qt","flyctl-qt-b","openfcc-battery-readout"}) {
-            View view=root.findViewWithTag(tag);
-            if(view==null || view==root || original.containsKey(view))continue;
-            original.put(view,view.getVisibility());
-            if(view.getVisibility()==View.VISIBLE){view.setVisibility(View.INVISIBLE);changed++;}
-        }
-        return changed;
+        // Do not save these views in the HUD restore map: restoring the stock
+        // HUD must never bring the special controls back.
+        removeFlightExtraViews(root);
+        return 0;
     }
     static void hudHidden(Activity a,ViewGroup root,boolean hidden) {
-        call(a,"app.openfcc.battery.BatteryOverlay",hidden?"detach":"attach",new Class<?>[]{ViewGroup.class},root);
+        removeFlightExtras(a,root);
     }
     static void radioUpdated(Context c,boolean fcc) {
         SharedPreferences.Editor edit=c.getSharedPreferences("mod_settings",0).edit();

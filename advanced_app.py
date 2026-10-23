@@ -139,8 +139,14 @@ def builder_factory(assets, work, emit, cancel=None, profile=None):
     builder = AdvancedBuilder(assets, work, emit, cancel=cancel, profile=profile)
     # Offline --work can reside on another drive; signing storage stays in the
     # dedicated per-user AppData directory, never beside source/bundled assets.
+    local = Path(os.environ.get('LOCALAPPDATA') or Path.home() / 'AppData/Local')
+    stable = HudKeyStore(builder.tools, local / 'RC2Studio/signing')
     existing=HudKeyStore(builder.tools)
-    if (existing.root/'signer.json').is_file():
+    if os.path.lexists(stable.root / 'signer.json'):
+        # An explicitly retained identity owns this location even when corrupt.
+        # load/ensure must report that error rather than choose a different key.
+        builder.keys = stable
+    elif (existing.root/'signer.json').is_file():
         # Reuse the PC's previous menu signer to preserve same-signer updates.
         # A corrupt existing identity fails closed when the builder loads it.
         builder.keys=existing

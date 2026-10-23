@@ -1,0 +1,68 @@
+{
+  "status": "PASS_HOST_CHECKS",
+  "version": "1.21.16",
+  "version_code": 3132286,
+  "source_sha256": "9bec52ed4c43aad6c615b0a7a0650f0d35e842c4bf8a5e59d5da005a50d56b6a",
+  "artifacts": {
+    "RC2-TuDong-Patch-r14.6.exe": {
+      "sha256": "b17433ae3a96ecd06a547ef139bab35c8fe33317fa29cf44dd089250c37b94d0",
+      "bytes": 198450875
+    },
+    "DJI-Fly-RC2-1.21.16-Vietnamese-Menu-r14.6.apk": {
+      "sha256": "5e9dac81a55d4c295d49a4de349b3757253d921538aaefc955f901ad2c012ccd",
+      "bytes": 525802402
+    }
+  },
+  "menu_recipe_sha256": "b8df8c71949f43ac5582f41144e0b46dcc73663a96a43bd59b26680117d350a1",
+  "embedded_vietnamese_resources": 11994,
+  "translation_sha256": "dcb39692e2a56d9e2c5670c04691ee1b561d1116128ab487a55828b9be75b150",
+  "machine_translated_resources": 569,
+  "all_machine_output_semantically_reviewed": false,
+  "sdk30_signature_scheme": "v3",
+  "certificate_sha256": "c581d1c3ff00db3b4d3d7cf5f6c384bb7719763c0986a3ee6b629aa001956915",
+  "same_signer_as_prior_mod": true,
+  "official_dji_signature": false,
+  "retained_original_v2_bytes": true,
+  "source_tests": {
+    "tests": 814,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "actual_frozen_exe_self_test": "PASS",
+  "actual_frozen_exe_build": "PASS",
+  "matched_zip_payload_entries": 15747,
+  "original_stock_recovered_byte_exactly": true,
+  "resource_ids_and_configurations_unchanged": true,
+  "native_entries_unchanged": 112,
+  "unresolved_helper_api_dependencies": 0,
+  "flight_screen_removed_controls": [
+    "ATTI",
+    "GPS disable",
+    "battery cell voltage"
+  ],
+  "flight_record_decryption_removed": true,
+  "device_installed": false,
+  "device_runtime_tested": false,
+  "usb_opened": true,
+  "private_signing_key_bundled": false,
+  "clean_export_source_tests": {
+    "passed": 814,
+    "failures": 0,
+    "errors": 0
+  },
+  "clean_export_exe_build": "PASS",
+  "clean_export_exe_self_test": "PASS",
+  "host_checks_usb_opened": false,
+  "device_install_attempt": {
+    "status": "BLOCKED_SIGNATURE_MISMATCH",
+    "android_error": "INSTALL_FAILED_UPDATE_INCOMPATIBLE",
+    "stock_version": "1.21.16",
+    "data_reset_authorized": false,
+    "app_uninstalled": false,
+    "app_data_reset": false,
+    "internal_app_data_backup_verified": true,
+    "mod_installed": false,
+    "mod_runtime_tested": false
+  }
+}

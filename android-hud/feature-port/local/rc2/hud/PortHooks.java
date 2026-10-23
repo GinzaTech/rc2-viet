@@ -90,7 +90,8 @@ public final class PortHooks {
         return Boolean.TRUE.equals(PortIntegration.call(a,"redfly.Startup","stopSystemLaunch",new Class<?>[]{Activity.class},a));
     }
     public static void noteIntent(Activity a,Intent i) { PortIntegration.call(a,"redfly.Startup","noteIntent",new Class<?>[]{Activity.class,Intent.class},a,i); }
-    public static void gpsControls(View v) { call("flyctl.F","addToggles",new Class<?>[]{View.class},v); }
+    /** Retained for older host DEX references; flight-screen controls are retired. */
+    public static void gpsControls(View v) { }
     public static String buttonName(int value) {
         Object v=call("flyctl.B","name",new Class<?>[]{int.class},value);return v instanceof String?(String)v:null;
     }

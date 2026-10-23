@@ -3,11 +3,11 @@
   "files": {
     "catalog.json": {
       "kind": "catalog",
-      "sha256": "0d099bea336c4d7a929824246ed9601e7dc62b827ce2b4cd05e45acd78de8961"
+      "sha256": "4ad8e63183121933bc4dec9409f7de283751367d82572f3fd35c3ec8ef36b627"
     },
     "memory/phone.json": {
       "kind": "catalog",
-      "sha256": "8d6f62957f30acda4bd032811377608642f053c0954e76b1b72a5ec0823dcc75"
+      "sha256": "1ea2916709004db5d96fc921d217aab338dc29435fcd03879885d72c90400c1b"
     },
     "overrides.json": {
       "kind": "text",
@@ -19,7 +19,7 @@
     },
     "wording.json": {
       "kind": "text",
-      "sha256": "3320b424ac06639cdbd0c79eb6631616096047f08012f40a547603d022596df0"
+      "sha256": "6f41af0beec52c5c43b168ee53d199bed01da6fcf68b883a2da43ac7ababdaf7"
     }
   }
 }

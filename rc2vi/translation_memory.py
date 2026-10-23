@@ -6,7 +6,7 @@ import re
 
 from .hud_tools import _safe_relative, load_json, sha256_file
 
-MEMORY_MANIFEST_SHA256 = '9fa21342a9c03a544c3dfcf1ba14d0ac6a156a9e92cc1321948210d1ac12bfc1'
+MEMORY_MANIFEST_SHA256 = 'c5d019eeb28309be1d4a4830c496e126006e0ccc143a3525e70eba66dda7d21b'
 
 
 def load_memories(assets: Path, cancel=None, enabled=True):

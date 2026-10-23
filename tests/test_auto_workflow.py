@@ -14,7 +14,8 @@ def sha(data):
     return hashlib.sha256(data).hexdigest()
 
 
-@pytest.fixture(params=[('1.21.8', 3115809), ('1.21.10', 3115981)], ids=['rc1218', 'rc12110'])
+@pytest.fixture(params=[('1.21.8', 3115809), ('1.21.10', 3115981), ('1.21.16', 3132286)],
+                ids=['rc1218', 'rc12110', 'rc12116'])
 def case(tmp_path, monkeypatch, request):
     state = SimpleNamespace(raw=b'installed', captured=0, recovered=0, built=0, installed=0,
                             verified=0, version=request.param[0], code=request.param[1], changed=False,
@@ -173,6 +174,45 @@ def test_already_installed_output_is_verified_without_reinstall(case):
     create().run(grounded=True, allow_data_reset=True)
     assert create().run(grounded=True, allow_data_reset=True)['installed_verified']
     assert state.installed == 1 and state.captured == 1 and state.verified == 1
+
+
+def test_current_recipe_recovered_from_fresh_capture_needs_no_signing_or_reinstall(case):
+    state, create = case
+    runner = create()
+    original = runner.builder_factory
+    class Current(original):
+        def recover(self, raw, output):
+            super().recover(raw, output)
+            self.current_recovery = {'digest': state.snapshot['digest'],
+                                     'source_digest': sha(b'stock'),
+                                     'certificate_sha256': 'c' * 64}
+        def build(self, source):
+            raise AssertionError('Current verified APK must not be rebuilt or signed')
+    runner.builder_factory = Current
+    result = runner.run(grounded=True)
+    assert result['already_current'] and result['installed_verified']
+    assert result['built'] is None
+    assert state.captured == state.recovered == 1
+    assert state.built == state.installed == 0
+    assert runner.run(grounded=True)['already_current']
+    assert state.captured == 1 and state.built == state.installed == 0
+
+
+def test_live_package_change_after_current_recipe_recovery_is_rejected(case):
+    state, create = case
+    runner = create()
+    original = runner.builder_factory
+    class Changed(original):
+        def recover(self, raw, output):
+            super().recover(raw, output)
+            self.current_recovery = {'digest': state.snapshot['digest'],
+                                     'source_digest': sha(b'stock'),
+                                     'certificate_sha256': 'c' * 64}
+            state.snapshot = {**state.snapshot, 'digest': 'f' * 64}
+    runner.builder_factory = Changed
+    with pytest.raises(api.DeploymentValidationError, match='thay đổi'):
+        runner.run(grounded=True)
+    assert state.built == state.installed == 0
 
 
 def test_recovered_stock_cache_never_authorizes_an_unrecognized_new_input(case):
