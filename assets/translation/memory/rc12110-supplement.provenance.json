@@ -1,0 +1,7 @@
+{
+  "source": "rc2-viet-codex-initial-release",
+  "source_catalog_sha256": "3c19be6b92197a2ff1bdd3a11f784e5431f05f223947598de340c2fa7e092888",
+  "translations": "translation/rc-1.21.10/res",
+  "method": "exact source text and placeholder contract; current pairs take precedence",
+  "runtime_tested": false
+}

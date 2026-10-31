@@ -1,0 +1,1 @@
+package android.widget;public class Toast {public static final int LENGTH_LONG=1;public static int shows;public static Toast makeText(android.content.Context context,CharSequence message,int length){return new Toast();}public void show(){shows++;}}

@@ -1,0 +1,151 @@
+{
+  "status": "PASS_RELEASE_AND_RC2_INSTALL",
+  "release": "r14.6.1-12118",
+  "date": "2026-11-01",
+  "exe": "RC2-TuDong-Patch-r14.6.1.exe",
+  "exe_sha256": "a9490ede112cf4c72157ad498ddf0e17e0ec316f86ca7da72725bbf55af420b7",
+  "exe_bytes": 235792206,
+  "supported_versions": [
+    "1.21.8",
+    "1.21.10",
+    "1.21.16",
+    "1.21.18"
+  ],
+  "source_apk_sha256": "9c6b068a43187a2700fb9fc31734ea6107a07ff222dc28482969b0ddb99ca0fe",
+  "source_mod_apk_sha256": "b93556e43495a100bc73b800e0fcc72fc05e04b4f254f7b9afddbeb79623cfc5",
+  "recipe_sha256": "da95900dd7ca9774ebd33ae8baeb5ae30c381488f92e4aac9e4d76a3d3af03e4",
+  "source_snapshot_sha256": "b206c678309eeb966aced1ee5d899a4fe7a6d59877a8f2db6e37e2f17f2983ce",
+  "clean_source_tests": {
+    "passed": 1201,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "modules": 39
+  },
+  "translation": {
+    "resources": 11994,
+    "stock_resources_byte_identical_to_12116": true,
+    "sha256": "7ae58691f03056aeab336edde3c0e29e383b7eab88592f82f29b6d84beb9b3d9"
+  },
+  "menu_policy": {
+    "sections": [
+      "Nâng cao",
+      "Hiệu chỉnh gimbal"
+    ],
+    "all_four_recipes_two_pages": true,
+    "hidden_basic_control_safety_calls_absent": true,
+    "connected_and_disconnected_home_anchors": true,
+    "aircraft_parameters_changed": false
+  },
+  "frozen_exe": {
+    "exe_sha256": "a9490ede112cf4c72157ad498ddf0e17e0ec316f86ca7da72725bbf55af420b7",
+    "bytes": 235792206,
+    "supported_versions": [
+      "1.21.8",
+      "1.21.10",
+      "1.21.16",
+      "1.21.18"
+    ],
+    "stock_build_payload_matches_source": true,
+    "status": "PASS",
+    "matched_zip_payload_entries": 15634,
+    "certificate_sha256_sdk30": "c581d1c3ff00db3b4d3d7cf5f6c384bb7719763c0986a3ee6b629aa001956915",
+    "recovered_original_sha256": "9c6b068a43187a2700fb9fc31734ea6107a07ff222dc28482969b0ddb99ca0fe",
+    "built_apk_sha256": "418b8724d010fc360e5309031fd1271c919e98e5118b3d3ceec5e589328a1d1e",
+    "candidate_apk_sha256": "b93556e43495a100bc73b800e0fcc72fc05e04b4f254f7b9afddbeb79623cfc5"
+  },
+  "frozen_checks": {
+    "self-test": "PASS",
+    "stock-build": "PASS",
+    "animation": "PASS",
+    "typing": "PASS",
+    "navigation": "PASS",
+    "package-ui": "PASS"
+  },
+  "boot_animation": {
+    "image_and_font_cache_replacement_fixed": true,
+    "invalid_aspect_ratio_export_rejected": true,
+    "native_library_sha256": "9442ab962705a12d0b442b48250954d71be9c800ad650fe962ede36040a0b3a6",
+    "current_v15_library_read_only_check": true,
+    "custom_overrides_selected_at_inspection": false,
+    "physical_boot_shutdown_playback_tested": false,
+    "private_checksum_connection_for_install_restore_and_usb_request": true,
+    "cleared_property_reinstall_archives_prior_receipt": true,
+    "unknown_nonempty_override_still_rejected": true,
+    "cancellation_adapter_compatible": true,
+    "installed_verified": true,
+    "package_sha256": "295e7b59b229be47cdaf4981298515863f2e73988a90b69b65c5501131ed2e37",
+    "reboot_verified": true,
+    "persistent_property_verified_after_reboot": true,
+    "visual_confirmed_by_user": true,
+    "visual_confirmation_source": "user observed actual RC2 boot",
+    "shutdown_animation_tested": false,
+    "physical_boot_playback_tested": true
+  },
+  "warning_audio": {
+    "vietnamese_replacement_feasible_static_analysis": true,
+    "audio_modified_in_this_release": false,
+    "english_mp3_assets": 148
+  },
+  "official_dji_signature_preserved": false,
+  "private_signing_key_embedded": false,
+  "full_fly_apk_embedded": false,
+  "patched_apk_installed_on_rc2": true,
+  "flight_tested": false,
+  "frozen_cancellation_guard": {
+    "status": "PASS",
+    "cases": [
+      {
+        "kind": "none",
+        "real_guard": "PASS",
+        "real_private_open_preflight": "PASS"
+      },
+      {
+        "kind": "event",
+        "real_guard": "PASS",
+        "real_private_open_preflight": "PASS"
+      },
+      {
+        "kind": "callable",
+        "real_guard": "PASS",
+        "real_private_open_preflight": "PASS"
+      }
+    ],
+    "modules_extracted_from_new_exe": [
+      "rc2vi.hud_tools",
+      "advanced_app",
+      "rc2vi.animation_install"
+    ],
+    "actual_usb_backend_replaced": true,
+    "physical_open_calls": 0
+  },
+  "frozen_code_and_asset_comparison": {
+    "prior_exe_sha256": "cc6db27479d966cc0e2ddc3df2a50c6fffa4c42fb705730ffbd9241f2b49ee83",
+    "pyz_module_count": 408,
+    "marshal_changed_modules": [
+      "rc2vi.animation_install"
+    ],
+    "semantic_changed_modules": [
+      "rc2vi.animation_install"
+    ],
+    "entrypoint_byte_identical": true,
+    "bundled_assets_verified_byte_identical": 43
+  },
+  "rc2_installation": {
+    "version": "1.21.18",
+    "code": 3132442,
+    "installed_apk_sha256": "418b8724d010fc360e5309031fd1271c919e98e5118b3d3ceec5e589328a1d1e",
+    "backup_verified_before_reinstall": true,
+    "backup_bytes": 326856192,
+    "app_uninstalled_due_to_different_signature": true,
+    "vietnamese_login_and_home_verified": true,
+    "two_menu_sections_verified_on_device": true,
+    "advanced_page_opened": true,
+    "gimbal_page_opened": true,
+    "advanced_back_to_selector_verified": true,
+    "apk_hash_verified_after_reboot": true,
+    "account_login_skipped_for_ui_check": true,
+    "gimbal_calibration_tested": false,
+    "flight_tested": false
+  }
+}
